@@ -1,0 +1,8 @@
+*~
+.project
+.settings
+*/target
+*/.project
+*/.classpath
+*/.checkstyle
+*/.settings
