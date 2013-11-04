@@ -11,6 +11,8 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 
+import net.dryanhild.jcollada.LoaderContext;
+
 import org.junit.Test;
 
 import com.sun.j3d.loaders.Scene;
@@ -23,10 +25,11 @@ public class GeodesicFrameTest {
 
     @Test
     public void geodesicFrameLoads() throws IOException {
-        URL resourceURL = ClassLoader.getSystemResource("resources/GeodesicFrame.dae");
-        Reader reader = new InputStreamReader(resourceURL.openStream());
-        net.dryanhild.jcollada.ColladaLoader instance = new net.dryanhild.jcollada.ColladaLoader();
-        Scene scene = instance.load(reader);
+        URL resourceUrl = ClassLoader.getSystemResource("GeodesicFrame.dae");
+        Reader reader = new InputStreamReader(resourceUrl.openStream());
+        LoaderContext context = new LoaderContext(resourceUrl, 0, true, null, null);
+        ColladaLoader instance = new ColladaLoader();
+        Scene scene = instance.load(reader, context);
         assertNotNull(scene);
     }
 }

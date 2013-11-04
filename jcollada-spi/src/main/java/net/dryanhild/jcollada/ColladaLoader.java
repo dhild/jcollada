@@ -105,14 +105,12 @@ public class ColladaLoader extends LoaderBase {
 
     private Scene loadImpl(Reader reader, URL mainFile) throws FileNotFoundException, IncorrectFormatException {
         char[] header = new char[headerLength];
-        if (!reader.markSupported()) {
-            int bufferSize = Math.max(headerLength, minBufferSize);
-            reader = new BufferedReader(reader, bufferSize);
-        }
+        int bufferSize = Math.max(headerLength, minBufferSize);
+        BufferedReader bufferedReader = new BufferedReader(reader, bufferSize);
         try {
-            reader.mark(headerLength);
-            reader.read(header);
-            reader.reset();
+            bufferedReader.mark(headerLength);
+            bufferedReader.read(header);
+            bufferedReader.reset();
         } catch (IOException ex) {
             throw new ParsingErrorException("IOException while reading: " + ex.getLocalizedMessage());
         }
@@ -121,7 +119,7 @@ public class ColladaLoader extends LoaderBase {
             if (loader.canLoad(headerString)) {
                 logger.debug("Attempting load with class {}", loader.getClass().getName());
                 LoaderContext context = new LoaderContext(mainFile, loadFlags, validating, baseUrl, basePath);
-                Scene s = loader.load(reader, context);
+                Scene s = loader.load(bufferedReader, context);
                 if (s != null) {
                     return s;
                 }

@@ -62,7 +62,7 @@ public class ColladaLoader extends ColladaLoaderService {
     public static final ColladaVersion version140 = new ColladaVersion(1, 4, 0, "1.4.0");
     public static final ColladaVersion version141 = new ColladaVersion(1, 4, 1, "1.4.1");
 
-    private static final URL schemaURL = ClassLoader.getSystemResource("resources/collada_schema_1_4_1.xsd");
+    private static final URL schemaURL = ClassLoader.getSystemResource("collada_schema_1_4_1.xsd");
     private static Schema schema = null;
     private static JAXBContext context = null;
 
@@ -77,7 +77,7 @@ public class ColladaLoader extends ColladaLoaderService {
     private synchronized void loadContext() {
         if (context == null) {
             try {
-                context = JAXBContext.newInstance("net.dryanhild.collada.schema14.gen");
+                context = JAXBContext.newInstance("net.dryanhild.jcollada.schema141.gen");
             } catch (JAXBException ex) {
                 logger.error("Unable to create JAXBContext!\n{}", ex.getLocalizedMessage());
                 ParsingErrorException exception = new ParsingErrorException("Creation of JAXBContext failed.");
@@ -128,7 +128,7 @@ public class ColladaLoader extends ColladaLoaderService {
         return scene.constructScene();
     }
 
-    private final Pattern versionPattern = Pattern.compile("COLLADA[^>]+version\\s?=\\s?\\\"1.4.[01]\\\"", Pattern.DOTALL);
+    private final Pattern versionPattern = Pattern.compile("COLLADA[^>]+version\\s?=\\s?\\\"1\\.4\\.[01]\\\"");
 
     @Override
     public boolean canLoad(CharSequence header) {

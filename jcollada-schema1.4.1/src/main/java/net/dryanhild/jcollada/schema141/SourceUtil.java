@@ -67,7 +67,7 @@ public class SourceUtil {
             doubleData = new double[dataCount];
             int index = 0;
             for (Double d : data.getValues()) {
-                doubleData[index++] = d;
+                doubleData[index++] = d.doubleValue();
             }
         } else if (source.getBoolArray() != null) {
             BoolArray data = source.getBoolArray();
@@ -75,7 +75,7 @@ public class SourceUtil {
             booleanData = new boolean[dataCount];
             int index = 0;
             for (Boolean b : data.getValues()) {
-                booleanData[index++] = b;
+                booleanData[index++] = b.booleanValue();
             }
         } else if (source.getIntArray() != null) {
             IntArray data = source.getIntArray();

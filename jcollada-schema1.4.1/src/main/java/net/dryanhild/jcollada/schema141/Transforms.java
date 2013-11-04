@@ -45,6 +45,7 @@ import com.sun.j3d.loaders.ParsingErrorException;
  * 
  * @author D. Ryan Hild <d.ryan.hild@gmail.com>
  */
+@SuppressWarnings("boxing")
 public class Transforms {
 
     public static Transform3D getLookatTransform(Lookat lookat) {
