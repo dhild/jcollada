@@ -1,14 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>net.dryanhild.jcollada</groupId>
-  <artifactId>jcollada</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <packaging>pom</packaging>
-  <name>jcollada</name>
-  <modules>
-    <module>jcollada-spi</module>
-    <module>jcollada-schema1.4.1</module>
-    <module>jcollada-schema1.5</module>
-  </modules>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>net.dryanhild.jcollada</groupId>
+    <artifactId>jcollada</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>jcollada</name>
+    <inceptionYear>2013</inceptionYear>
+    <licenses>
+        <license>
+            <name>MIT-License</name>
+        </license>
+    </licenses>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>1.5</version>
+            </plugin>
+        </plugins>
+    </build>
+    <modules>
+        <module>jcollada-spi</module>
+        <module>jcollada-schema1.4.1</module>
+        <module>jcollada-schema1.5</module>
+    </modules>
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>1.5</version>
+            </plugin>
+        </plugins>
+    </reporting>
+    <properties>
+        <junit.version>4.11</junit.version>
+        <log4j.version>2.0-beta9</log4j.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <license.licenseName>mit</license.licenseName>
+    </properties>
 </project>
