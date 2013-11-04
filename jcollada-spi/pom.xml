@@ -34,6 +34,38 @@
     </build>
     <dependencies>
         <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>${log4j.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.java3d</groupId>
+            <artifactId>j3dcore</artifactId>
+            <version>1.5.2</version>
+            <scope>system</scope>
+            <systemPath>${java.home}/lib/ext/j3dcore.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>javax.java3d</groupId>
+            <artifactId>vecmath</artifactId>
+            <version>1.5.2</version>
+            <scope>system</scope>
+            <systemPath>${java.home}/lib/ext/vecmath.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>javax.java3d</groupId>
+            <artifactId>j3dutils</artifactId>
+            <version>1.5.2</version>
+            <scope>system</scope>
+            <systemPath>${java.home}/lib/ext/j3dutils.jar</systemPath>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>${junit.version}</version>
