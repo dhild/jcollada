@@ -35,15 +35,16 @@ import java.util.regex.Pattern;
 import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
-import net.dryanhild.jcollada.LoaderContext;
-import net.dryanhild.jcollada.schema141.gen.COLLADA;
+import net.dryanhild.jcollada.ColladaContext;
+import net.dryanhild.jcollada.ColladaContext.ContextSchema;
+import net.dryanhild.jcollada.schema141.handlers.impl.COLLADAHandler;
 import net.dryanhild.jcollada.spi.ColladaLoaderService;
 import net.dryanhild.jcollada.spi.ColladaVersion;
 
+import org.apache.commons.io.input.ReaderInputStream;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.xml.sax.SAXException;
@@ -74,7 +75,7 @@ public class ColladaLoader extends ColladaLoaderService {
         return versions;
     }
 
-    private synchronized void loadContext() {
+    private synchronized JAXBContext loadContext() {
         if (context == null) {
             try {
                 context = JAXBContext.newInstance("net.dryanhild.jcollada.schema141.gen");
@@ -85,9 +86,10 @@ public class ColladaLoader extends ColladaLoaderService {
                 throw exception;
             }
         }
+        return context;
     }
 
-    private synchronized void loadSchema() {
+    private synchronized Schema loadSchema() {
         if (schema == null) {
             SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
             try {
@@ -97,35 +99,21 @@ public class ColladaLoader extends ColladaLoaderService {
                         schemaURL.toString(), e.getLocalizedMessage());
             }
         }
-    }
-
-    private COLLADA loadElements(Reader in, LoaderContext loaderContext) {
-        loadContext();
-        try {
-            Unmarshaller unmarshaller = context.createUnmarshaller();
-            if (loaderContext.isValidating()) {
-                loadSchema();
-                unmarshaller.setSchema(schema);
-            }
-            return (COLLADA) unmarshaller.unmarshal(in);
-        } catch (Exception e) {
-            logger.error("Encountered exception while unmarshalling.", e);
-            ParsingErrorException exception = new ParsingErrorException("Encountered exception while unmarshalling.");
-            exception.addSuppressed(e);
-            throw exception;
-        }
+        return schema;
     }
 
     @Override
-    public Scene load(Reader in, LoaderContext loaderContext) {
-        ColladaScene scene = new ColladaScene(loaderContext);
-        COLLADA mainFile = loadElements(in, loaderContext);
-        scene.load(mainFile);
-        while (loaderContext.hasUnloadedURLs()) {
-            scene.load(loadElements(in, loaderContext));
-        }
+    public Scene load(Reader in) {
+        ColladaContext.load(new ReaderInputStream(in), loadContext(), new ContextSchema() {
+            @Override
+            public Schema getSchema() {
+                return loadSchema();
+            }
+        });
 
-        return scene.constructScene();
+        COLLADAHandler handler = new COLLADAHandler();
+
+        return handler.process();
     }
 
     private final Pattern versionPattern = Pattern.compile("COLLADA[^>]+version\\s?=\\s?\\\"1\\.4\\.[01]\\\"");

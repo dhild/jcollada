@@ -28,7 +28,6 @@ package net.dryanhild.jcollada.schema141;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Shape3D;
 
-import net.dryanhild.jcollada.LoaderContext;
 import net.dryanhild.jcollada.schema141.gen.COLLADA;
 import net.dryanhild.jcollada.schema141.gen.Geometry;
 import net.dryanhild.jcollada.schema141.gen.InstanceWithExtra;
@@ -52,12 +51,7 @@ public class ColladaScene {
 
     final Logger logger = LogManager.getLogger(ColladaScene.class);
 
-    LoaderContext context;
     COLLADA.Scene mainScene;
-
-    public ColladaScene(LoaderContext context) {
-        this.context = context;
-    }
 
     /** Adds the collada file to the data to be processed. */
     void load(COLLADA collada) {

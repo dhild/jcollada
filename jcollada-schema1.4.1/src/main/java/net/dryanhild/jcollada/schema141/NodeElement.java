@@ -34,7 +34,6 @@ import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
 import javax.xml.bind.JAXBElement;
 
-import net.dryanhild.jcollada.LoaderContext;
 import net.dryanhild.jcollada.schema141.gen.InstanceGeometry;
 import net.dryanhild.jcollada.schema141.gen.InstanceWithExtra;
 import net.dryanhild.jcollada.schema141.gen.Lookat;
@@ -54,8 +53,6 @@ public class NodeElement {
 
     final Logger logger = LogManager.getLogger(NodeElement.class);
 
-    LoaderContext context;
-
     String id;
     String name;
     String sid;
@@ -63,7 +60,7 @@ public class NodeElement {
     List<NodeElement> childNodes = new ArrayList<>();
     Group instance;
 
-    public static void createNode(Node node, LoaderContext context) {
+    public static void createNode(Node node) {
         NodeElement element = new NodeElement(node, context);
         if (element.id != null) {
             context.addObjectById(element.id, element);

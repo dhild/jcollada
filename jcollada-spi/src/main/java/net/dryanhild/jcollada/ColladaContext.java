@@ -152,6 +152,10 @@ public final class ColladaContext {
         documents.get().put(key, document);
     }
 
+    public static Collection<Document> getDocuments() {
+        return Lists.newArrayList(documents.get().values());
+    }
+
     public static <T> Collection<T> getElementsByTag(String tag, Class<T> type) {
         logger.entry(tag, type);
         List<T> values = Lists.newArrayList();
