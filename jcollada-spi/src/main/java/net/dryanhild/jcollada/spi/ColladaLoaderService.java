@@ -29,8 +29,6 @@ import java.io.FileNotFoundException;
 import java.io.Reader;
 import java.util.List;
 
-import net.dryanhild.jcollada.LoaderContext;
-
 import com.sun.j3d.loaders.Scene;
 
 /**
@@ -43,6 +41,6 @@ public abstract class ColladaLoaderService {
 
     public abstract boolean canLoad(CharSequence header);
 
-    public abstract Scene load(Reader reader, LoaderContext context) throws FileNotFoundException;
+    public abstract Scene load(Reader reader) throws FileNotFoundException;
 
 }

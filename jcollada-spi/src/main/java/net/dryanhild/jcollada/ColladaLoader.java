@@ -63,7 +63,7 @@ public class ColladaLoader extends LoaderBase {
     private static final int minBufferSize = 512;
 
     public ColladaLoader() {
-        logger.info("Creating new ColladaLoader instance");
+        logger.trace("Creating new ColladaLoader instance");
         for (ColladaLoaderService service : loaders) {
             for (ColladaVersion version : service.getColladaVersions()) {
                 logger.debug("Service implementation for {} is available at {}", version, service.getClass().getName());
@@ -118,8 +118,8 @@ public class ColladaLoader extends LoaderBase {
         for (ColladaLoaderService loader : loaders) {
             if (loader.canLoad(headerString)) {
                 logger.debug("Attempting load with class {}", loader.getClass().getName());
-                LoaderContext context = new LoaderContext(mainFile, loadFlags, validating, baseUrl, basePath);
-                Scene s = loader.load(bufferedReader, context);
+                ColladaContext.initialize(getBaseUrl(), getBasePath(), isValidating(), getFlags());
+                Scene s = loader.load(bufferedReader);
                 if (s != null) {
                     return s;
                 }
