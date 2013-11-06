@@ -23,7 +23,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package net.dryanhild.jcollada.schema141;
+package net.dryanhild.jcollada.schema141.geometry;
 
 import java.util.List;
 
@@ -34,8 +34,8 @@ import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 import javax.xml.bind.JAXBElement;
 
+import net.dryanhild.jcollada.schema141.gen.ColladaMatrix;
 import net.dryanhild.jcollada.schema141.gen.Lookat;
-import net.dryanhild.jcollada.schema141.gen.Matrix;
 import net.dryanhild.jcollada.schema141.gen.Rotate;
 import net.dryanhild.jcollada.schema141.gen.Skew;
 
@@ -46,7 +46,10 @@ import com.sun.j3d.loaders.ParsingErrorException;
  * @author D. Ryan Hild <d.ryan.hild@gmail.com>
  */
 @SuppressWarnings("boxing")
-public class Transforms {
+public final class Transforms {
+
+    private Transforms() {
+    }
 
     public static Transform3D getLookatTransform(Lookat lookat) {
         List<Double> values = lookat.getValues();
@@ -58,7 +61,7 @@ public class Transforms {
         return t;
     }
 
-    public static Matrix4d getMatrix(Matrix matrix) {
+    public static Matrix4d getMatrix(ColladaMatrix matrix) {
         List<Double> values = matrix.getValues();
         Matrix4d mat = new Matrix4d();
         mat.m00 = values.get(0);
@@ -80,7 +83,7 @@ public class Transforms {
         return mat;
     }
 
-    public static Transform3D getMatrixTransform(Matrix matrix) {
+    public static Transform3D getMatrixTransform(ColladaMatrix matrix) {
         return new Transform3D(getMatrix(matrix));
     }
 

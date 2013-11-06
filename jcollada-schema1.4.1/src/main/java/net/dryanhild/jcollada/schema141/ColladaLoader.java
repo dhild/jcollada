@@ -38,11 +38,10 @@ import javax.xml.bind.JAXBException;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
-import net.dryanhild.jcollada.ColladaContext;
-import net.dryanhild.jcollada.ColladaContext.ContextSchema;
-import net.dryanhild.jcollada.schema141.handlers.impl.COLLADAHandler;
+import net.dryanhild.jcollada.metadata.Version;
+import net.dryanhild.jcollada.spi.ColladaContext;
 import net.dryanhild.jcollada.spi.ColladaLoaderService;
-import net.dryanhild.jcollada.spi.ColladaVersion;
+import net.dryanhild.jcollada.spi.ColladaContext.ContextSchema;
 
 import org.apache.commons.io.input.ReaderInputStream;
 import org.apache.logging.log4j.LogManager;
@@ -60,16 +59,16 @@ public class ColladaLoader extends ColladaLoaderService {
 
     final Logger logger = LogManager.getLogger(ColladaLoader.class);
 
-    public static final ColladaVersion version140 = new ColladaVersion(1, 4, 0, "1.4.0");
-    public static final ColladaVersion version141 = new ColladaVersion(1, 4, 1, "1.4.1");
+    public static final Version version140 = new Version(1, 4, 0, "1.4.0");
+    public static final Version version141 = new Version(1, 4, 1, "1.4.1");
 
     private static final URL schemaURL = ClassLoader.getSystemResource("collada_schema_1_4_1.xsd");
     private static Schema schema = null;
     private static JAXBContext context = null;
 
     @Override
-    public List<ColladaVersion> getColladaVersions() {
-        List<ColladaVersion> versions = new ArrayList<>();
+    public List<Version> getColladaVersions() {
+        List<Version> versions = new ArrayList<>();
         versions.add(version140);
         versions.add(version141);
         return versions;
@@ -111,7 +110,7 @@ public class ColladaLoader extends ColladaLoaderService {
             }
         });
 
-        COLLADAHandler handler = new COLLADAHandler();
+        COLLADAContextHandler handler = new COLLADAContextHandler();
 
         return handler.process();
     }

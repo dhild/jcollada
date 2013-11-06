@@ -23,7 +23,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package net.dryanhild.jcollada.schema141;
+package net.dryanhild.jcollada.schema141.geometry;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ import javax.media.j3d.IndexedGeometryArray;
 import javax.media.j3d.IndexedTriangleArray;
 import javax.media.j3d.Shape3D;
 
-import net.dryanhild.jcollada.LoaderContext;
+import net.dryanhild.jcollada.schema141.Handler;
 import net.dryanhild.jcollada.schema141.gen.Geometry;
 import net.dryanhild.jcollada.schema141.gen.InputLocal;
 import net.dryanhild.jcollada.schema141.gen.InputLocalOffset;
@@ -43,9 +43,7 @@ import net.dryanhild.jcollada.schema141.gen.Polygons;
 import net.dryanhild.jcollada.schema141.gen.Source;
 import net.dryanhild.jcollada.schema141.gen.Triangles;
 import net.dryanhild.jcollada.schema141.gen.Vertices;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import net.dryanhild.jcollada.spi.ColladaContext;
 
 import com.sun.j3d.loaders.ParsingErrorException;
 import com.sun.j3d.utils.geometry.GeometryInfo;
@@ -54,26 +52,20 @@ import com.sun.j3d.utils.geometry.GeometryInfo;
  * 
  * @author D. Ryan Hild <d.ryan.hild@gmail.com>
  */
-public class MeshUtil implements GeometryElement {
-
-    final Logger logger = LogManager.getLogger(MeshUtil.class);
+public class GeometryHandler implements Handler<Shape3D> {
 
     private final String id;
     private final String name;
     private final Mesh mesh;
-    private final LoaderContext context;
 
-    public MeshUtil(Geometry geom, LoaderContext context) {
+    public GeometryHandler(String id) {
+        this(ColladaContext.getElementById(id, Geometry.class));
+    }
+
+    public GeometryHandler(Geometry geom) {
         this.name = geom.getName();
         this.mesh = geom.getMesh();
-        this.context = context;
         this.id = geom.getId();
-
-        if (mesh != null) {
-            for (Source s : mesh.getSources()) {
-                SourceUtil.createSource(s, context);
-            }
-        }
     }
 
     private int getVertexFormat(InputLocal input) {
@@ -89,7 +81,7 @@ public class MeshUtil implements GeometryElement {
     }
 
     private int getVertexFormat(InputLocalOffset input) {
-        Object obj = context.getObjectById(input.getSource(), Object.class);
+        Object obj = ColladaContext.getElementById(input.getSource(), Object.class);
         if (obj instanceof Vertices) {
             Vertices vert = (Vertices) obj;
             int format = 0;
@@ -98,7 +90,7 @@ public class MeshUtil implements GeometryElement {
             }
             return format;
         }
-        SourceUtil s = (SourceUtil) obj;
+        SourceUtil s = new SourceUtil((Source) obj);
         switch (input.getSemantic()) {
         case "COLOR":
             switch (s.getSize("R", "G", "B", "A")) {
@@ -136,11 +128,7 @@ public class MeshUtil implements GeometryElement {
     }
 
     private SourceUtil getSource(String id) {
-        SourceUtil source = context.getObjectById(id, SourceUtil.class);
-        if (source == null) {
-            throw new ParsingErrorException("Can't locate source " + id);
-        }
-        return source;
+        return new SourceUtil(ColladaContext.getElementById(id, Source.class));
     }
 
     private class ColorsData {
@@ -456,18 +444,8 @@ public class MeshUtil implements GeometryElement {
     }
 
     @Override
-    public Shape3D toShape3D() {
-        if (mesh != null) {
-            return meshToShape3D();
-        }
-
-        throw new ParsingErrorException("Can't handle geometry " + name + ", id: " + id);
-    }
-
-    private Shape3D meshToShape3D() {
+    public Shape3D process() {
         List<IndexedGeometryArray> geometries = new ArrayList<>();
-
-        context.addObjectById(mesh.getVertices().getId(), mesh.getVertices());
 
         for (Object obj : mesh.getLinesAndLinestripsAndPolygons()) {
             if (obj instanceof Triangles) {

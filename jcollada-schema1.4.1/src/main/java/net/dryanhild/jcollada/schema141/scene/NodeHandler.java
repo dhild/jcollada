@@ -23,7 +23,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package net.dryanhild.jcollada.schema141;
+package net.dryanhild.jcollada.schema141.scene;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,13 +34,17 @@ import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
 import javax.xml.bind.JAXBElement;
 
+import net.dryanhild.jcollada.schema141.Handler;
+import net.dryanhild.jcollada.schema141.gen.ColladaMatrix;
+import net.dryanhild.jcollada.schema141.gen.ColladaNode;
 import net.dryanhild.jcollada.schema141.gen.InstanceGeometry;
 import net.dryanhild.jcollada.schema141.gen.InstanceWithExtra;
 import net.dryanhild.jcollada.schema141.gen.Lookat;
-import net.dryanhild.jcollada.schema141.gen.Matrix;
-import net.dryanhild.jcollada.schema141.gen.Node;
 import net.dryanhild.jcollada.schema141.gen.Rotate;
 import net.dryanhild.jcollada.schema141.gen.Skew;
+import net.dryanhild.jcollada.schema141.geometry.GeometryHandler;
+import net.dryanhild.jcollada.schema141.geometry.Transforms;
+import net.dryanhild.jcollada.spi.ColladaContext;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -49,40 +53,30 @@ import org.apache.logging.log4j.Logger;
  * 
  * @author D. Ryan Hild <d.ryan.hild@gmail.com>
  */
-public class NodeElement {
+public class NodeHandler implements Handler<Group> {
 
-    final Logger logger = LogManager.getLogger(NodeElement.class);
+    private final Logger logger = LogManager.getLogger(NodeHandler.class);
 
     String id;
     String name;
     String sid;
-    Node nodeType;
-    List<NodeElement> childNodes = new ArrayList<>();
+    ColladaNode nodeType;
+    List<NodeHandler> childNodes = new ArrayList<>();
     Group instance;
 
-    public static void createNode(Node node) {
-        NodeElement element = new NodeElement(node, context);
-        if (element.id != null) {
-            context.addObjectById(element.id, element);
-        }
+    public NodeHandler(String id) {
+        this(ColladaContext.getElementById(id, ColladaNode.class));
     }
 
-    public NodeElement(Node node, LoaderContext context) {
-        this.context = context;
+    public NodeHandler(ColladaNode node) {
         id = node.getId();
         name = node.getName();
         sid = node.getSid();
         nodeType = node;
-
-        for (Node n : node.getNodes()) {
-            NodeElement element = new NodeElement(n, context);
-            if (element.id != null) {
-                context.addObjectById(element.id, element);
-            }
-        }
     }
 
-    public Group getInstance() {
+    @Override
+    public Group process() {
         if (instance == null) {
             instance = constructInstance();
         }
@@ -91,13 +85,13 @@ public class NodeElement {
 
     public Group constructInstance() {
         List<Group> children = new ArrayList<>();
-        for (NodeElement n : childNodes) {
+        for (NodeHandler n : childNodes) {
             children.add(n.constructInstance());
         }
 
         if (nodeType.getInstanceNodes() != null) {
             for (InstanceWithExtra inst : nodeType.getInstanceNodes()) {
-                NodeElement element = context.getObjectById(id, NodeElement.class);
+                NodeHandler element = new NodeHandler(id);
                 Group node = element.constructInstance();
                 if (inst.getName() != null) {
                     node.setName(inst.getName());
@@ -109,7 +103,7 @@ public class NodeElement {
         List<Shape3D> shapes = new ArrayList<>();
         if (nodeType.getInstanceGeometries() != null) {
             for (InstanceGeometry inst : nodeType.getInstanceGeometries()) {
-                Shape3D shape = context.getObjectById(inst.getUrl(), GeometryUtil.class).getShape3D();
+                Shape3D shape = new GeometryHandler(inst.getUrl()).process();
                 if (inst.getName() != null) {
                     shape.setName(inst.getName());
                 }
@@ -122,8 +116,8 @@ public class NodeElement {
             for (Object obj : nodeType.getLookatsAndMatrixesAndRotates()) {
                 if (obj instanceof Lookat) {
                     transforms.add(Transforms.getLookatTransform((Lookat) obj));
-                } else if (obj instanceof Matrix) {
-                    transforms.add(Transforms.getMatrixTransform((Matrix) obj));
+                } else if (obj instanceof ColladaMatrix) {
+                    transforms.add(Transforms.getMatrixTransform((ColladaMatrix) obj));
                 } else if (obj instanceof Rotate) {
                     transforms.add(Transforms.getRotateTransform((Rotate) obj));
                 } else if (obj instanceof JAXBElement<?>) {
@@ -161,5 +155,4 @@ public class NodeElement {
 
         return group;
     }
-
 }

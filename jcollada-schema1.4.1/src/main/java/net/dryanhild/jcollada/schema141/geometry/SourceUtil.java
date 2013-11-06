@@ -23,9 +23,8 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package net.dryanhild.jcollada.schema141;
+package net.dryanhild.jcollada.schema141.geometry;
 
-import net.dryanhild.jcollada.LoaderContext;
 import net.dryanhild.jcollada.schema141.gen.Accessor;
 import net.dryanhild.jcollada.schema141.gen.BoolArray;
 import net.dryanhild.jcollada.schema141.gen.FloatArray;
@@ -41,7 +40,7 @@ import org.apache.logging.log4j.Logger;
  */
 public class SourceUtil {
 
-    static final Logger logger = LogManager.getLogger(SourceUtil.class);
+    private final Logger logger = LogManager.getLogger(SourceUtil.class);
 
     double[] doubleData;
     boolean[] booleanData;
@@ -52,12 +51,7 @@ public class SourceUtil {
     Accessor common;
     String[] parameters;
 
-    public static void createSource(Source sourceType, LoaderContext context) {
-        SourceUtil source = new SourceUtil(sourceType);
-        context.addObjectById(source.id, source);
-    }
-
-    private SourceUtil(Source source) {
+    public SourceUtil(Source source) {
         name = source.getName();
         id = source.getId();
         common = source.getTechniqueCommon().getAccessor();
@@ -108,6 +102,7 @@ public class SourceUtil {
     }
 
     public double[] getParamsAsDoubles(String... paramNames) {
+        logger.entry(paramNames);
         int paramCount = 0;
         for (String param : parameters) {
             for (String p : paramNames) {
@@ -132,10 +127,11 @@ public class SourceUtil {
                 }
             }
         }
-        return values;
+        return logger.exit(values);
     }
 
     public float[] getParamsAsFloats(String... paramNames) {
+        logger.entry(paramNames);
         int paramCount = 0;
         for (String param : parameters) {
             for (String p : paramNames) {
@@ -160,10 +156,11 @@ public class SourceUtil {
                 }
             }
         }
-        return values;
+        return logger.exit(values);
     }
 
     public int[] getParamsAsInts(String... paramNames) {
+        logger.entry(paramNames);
         int paramCount = 0;
         for (String param : parameters) {
             for (String p : paramNames) {
@@ -188,10 +185,11 @@ public class SourceUtil {
                 }
             }
         }
-        return values;
+        return logger.exit(values);
     }
 
     public boolean[] getParamsAsBooleans(String... paramNames) {
+        logger.entry(paramNames);
         int paramCount = 0;
         for (String param : parameters) {
             for (String p : paramNames) {
@@ -216,7 +214,7 @@ public class SourceUtil {
                 }
             }
         }
-        return values;
+        return logger.exit(values);
     }
 
 }
