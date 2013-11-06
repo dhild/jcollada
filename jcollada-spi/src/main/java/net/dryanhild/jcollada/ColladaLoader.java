@@ -36,8 +36,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ServiceLoader;
 
+import net.dryanhild.jcollada.metadata.Version;
+import net.dryanhild.jcollada.spi.ColladaContext;
 import net.dryanhild.jcollada.spi.ColladaLoaderService;
-import net.dryanhild.jcollada.spi.ColladaVersion;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -65,7 +66,7 @@ public class ColladaLoader extends LoaderBase {
     public ColladaLoader() {
         logger.trace("Creating new ColladaLoader instance");
         for (ColladaLoaderService service : loaders) {
-            for (ColladaVersion version : service.getColladaVersions()) {
+            for (Version version : service.getColladaVersions()) {
                 logger.debug("Service implementation for {} is available at {}", version, service.getClass().getName());
             }
         }
@@ -94,16 +95,10 @@ public class ColladaLoader extends LoaderBase {
 
     @Override
     public Scene load(Reader reader) throws IncorrectFormatException, ParsingErrorException {
-        try {
-            return loadImpl(reader, null);
-        } catch (FileNotFoundException e) {
-            ParsingErrorException exec = new ParsingErrorException();
-            exec.addSuppressed(e);
-            throw exec;
-        }
+        return loadImpl(reader, null);
     }
 
-    private Scene loadImpl(Reader reader, URL mainFile) throws FileNotFoundException, IncorrectFormatException {
+    private Scene loadImpl(Reader reader, URL mainFile) throws IncorrectFormatException {
         char[] header = new char[headerLength];
         int bufferSize = Math.max(headerLength, minBufferSize);
         BufferedReader bufferedReader = new BufferedReader(reader, bufferSize);
@@ -115,15 +110,21 @@ public class ColladaLoader extends LoaderBase {
             throw new ParsingErrorException("IOException while reading: " + ex.getLocalizedMessage());
         }
         String headerString = new String(header);
-        for (ColladaLoaderService loader : loaders) {
-            if (loader.canLoad(headerString)) {
-                logger.debug("Attempting load with class {}", loader.getClass().getName());
-                ColladaContext.initialize(getBaseUrl(), getBasePath(), isValidating(), getFlags());
-                Scene s = loader.load(bufferedReader);
-                if (s != null) {
-                    return s;
+        try {
+            for (ColladaLoaderService loader : loaders) {
+                if (loader.canLoad(headerString)) {
+                    logger.debug("Attempting load with class {}", loader.getClass().getName());
+                    ColladaContext.initialize(getBaseUrl(), getBasePath(), isValidating(), getFlags());
+                    Scene s = loader.load(bufferedReader);
+                    if (s != null) {
+                        return s;
+                    }
                 }
             }
+        } catch (Exception e) {
+            ParsingErrorException ex = new ParsingErrorException("Exception while parsing!");
+            ex.addSuppressed(e);
+            throw ex;
         }
         logger.debug("Registered Collada file loaders:");
         for (ColladaLoaderService loader : loaders) {

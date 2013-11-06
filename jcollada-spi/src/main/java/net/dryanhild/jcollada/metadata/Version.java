@@ -23,20 +23,20 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package net.dryanhild.jcollada.spi;
+package net.dryanhild.jcollada.metadata;
 
 /**
  * 
  * @author D. Ryan Hild <d.ryan.hild@gmail.com>
  */
-public class ColladaVersion {
+public class Version {
 
     public final int majorVersion;
     public final int minorVersion;
     public final int thirdVersion;
     public final String versionString;
 
-    public ColladaVersion(int major, int minor, int third, String version) {
+    public Version(int major, int minor, int third, String version) {
         majorVersion = major;
         minorVersion = minor;
         thirdVersion = third;
@@ -60,7 +60,7 @@ public class ColladaVersion {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final ColladaVersion other = (ColladaVersion) obj;
+        final Version other = (Version) obj;
         if (this.majorVersion != other.majorVersion) {
             return false;
         }

@@ -25,9 +25,10 @@
  */
 package net.dryanhild.jcollada.spi;
 
-import java.io.FileNotFoundException;
 import java.io.Reader;
 import java.util.List;
+
+import net.dryanhild.jcollada.metadata.Version;
 
 import com.sun.j3d.loaders.Scene;
 
@@ -37,10 +38,10 @@ import com.sun.j3d.loaders.Scene;
  */
 public abstract class ColladaLoaderService {
 
-    public abstract List<ColladaVersion> getColladaVersions();
+    public abstract List<Version> getColladaVersions();
 
     public abstract boolean canLoad(CharSequence header);
 
-    public abstract Scene load(Reader reader) throws FileNotFoundException;
+    public abstract Scene load(Reader reader);
 
 }
