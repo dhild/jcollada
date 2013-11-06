@@ -14,4 +14,16 @@
         <!-- Force all classes implements Serializable -->
         <xjc:serializable uid="1" />
     </jaxb:globalBindings>
+
+    <jaxb:bindings schemaLocation="../xsd/collada_schema_1_4_1.xsd">
+        <jaxb:bindings node="//xs:element[@name='asset']">
+            <jaxb:class name="ColladaAsset" />
+        </jaxb:bindings>
+        <jaxb:bindings node="//xs:element[@name='matrix']">
+            <jaxb:class name="ColladaMatrix" />
+        </jaxb:bindings>
+        <jaxb:bindings node="//xs:element[@name='node']">
+            <jaxb:class name="ColladaNode" />
+        </jaxb:bindings>
+    </jaxb:bindings>
 </jaxb:bindings>
