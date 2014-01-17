@@ -16,12 +16,13 @@
     </licenses>
 
     <properties>
-        <junit.version>4.11</junit.version>
+        <testng.version>6.1.1</testng.version>
         <log4j.version>2.0-beta9</log4j.version>
 
         <java3d.version>1.5.2</java3d.version>
         <commons.io.version>2.4</commons.io.version>
-        <google.collections.version>snapshot-20080530</google.collections.version>
+        <google.guava.version>15.0</google.guava.version>
+        <spring.version>4.0.0.RELEASE</spring.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <license.licenseName>mit</license.licenseName>
@@ -48,6 +49,11 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>2.16</version>
+                    <configuration>
+                        <suiteXmlFiles>
+                            <suiteXmlFile>${basedir}/src/test/config/all-tests.xml</suiteXmlFile>
+                        </suiteXmlFiles>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
@@ -71,9 +77,8 @@
     </build>
 
     <modules>
-        <module>../jcollada-spi</module>
-        <module>../jcollada-schema1.4.1</module>
-        <module>../jcollada-schema1.5</module>
+        <module>jcollada-spi</module>
+        <module>jcollada-schema1.5</module>
     </modules>
 
     <reporting>
@@ -114,9 +119,9 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>${junit.version}</version>
+                <groupId>org.testng</groupId>
+                <artifactId>testng</artifactId>
+                <version>${testng.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
@@ -151,9 +156,20 @@
                 <version>${commons.io.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.google.code.google-collections</groupId>
-                <artifactId>google-collect</artifactId>
-                <version>${google.collections.version}</version>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${google.guava.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-test</artifactId>
+                <version>${spring.version}</version>
+                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
