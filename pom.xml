@@ -10,6 +10,16 @@
     <inceptionYear>2013</inceptionYear>
     <url>https://github.com/dhild/jcollada</url>
 
+    <scm>
+        <connection>scm:git:git@github.com:dhild/jcollada.git</connection>
+        <url>scm:git:git@github.com:dhild/jcollada.git</url>
+        <developerConnection>scm:git:git@github.com:dhild/jcollada.git</developerConnection>
+    </scm>
+
+    <issueManagement>
+        <system></system>
+    </issueManagement>
+
     <licenses>
         <license>
             <name>MIT-License</name>
@@ -91,6 +101,11 @@
                             <version>2.6</version>
                         </dependency>
                     </dependencies>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>2.4.2</version>
                 </plugin>
             </plugins>
         </pluginManagement>
