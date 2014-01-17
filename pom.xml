@@ -8,6 +8,7 @@
     <packaging>pom</packaging>
     <name>jcollada</name>
     <inceptionYear>2013</inceptionYear>
+    <url>https://github.com/dhild/jcollada</url>
 
     <licenses>
         <license>
