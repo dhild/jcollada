@@ -26,14 +26,14 @@ import com.sun.j3d.loaders.Scene;
 @Service
 public class ColladaLoader extends LoaderBase {
 
-    final Logger logger = LogManager.getLogger(ColladaLoader.class);
+    private static final int HEADER_LENGTH = 1024;
+
+    private final Logger logger = LogManager.getLogger(ColladaLoader.class);
 
     @Autowired
     private List<ColladaLoaderService> loaders;
 
-    public boolean validating = true;
-
-    private static final int headerLength = 1024;
+    private boolean validating = true;
 
     public ColladaLoader() {
         for (ColladaLoaderService service : loaders) {
@@ -51,14 +51,20 @@ public class ColladaLoader extends LoaderBase {
         loaders.add(loader);
     }
 
+    /*
+     * {@inheritDoc}
+     */
     @Override
-    public Scene load(String fileName) throws FileNotFoundException, IncorrectFormatException, ParsingErrorException {
+    public Scene load(String fileName) throws FileNotFoundException {
         File file = new File(fileName);
         return loadImpl(new FileReader(file), new DefaultParsingContext());
     }
 
+    /*
+     * {@inheritDoc}
+     */
     @Override
-    public Scene load(URL url) throws FileNotFoundException, IncorrectFormatException, ParsingErrorException {
+    public Scene load(URL url) throws FileNotFoundException {
         try {
             return loadImpl(new InputStreamReader(url.openStream()), new DefaultParsingContext());
         } catch (IOException e) {
@@ -68,12 +74,15 @@ public class ColladaLoader extends LoaderBase {
         }
     }
 
+    /*
+     * {@inheritDoc}
+     */
     @Override
-    public Scene load(Reader reader) throws IncorrectFormatException, ParsingErrorException {
+    public Scene load(Reader reader) {
         return loadImpl(reader, new DefaultParsingContext());
     }
 
-    private Scene loadImpl(Reader reader, DefaultParsingContext context) throws IncorrectFormatException {
+    private Scene loadImpl(Reader reader, DefaultParsingContext context) {
         BufferedReader bufferedReader = new BufferedReader(reader);
         context.setMainFileReader(bufferedReader);
         context.setFlags(getFlags());
@@ -96,9 +105,9 @@ public class ColladaLoader extends LoaderBase {
     }
 
     private String readHeader(BufferedReader bufferedReader) {
-        char[] header = new char[headerLength];
+        char[] header = new char[HEADER_LENGTH];
         try {
-            bufferedReader.mark(headerLength);
+            bufferedReader.mark(HEADER_LENGTH);
             bufferedReader.read(header);
             bufferedReader.reset();
         } catch (IOException ex) {

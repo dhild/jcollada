@@ -2,6 +2,7 @@ package net.dryanhild.jcollada.metadata;
 
 public class Version {
 
+    private static final int PRIME = 61;
     public final int majorVersion;
     public final int minorVersion;
     public final int thirdVersion;
@@ -17,9 +18,9 @@ public class Version {
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = (61 * hash) + this.majorVersion;
-        hash = (61 * hash) + this.minorVersion;
-        hash = (61 * hash) + this.thirdVersion;
+        hash = (PRIME * hash) + this.majorVersion;
+        hash = (PRIME * hash) + this.minorVersion;
+        hash = (PRIME * hash) + this.thirdVersion;
         return hash;
     }
 
@@ -46,7 +47,7 @@ public class Version {
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder(20);
+        StringBuilder builder = new StringBuilder();
         builder.append("Version=[").append(majorVersion).append('.').append(minorVersion).append('.')
                 .append(thirdVersion).append(", ").append(versionString).append(']');
         return builder.toString();

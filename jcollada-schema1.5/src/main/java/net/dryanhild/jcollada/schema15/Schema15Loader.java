@@ -18,12 +18,12 @@ public class Schema15Loader implements ColladaLoaderService {
 
     private static final Version VERSION = new Version(1, 5, 0, "1.5.0");
 
+    private final Pattern versionPattern = Pattern.compile("COLLADA[^>]+version\\s?=\\s?\\\"1\\.5\\.0\\\"");
+
     @Override
     public Collection<Version> getColladaVersions() {
         return ImmutableList.of(VERSION);
     }
-
-    private final Pattern versionPattern = Pattern.compile("COLLADA[^>]+version\\s?=\\s?\\\"1\\.5\\.0\\\"");
 
     @Override
     public boolean canLoad(CharSequence header) {
