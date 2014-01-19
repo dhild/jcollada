@@ -16,8 +16,8 @@ import java.util.ServiceLoader;
 import net.dryanhild.jcollada.metadata.Version;
 import net.dryanhild.jcollada.spi.ColladaLoaderService;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.sun.j3d.loaders.IncorrectFormatException;
 import com.sun.j3d.loaders.LoaderBase;
@@ -28,7 +28,7 @@ public class ColladaLoader extends LoaderBase {
 
     private static final int HEADER_LENGTH = 1024;
 
-    private final Logger logger = LogManager.getLogger(ColladaLoader.class);
+    private final Logger logger = LoggerFactory.getLogger(ColladaLoader.class);
 
     private final Collection<ColladaLoaderService> loaders;
 

@@ -8,13 +8,10 @@ import net.dryanhild.jcollada.metadata.Version;
 import net.dryanhild.jcollada.spi.ColladaLoaderService;
 import net.dryanhild.jcollada.spi.ParsingContext;
 
-import org.springframework.stereotype.Service;
-
 import com.google.common.collect.ImmutableList;
 import com.sun.j3d.loaders.Scene;
 import com.sun.j3d.loaders.SceneBase;
 
-@Service
 public class Schema15Loader implements ColladaLoaderService {
 
     private static final Version VERSION = new Version(1, 5, 0, "1.5.0");
