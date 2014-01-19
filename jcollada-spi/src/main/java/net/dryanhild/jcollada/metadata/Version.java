@@ -2,7 +2,7 @@ package net.dryanhild.jcollada.metadata;
 
 public class Version {
 
-    private static final int PRIME = 61;
+    private static final int PRIME = 31;
     public final int majorVersion;
     public final int minorVersion;
     public final int thirdVersion;

@@ -4,11 +4,11 @@
   <test name="Unit Tests">
     <groups>
         <run>
-            <exclude name="integrationTests"/>
+            <exclude name="integrationTest"/>
         </run>
     </groups>
     <packages>
-        <package name="net.dryanhild.jcollada.schema15"/>
+        <package name="net.dryanhild.jcollada"/>
     </packages>
   </test>
 </suite>

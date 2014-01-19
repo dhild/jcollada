@@ -191,6 +191,12 @@
                 <scope>test</scope>
             </dependency>
             <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-all</artifactId>
+                <version>1.9.5</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
                 <groupId>javax.java3d</groupId>
                 <artifactId>j3dcore</artifactId>
                 <version>${java3d.version}</version>
