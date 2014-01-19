@@ -1,7 +1,5 @@
 package net.dryanhild.jcollada.schema15;
 
-import java.io.Reader;
-import java.io.StringReader;
 import java.util.Collection;
 
 import net.dryanhild.jcollada.ColladaLoader;
@@ -9,8 +7,6 @@ import net.dryanhild.jcollada.metadata.Version;
 import net.dryanhild.jcollada.spi.ColladaLoaderService;
 
 import org.testng.annotations.Test;
-
-import com.sun.j3d.loaders.Scene;
 
 public class ServiceMetadataTests {
 
@@ -45,25 +41,5 @@ public class ServiceMetadataTests {
         String fileHeader = "<COLLADA version=\"1.5.0\">";
 
         assert service.canLoad(fileHeader);
-    }
-
-    @Test(groups = "integrationTests")
-    public void versionCanBeLoadedRealFile() {
-        ColladaLoaderService service = new Schema15Loader();
-
-        String fileHeader = BasicCubeDefinition.getCubeContent();
-
-        assert service.canLoad(fileHeader);
-    }
-
-    @Test(groups = "integrationTests")
-    public void loadOnRealFileWorks() {
-        ColladaLoader loader = new ColladaLoader();
-
-        Reader reader = new StringReader(BasicCubeDefinition.getCubeContent());
-
-        Scene scene = loader.load(reader);
-
-        assert scene != null;
     }
 }

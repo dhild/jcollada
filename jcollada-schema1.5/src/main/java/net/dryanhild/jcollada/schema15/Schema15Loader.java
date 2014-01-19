@@ -31,7 +31,6 @@ public class Schema15Loader implements ColladaLoaderService {
 
     @Override
     public Scene load(ParsingContext context) {
-        // TODO Auto-generated method stub
         return new SceneBase();
     }
 

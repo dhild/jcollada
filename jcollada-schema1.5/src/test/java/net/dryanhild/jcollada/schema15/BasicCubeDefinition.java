@@ -7,6 +7,8 @@ import java.io.InputStreamReader;
 
 public final class BasicCubeDefinition {
 
+    public static final String TEST_FILE_LOCATION = "test-files/cube.dae";
+
     private static String cubeContent;
 
     private BasicCubeDefinition() {
@@ -20,8 +22,8 @@ public final class BasicCubeDefinition {
     }
 
     private static void loadCubeContent() {
-        try (InputStream input = Thread.currentThread().getContextClassLoader()
-                .getResourceAsStream("test-files/cube.dae")) {
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        try (InputStream input = classLoader.getResourceAsStream(TEST_FILE_LOCATION)) {
             BufferedReader reader = new BufferedReader(new InputStreamReader(input));
             StringBuilder content = new StringBuilder();
             String nextLine;
