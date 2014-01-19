@@ -9,7 +9,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.Writer;
 import java.net.URL;
-import java.util.List;
+import java.util.Collection;
 
 import net.dryanhild.jcollada.metadata.Version;
 
@@ -25,10 +25,9 @@ public class ColladaLoaderTests {
     public void serviceProviderImplementationFound() {
         ColladaLoader loader = new ColladaLoader();
 
-        List<Version> versions = loader.getRegisteredVersions();
+        Collection<Version> versions = loader.getRegisteredVersions();
 
-        assert versions.size() == 1;
-        assert versions.get(0).equals(ColladaLoaderServiceImpl.TEST_VERSION);
+        assert versions.contains(ColladaLoaderServiceImpl.TEST_VERSION);
     }
 
     @DataProvider

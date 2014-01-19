@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.google.common.collect.ImmutableList;
 import com.sun.j3d.loaders.Scene;
+import com.sun.j3d.loaders.SceneBase;
 
 @Service
 public class Schema15Loader implements ColladaLoaderService {
@@ -34,7 +35,7 @@ public class Schema15Loader implements ColladaLoaderService {
     @Override
     public Scene load(ParsingContext context) {
         // TODO Auto-generated method stub
-        return null;
+        return new SceneBase();
     }
 
 }

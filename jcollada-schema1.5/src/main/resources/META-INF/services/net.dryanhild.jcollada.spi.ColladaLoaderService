@@ -1,0 +1,2 @@
+# Service implementation for loading COLLADA 1.5 files:
+net.dryanhild.jcollada.schema15.Schema15Loader

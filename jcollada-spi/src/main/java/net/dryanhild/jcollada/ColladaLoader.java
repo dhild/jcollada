@@ -11,7 +11,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import java.util.ServiceLoader;
 
 import net.dryanhild.jcollada.metadata.Version;
@@ -63,7 +62,7 @@ public class ColladaLoader extends LoaderBase {
         }
     }
 
-    public List<Version> getRegisteredVersions() {
+    public Collection<Version> getRegisteredVersions() {
         ArrayList<Version> versions = new ArrayList<>();
 
         for (ColladaLoaderService service : loaders) {
