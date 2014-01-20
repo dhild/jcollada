@@ -44,14 +44,4 @@ class DefaultParsingContext implements ParsingContext {
         return mainFileReader;
     }
 
-    @Override
-    public <T> void storeElementById(String id, T element) {
-        elements.put(id, element);
-    }
-
-    @Override
-    public <T> T getElementById(String id, Class<T> type) {
-        return type.cast(elements.get(id));
-    }
-
 }

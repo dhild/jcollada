@@ -11,8 +11,6 @@ import java.io.Writer;
 import java.net.URL;
 import java.util.Collection;
 
-import net.dryanhild.jcollada.metadata.Version;
-
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -25,7 +23,7 @@ public class ColladaLoaderTests {
     public void serviceProviderImplementationFound() {
         ColladaLoader loader = new ColladaLoader();
 
-        Collection<Version> versions = loader.getRegisteredVersions();
+        Collection<VersionSupport> versions = loader.getRegisteredVersions();
 
         assert versions.contains(ColladaLoaderServiceImpl.TEST_VERSION);
     }

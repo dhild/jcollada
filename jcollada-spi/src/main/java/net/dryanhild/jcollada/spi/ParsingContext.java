@@ -9,8 +9,4 @@ public interface ParsingContext {
     boolean isValidating();
 
     Reader getMainFileReader();
-
-    <T> void storeElementById(String id, T element);
-
-    <T> T getElementById(String id, Class<T> type);
 }

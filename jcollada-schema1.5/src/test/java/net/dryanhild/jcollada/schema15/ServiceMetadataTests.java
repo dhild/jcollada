@@ -3,7 +3,7 @@ package net.dryanhild.jcollada.schema15;
 import java.util.Collection;
 
 import net.dryanhild.jcollada.ColladaLoader;
-import net.dryanhild.jcollada.metadata.Version;
+import net.dryanhild.jcollada.VersionSupport;
 import net.dryanhild.jcollada.spi.ColladaLoaderService;
 
 import org.testng.annotations.Test;
@@ -13,11 +13,11 @@ public class ServiceMetadataTests {
     @Test
     public void versionSupportIsCorrect() {
         ColladaLoaderService loader = new Schema15Loader();
-        Collection<Version> versions = loader.getColladaVersions();
+        Collection<VersionSupport> versions = loader.getColladaVersions();
 
         assert versions.size() == 1;
 
-        Version version = versions.iterator().next();
+        VersionSupport version = versions.iterator().next();
 
         assert version.majorVersion == 1;
         assert version.minorVersion == 5;
@@ -29,9 +29,9 @@ public class ServiceMetadataTests {
     public void versionIsIdentifiedByService() {
         ColladaLoader loader = new ColladaLoader();
 
-        Collection<Version> versions = loader.getRegisteredVersions();
+        Collection<VersionSupport> versions = loader.getRegisteredVersions();
 
-        assert versions.contains(new Version(1, 5, 0, "1.5.0"));
+        assert versions.contains(new VersionSupport(1, 5, 0, "1.5.0"));
     }
 
     @Test

@@ -27,6 +27,7 @@
                     <packageName>net.dryanhild.jcollada.schema15.generated</packageName>
                     <includeSchemasOutputPath>/</includeSchemasOutputPath>
                     <extension>true</extension>
+                    <arguments>-mark-generated</arguments>
                 </configuration>
             </plugin>
             <plugin>

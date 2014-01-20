@@ -6,15 +6,16 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 
 import net.dryanhild.jcollada.ColladaLoader;
+import net.dryanhild.jcollada.data.ColladaScene;
 import net.dryanhild.jcollada.spi.ColladaLoaderService;
 
 import org.testng.annotations.Test;
 
 import com.sun.j3d.loaders.Scene;
 
+@Test(groups = "integrationTests")
 public class ServiceCubeTests {
 
-    @Test(groups = "integrationTests")
     public void versionCanBeLoadedRealFile() {
         ColladaLoaderService service = new Schema15Loader();
 
@@ -23,8 +24,13 @@ public class ServiceCubeTests {
         assert service.canLoad(fileHeader);
     }
 
-    @Test(groups = "integrationTests")
     public void loadOnRealFileWorks() throws FileNotFoundException {
+        Scene scene = loadCubeScene();
+
+        assert scene != null;
+    }
+
+    private ColladaScene loadCubeScene() {
         ColladaLoader loader = new ColladaLoader();
 
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
@@ -33,9 +39,6 @@ public class ServiceCubeTests {
                 new InputStreamReader(new BufferedInputStream(
                         classLoader.getResourceAsStream(BasicCubeDefinition.TEST_FILE_LOCATION)));
 
-        Scene scene = loader.load(reader);
-
-        assert scene != null;
+        return loader.load(reader);
     }
-
 }

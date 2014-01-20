@@ -4,22 +4,21 @@ import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.dryanhild.jcollada.metadata.Version;
+import net.dryanhild.jcollada.VersionSupport;
+import net.dryanhild.jcollada.data.ColladaScene;
 import net.dryanhild.jcollada.spi.ColladaLoaderService;
 import net.dryanhild.jcollada.spi.ParsingContext;
 
 import com.google.common.collect.ImmutableList;
-import com.sun.j3d.loaders.Scene;
-import com.sun.j3d.loaders.SceneBase;
 
 public class Schema15Loader implements ColladaLoaderService {
 
-    private static final Version VERSION = new Version(1, 5, 0, "1.5.0");
+    private static final VersionSupport VERSION = new VersionSupport(1, 5, 0, "1.5.0");
 
     private final Pattern versionPattern = Pattern.compile("COLLADA[^>]+version\\s?=\\s?\\\"1\\.5\\.0\\\"");
 
     @Override
-    public Collection<Version> getColladaVersions() {
+    public Collection<VersionSupport> getColladaVersions() {
         return ImmutableList.of(VERSION);
     }
 
@@ -30,8 +29,8 @@ public class Schema15Loader implements ColladaLoaderService {
     }
 
     @Override
-    public Scene load(ParsingContext context) {
-        return new SceneBase();
+    public ColladaScene load(ParsingContext context) {
+        return new ColladaScene15();
     }
 
 }

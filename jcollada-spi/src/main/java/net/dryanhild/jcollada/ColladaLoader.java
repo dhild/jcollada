@@ -13,7 +13,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.ServiceLoader;
 
-import net.dryanhild.jcollada.metadata.Version;
+import net.dryanhild.jcollada.data.ColladaScene;
 import net.dryanhild.jcollada.spi.ColladaLoaderService;
 
 import org.slf4j.Logger;
@@ -22,7 +22,6 @@ import org.slf4j.LoggerFactory;
 import com.sun.j3d.loaders.IncorrectFormatException;
 import com.sun.j3d.loaders.LoaderBase;
 import com.sun.j3d.loaders.ParsingErrorException;
-import com.sun.j3d.loaders.Scene;
 
 public class ColladaLoader extends LoaderBase {
 
@@ -55,15 +54,15 @@ public class ColladaLoader extends LoaderBase {
             ColladaLoaderService service = serviceImplementations.next();
             loaders.add(service);
 
-            for (Version version : service.getColladaVersions()) {
+            for (VersionSupport version : service.getColladaVersions()) {
                 logger.debug("Service implementation for {} is available from class {}", version, service.getClass()
                         .getName());
             }
         }
     }
 
-    public Collection<Version> getRegisteredVersions() {
-        ArrayList<Version> versions = new ArrayList<>();
+    public Collection<VersionSupport> getRegisteredVersions() {
+        ArrayList<VersionSupport> versions = new ArrayList<>();
 
         for (ColladaLoaderService service : loaders) {
             versions.addAll(service.getColladaVersions());
@@ -76,7 +75,7 @@ public class ColladaLoader extends LoaderBase {
      * {@inheritDoc}
      */
     @Override
-    public Scene load(String fileName) throws FileNotFoundException {
+    public ColladaScene load(String fileName) throws FileNotFoundException {
         File file = new File(fileName);
         return loadImpl(new FileReader(file), new DefaultParsingContext());
     }
@@ -85,7 +84,7 @@ public class ColladaLoader extends LoaderBase {
      * {@inheritDoc}
      */
     @Override
-    public Scene load(URL url) throws FileNotFoundException {
+    public ColladaScene load(URL url) throws FileNotFoundException {
         try {
             return loadImpl(new InputStreamReader(url.openStream()), new DefaultParsingContext());
         } catch (FileNotFoundException e) {
@@ -102,11 +101,11 @@ public class ColladaLoader extends LoaderBase {
      * {@inheritDoc}
      */
     @Override
-    public Scene load(Reader reader) {
+    public ColladaScene load(Reader reader) {
         return loadImpl(reader, new DefaultParsingContext());
     }
 
-    private Scene loadImpl(Reader reader, DefaultParsingContext context) {
+    private ColladaScene loadImpl(Reader reader, DefaultParsingContext context) {
         BufferedReader bufferedReader = new BufferedReader(reader);
         context.setMainFileReader(bufferedReader);
         context.setFlags(getFlags());
@@ -116,8 +115,7 @@ public class ColladaLoader extends LoaderBase {
 
         for (ColladaLoaderService loader : loaders) {
             if (loader.canLoad(header)) {
-                logger.debug("Attempting load with class {}", loader.getClass().getName());
-                return loader.load(context);
+                return loadWithService(reader, context, loader);
             }
         }
 
@@ -126,6 +124,22 @@ public class ColladaLoader extends LoaderBase {
             logger.debug(loader.getClass().getName());
         }
         throw new IncorrectFormatException("Format of input data not recognized by any loaders on the classpath.");
+    }
+
+    private ColladaScene loadWithService(Reader reader, DefaultParsingContext context, ColladaLoaderService loader) {
+        logger.debug("Attempting load with class {}", loader.getClass().getName());
+
+        ColladaScene scene = loader.load(context);
+
+        try {
+            reader.close();
+        } catch (IOException e) {
+            ParsingErrorException exec = new ParsingErrorException("Error encountered while closing output stream!");
+            exec.addSuppressed(e);
+            throw exec;
+        }
+
+        return scene;
     }
 
     private String readHeader(BufferedReader bufferedReader) {

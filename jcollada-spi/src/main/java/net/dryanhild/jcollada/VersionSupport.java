@@ -1,6 +1,6 @@
-package net.dryanhild.jcollada.metadata;
+package net.dryanhild.jcollada;
 
-public class Version {
+public class VersionSupport {
 
     private static final int PRIME = 31;
     public final int majorVersion;
@@ -8,7 +8,7 @@ public class Version {
     public final int thirdVersion;
     public final String versionString;
 
-    public Version(int major, int minor, int third, String version) {
+    public VersionSupport(int major, int minor, int third, String version) {
         majorVersion = major;
         minorVersion = minor;
         thirdVersion = third;
@@ -32,7 +32,7 @@ public class Version {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Version other = (Version) obj;
+        final VersionSupport other = (VersionSupport) obj;
         if (this.majorVersion != other.majorVersion) {
             return false;
         }
