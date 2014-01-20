@@ -1,5 +1,6 @@
 package net.dryanhild.jcollada.schema15;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import net.dryanhild.jcollada.data.AssetDescription;
@@ -8,64 +9,101 @@ import org.joda.time.DateTime;
 
 class AssetImpl implements AssetDescription {
 
+    private DateTime created;
+    private DateTime modified;
+    private String revision;
+    private String subject;
+    private String title;
+    private Unit unit;
+    private UpAxis upAxis;
+    private final Collection<Contributor> contributors = new ArrayList<>();
+    private GeographicLocation location;
+    private final Collection<String> keywords = new ArrayList<>();
+
+    public void setCreated(DateTime created) {
+        this.created = created;
+    }
+
+    public void setModified(DateTime modified) {
+        this.modified = modified;
+    }
+
+    public GeographicLocation getLocation() {
+        return location;
+    }
+
+    public void setLocation(GeographicLocation location) {
+        this.location = location;
+    }
+
+    public void setRevision(String revision) {
+        this.revision = revision;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setUnit(Unit unit) {
+        this.unit = unit;
+    }
+
+    public void setUpAxis(UpAxis upAxis) {
+        this.upAxis = upAxis;
+    }
+
     @Override
     public Collection<Contributor> getContributors() {
-        // TODO Auto-generated method stub
-        return null;
+        return contributors;
     }
 
     @Override
     public GeographicLocation getCoverage() {
-        // TODO Auto-generated method stub
-        return null;
+        return location;
     }
 
     @Override
     public DateTime getCreated() {
-        // TODO Auto-generated method stub
-        return null;
+        return created;
     }
 
     @Override
     public Collection<String> getKeywords() {
-        // TODO Auto-generated method stub
-        return null;
+        return keywords;
     }
 
     @Override
     public DateTime getModified() {
-        // TODO Auto-generated method stub
-        return null;
+        return modified;
     }
 
     @Override
     public String getRevision() {
-        // TODO Auto-generated method stub
-        return null;
+        return revision;
     }
 
     @Override
     public String getSubject() {
-        // TODO Auto-generated method stub
-        return null;
+        return subject;
     }
 
     @Override
     public String getTitle() {
-        // TODO Auto-generated method stub
-        return null;
+        return title;
     }
 
     @Override
     public Unit getUnit() {
-        // TODO Auto-generated method stub
-        return null;
+        return unit;
     }
 
     @Override
     public UpAxis getUpAxis() {
-        // TODO Auto-generated method stub
-        return null;
+        return upAxis;
     }
 
 }

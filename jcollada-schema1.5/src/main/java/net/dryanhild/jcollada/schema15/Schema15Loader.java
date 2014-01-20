@@ -30,7 +30,15 @@ public class Schema15Loader implements ColladaLoaderService {
 
     @Override
     public ColladaScene load(ParsingContext context) {
-        return new ColladaScene15();
+        FileMarshaller marshaller = new FileMarshaller();
+
+        marshaller.loadFrom(context.getMainFileReader());
+
+        ColladaScene15 scene = new ColladaScene15();
+
+        scene.setMainAsset(marshaller.getMainAsset());
+
+        return scene;
     }
 
 }
