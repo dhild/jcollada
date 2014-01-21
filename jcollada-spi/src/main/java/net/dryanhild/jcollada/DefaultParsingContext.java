@@ -6,7 +6,7 @@ import java.util.Map;
 
 import net.dryanhild.jcollada.spi.ParsingContext;
 
-class DefaultParsingContext implements ParsingContext {
+public class DefaultParsingContext implements ParsingContext {
 
     private int flags;
     private boolean validating;

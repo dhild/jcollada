@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 
 import net.dryanhild.jcollada.VersionSupport;
 import net.dryanhild.jcollada.data.ColladaScene;
+import net.dryanhild.jcollada.schema15.generated.AssetType;
 import net.dryanhild.jcollada.spi.ColladaLoaderService;
 import net.dryanhild.jcollada.spi.ParsingContext;
 
@@ -32,11 +33,15 @@ public class Schema15Loader implements ColladaLoaderService {
     public ColladaScene load(ParsingContext context) {
         FileMarshaller marshaller = new FileMarshaller();
 
-        marshaller.loadFrom(context.getMainFileReader());
+        marshaller.loadFrom(context.getMainFileReader(), context.isValidating());
 
         ColladaScene15 scene = new ColladaScene15();
 
-        scene.setMainAsset(marshaller.getMainAsset());
+        AssetType mainAsset = marshaller.getMainAsset();
+
+        AssetHandler handler = new AssetHandler();
+
+        scene.setMainAsset(handler.loadAssetDescription(mainAsset));
 
         return scene;
     }
