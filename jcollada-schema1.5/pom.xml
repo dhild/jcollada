@@ -8,7 +8,8 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <artifactId>jcollada-schema1.5</artifactId>
-    <name>jcollada-schema1.5</name>
+    <name>JCollada for COLLADA 1.5</name>
+    <description>Provides the loading implementation for COLLADA files adhering to schema version 1.5</description>
 
     <build>
         <plugins>

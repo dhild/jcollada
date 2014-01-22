@@ -8,6 +8,7 @@
     </parent>
     <artifactId>build-tools</artifactId>
     <name>Build tools</name>
+    <description>Helper build tools for the JCollada process. Contains shared configurations.</description>
     <build>
         <plugins>
             <plugin>

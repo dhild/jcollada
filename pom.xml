@@ -6,7 +6,8 @@
     <artifactId>jcollada</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>jcollada</name>
+    <name>JCollada</name>
+    <description>A utility to load COLLADA files into Java3D</description>
     <inceptionYear>2013</inceptionYear>
     <url>https://github.com/dhild/jcollada</url>
 
