@@ -6,9 +6,10 @@ import java.util.regex.Pattern;
 
 import net.dryanhild.jcollada.VersionSupport;
 import net.dryanhild.jcollada.data.ColladaScene;
-import net.dryanhild.jcollada.schema15.generated.AssetType;
 import net.dryanhild.jcollada.spi.ColladaLoaderService;
 import net.dryanhild.jcollada.spi.ParsingContext;
+
+import org.collada.x2008.x03.colladaSchema.AssetType;
 
 import com.google.common.collect.ImmutableList;
 

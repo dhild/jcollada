@@ -1,5 +1,6 @@
 package net.dryanhild.jcollada.schema15;
 
+import net.dryanhild.jcollada.schema15.FileMarshaller;
 import net.dryanhild.jcollada.spi.ParsingContext;
 
 import org.testng.annotations.Test;

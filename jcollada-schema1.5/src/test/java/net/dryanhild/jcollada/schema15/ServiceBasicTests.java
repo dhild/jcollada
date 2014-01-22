@@ -66,8 +66,8 @@ public class ServiceBasicTests {
         String invalidContent = "<COLLADA xmlns=\"http://www.collada.org/2008/03/COLLADASchema\" " + //
                 "version=\"1.5.0\">" + //
                 "<asset>" + //
-                "<created>2014-01-01</created>" + //
-                "<modified>2014-01-01</modified>" + //
+                "<created>2014-01-01T00:00:00Z</created>" + //
+                "<modified>2014-01-01T00:00:00Z</modified>" + //
                 "</asset></COLLADA>";
 
         ParsingContext context = ServiceBasicTests.mockInput(invalidContent);

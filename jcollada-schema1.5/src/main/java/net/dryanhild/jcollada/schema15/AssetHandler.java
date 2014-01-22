@@ -3,8 +3,8 @@ package net.dryanhild.jcollada.schema15;
 import java.util.Calendar;
 
 import net.dryanhild.jcollada.data.AssetDescription;
-import net.dryanhild.jcollada.schema15.generated.AssetType;
 
+import org.collada.x2008.x03.colladaSchema.AssetType;
 import org.joda.time.DateTime;
 
 class AssetHandler {
