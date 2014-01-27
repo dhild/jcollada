@@ -6,8 +6,8 @@
         <artifactId>jcollada</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>jcollada-schema1.5-generated</artifactId>
-    <name>COLLADA 1.5 generated files</name>
+    <artifactId>jcollada-schema1.4-generated</artifactId>
+    <name>Generated files for JCollada 1.4</name>
     <description>Generated XML interface classes for COLLADA Schema 1.5</description>
 
     <build>

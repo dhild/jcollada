@@ -19,11 +19,7 @@ import net.dryanhild.jcollada.spi.ColladaLoaderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.sun.j3d.loaders.IncorrectFormatException;
-import com.sun.j3d.loaders.LoaderBase;
-import com.sun.j3d.loaders.ParsingErrorException;
-
-public class ColladaLoader extends LoaderBase {
+public class ColladaLoader {
 
     private static final int HEADER_LENGTH = 1024;
 
@@ -71,19 +67,11 @@ public class ColladaLoader extends LoaderBase {
         return versions;
     }
 
-    /*
-     * {@inheritDoc}
-     */
-    @Override
     public ColladaScene load(String fileName) throws FileNotFoundException {
         File file = new File(fileName);
         return loadImpl(new FileReader(file), new DefaultParsingContext());
     }
 
-    /*
-     * {@inheritDoc}
-     */
-    @Override
     public ColladaScene load(URL url) throws FileNotFoundException {
         try {
             return loadImpl(new InputStreamReader(url.openStream()), new DefaultParsingContext());
@@ -97,10 +85,6 @@ public class ColladaLoader extends LoaderBase {
         }
     }
 
-    /*
-     * {@inheritDoc}
-     */
-    @Override
     public ColladaScene load(Reader reader) {
         return loadImpl(reader, new DefaultParsingContext());
     }

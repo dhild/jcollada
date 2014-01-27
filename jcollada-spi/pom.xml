@@ -46,15 +46,7 @@
         </dependency>
         <dependency>
             <groupId>javax.java3d</groupId>
-            <artifactId>j3dcore</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax.java3d</groupId>
             <artifactId>vecmath</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax.java3d</groupId>
-            <artifactId>j3dutils</artifactId>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
