@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Unit Tests" parallel="tests">
+  <test name="Unit Tests">
+    <groups>
+        <run>
+            <exclude name="manual"/>
+            <exclude name="slow"/>
+        </run>
+    </groups>
+    <packages>
+        <package name="net.dryanhild.jcollada.schema15"/>
+    </packages>
+  </test>
+</suite>

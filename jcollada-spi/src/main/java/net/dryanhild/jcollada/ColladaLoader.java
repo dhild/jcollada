@@ -69,12 +69,19 @@ public class ColladaLoader {
 
     public ColladaScene load(String fileName) throws FileNotFoundException {
         File file = new File(fileName);
-        return loadImpl(new FileReader(file), new DefaultParsingContext());
+        try (FileReader reader = new FileReader(file)) {
+            return loadImpl(reader, new DefaultParsingContext());
+        } catch (FileNotFoundException e) {
+            // FileNotFound exceptions should be preserved.
+            throw e;
+        } catch (IOException e) {
+            throw new ParsingException("IOException encountered while parsing!", e);
+        }
     }
 
     public ColladaScene load(URL url) throws FileNotFoundException {
-        try {
-            return loadImpl(new InputStreamReader(url.openStream()), new DefaultParsingContext());
+        try (InputStreamReader reader = new InputStreamReader(url.openStream())) {
+            return loadImpl(reader, new DefaultParsingContext());
         } catch (FileNotFoundException e) {
             // FileNotFound exceptions should be preserved.
             throw e;
@@ -87,6 +94,7 @@ public class ColladaLoader {
         return loadImpl(reader, new DefaultParsingContext());
     }
 
+    @SuppressWarnings("resource")
     private ColladaScene loadImpl(Reader reader, DefaultParsingContext context) {
         BufferedReader bufferedReader = new BufferedReader(reader);
         context.setMainFileReader(bufferedReader);
