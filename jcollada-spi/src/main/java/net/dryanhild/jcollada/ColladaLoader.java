@@ -79,9 +79,7 @@ public class ColladaLoader {
             // FileNotFound exceptions should be preserved.
             throw e;
         } catch (IOException e) {
-            ParsingErrorException exec = new ParsingErrorException("Exception encountered while parsing!");
-            exec.addSuppressed(e);
-            throw exec;
+            throw new ParsingException("Exception encountered while parsing!", e);
         }
     }
 
@@ -92,7 +90,6 @@ public class ColladaLoader {
     private ColladaScene loadImpl(Reader reader, DefaultParsingContext context) {
         BufferedReader bufferedReader = new BufferedReader(reader);
         context.setMainFileReader(bufferedReader);
-        context.setFlags(getFlags());
         context.setValidating(isValidating());
 
         String header = readHeader(bufferedReader);
@@ -118,9 +115,7 @@ public class ColladaLoader {
         try {
             reader.close();
         } catch (IOException e) {
-            ParsingErrorException exec = new ParsingErrorException("Error encountered while closing output stream!");
-            exec.addSuppressed(e);
-            throw exec;
+            throw new ParsingException("Error encountered while closing output stream!", e);
         }
 
         return scene;
@@ -134,7 +129,7 @@ public class ColladaLoader {
             read = bufferedReader.read(header);
             bufferedReader.reset();
         } catch (IOException ex) {
-            throw new ParsingErrorException("IOException while reading: " + ex.getLocalizedMessage());
+            throw new ParsingException("IOException while reading: ", ex);
         }
         return new String(header, 0, read);
     }

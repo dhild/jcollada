@@ -6,13 +6,11 @@ public class VersionSupport {
     public final int majorVersion;
     public final int minorVersion;
     public final int thirdVersion;
-    public final String versionString;
 
-    public VersionSupport(int major, int minor, int third, String version) {
+    public VersionSupport(int major, int minor, int third) {
         majorVersion = major;
         minorVersion = minor;
         thirdVersion = third;
-        versionString = version;
     }
 
     @Override
@@ -49,7 +47,7 @@ public class VersionSupport {
     public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append("Version=[").append(majorVersion).append('.').append(minorVersion).append('.')
-                .append(thirdVersion).append(", ").append(versionString).append(']');
+                .append(thirdVersion).append(']');
         return builder.toString();
     }
 

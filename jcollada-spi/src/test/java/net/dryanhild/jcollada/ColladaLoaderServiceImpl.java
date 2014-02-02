@@ -12,9 +12,9 @@ import com.google.common.collect.ImmutableList;
 
 public class ColladaLoaderServiceImpl implements ColladaLoaderService {
 
-    public static final VersionSupport TEST_VERSION = new VersionSupport(0, 0, 0, "test-version");
+    public static final VersionSupport TEST_VERSION = new VersionSupport(0, 0, 0);
 
-    public static final String TEST_BASIC_FILE = "This is a test file for 0.0.0, test-version.";
+    public static final String TEST_BASIC_FILE = "This is a test file for 0.0.0.";
 
     public static ParsingContext lastContext = null;
 

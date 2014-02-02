@@ -6,7 +6,7 @@ import java.util.Collection;
 
 import org.joda.time.DateTime;
 
-public interface AssetDescription {
+public interface Asset {
 
     Collection<Contributor> getContributors();
 

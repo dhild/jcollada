@@ -14,9 +14,6 @@ import java.util.Collection;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import com.sun.j3d.loaders.IncorrectFormatException;
-import com.sun.j3d.loaders.LoaderBase;
-
 public class ColladaLoaderTests {
 
     @Test
@@ -32,43 +29,41 @@ public class ColladaLoaderTests {
     public Object[][] flagConfigurations() {
         return new Object[][] { //
         //
-                { false, 0 }, //
-                { false, LoaderBase.LOAD_ALL }, //
-                { true, 0 }, //
-                { true, LoaderBase.LOAD_ALL }, //
+                { false }, //
+                { true }, //
         };
     }
 
     @Test(dataProvider = "flagConfigurations")
-    public void loadReader(boolean validate, int flags) {
-        ColladaLoader loader = createLoader(validate, flags);
+    public void loadReader(boolean validate) {
+        ColladaLoader loader = createLoader(validate);
 
         Reader reader = new StringReader(ColladaLoaderServiceImpl.TEST_BASIC_FILE);
         loader.load(reader);
 
-        checkLoadContext(validate, flags);
+        checkLoadContext(validate);
     }
 
     @Test(dataProvider = "flagConfigurations")
-    public void loadFile(boolean validate, int flags) throws IOException {
-        ColladaLoader loader = createLoader(validate, flags);
+    public void loadFile(boolean validate) throws IOException {
+        ColladaLoader loader = createLoader(validate);
 
         File tempFile = writeTestStringToTempFile();
 
         loader.load(tempFile.getAbsolutePath());
 
-        checkLoadContext(validate, flags);
+        checkLoadContext(validate);
     }
 
     @Test(dataProvider = "flagConfigurations")
-    public void loadURL(boolean validate, int flags) throws IOException {
-        ColladaLoader loader = createLoader(validate, flags);
+    public void loadURL(boolean validate) throws IOException {
+        ColladaLoader loader = createLoader(validate);
 
         File tempFile = writeTestStringToTempFile();
 
         loader.load(tempFile.toURI().toURL());
 
-        checkLoadContext(validate, flags);
+        checkLoadContext(validate);
     }
 
     @Test(expectedExceptions = FileNotFoundException.class)
@@ -93,16 +88,14 @@ public class ColladaLoaderTests {
         loader.load(reader);
     }
 
-    private ColladaLoader createLoader(boolean validate, int flags) {
+    private ColladaLoader createLoader(boolean validate) {
         ColladaLoader loader = new ColladaLoader();
         loader.setValidating(validate);
-        loader.setFlags(flags);
         return loader;
     }
 
-    private void checkLoadContext(boolean validate, int flags) {
+    private void checkLoadContext(boolean validate) {
         assert ColladaLoaderServiceImpl.lastContext.isValidating() == validate;
-        assert ColladaLoaderServiceImpl.lastContext.getFlags() == flags;
         assert ColladaLoaderServiceImpl.lastContext.getMainFileReader() != null;
     }
 
