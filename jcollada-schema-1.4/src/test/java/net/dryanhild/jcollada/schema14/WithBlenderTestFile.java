@@ -3,7 +3,6 @@ package net.dryanhild.jcollada.schema14;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.util.Collection;
 
 import net.dryanhild.jcollada.ColladaLoader;
 import net.dryanhild.jcollada.data.ColladaScene;
@@ -35,15 +34,7 @@ public class WithBlenderTestFile {
     }
 
     private Geometry getCylinderGeometry() {
-        Collection<Geometry> geometries = scene.getGeometries();
-
-        for (Geometry g : geometries) {
-            if ("Cylinder.001".equals(g.getName())) {
-                return g;
-            }
-        }
-
-        return null;
+        return scene.getGeometryById("Cylinder.001");
     }
 
     private Mesh getCylinderGeometryMesh() {

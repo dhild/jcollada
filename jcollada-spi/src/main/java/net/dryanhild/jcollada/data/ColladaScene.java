@@ -10,4 +10,6 @@ public interface ColladaScene {
 
     Collection<Geometry> getGeometries();
 
+    Geometry getGeometryById(String id);
+
 }
