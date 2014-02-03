@@ -3,7 +3,7 @@
 <suite name="All Tests" parallel="tests">
   <test name="All Tests">
     <packages>
-        <package name="net.dryanhild.jcollada"/>
+        <package name="net.dryanhild.jcollada.schema14"/>
     </packages>
   </test>
 </suite>
