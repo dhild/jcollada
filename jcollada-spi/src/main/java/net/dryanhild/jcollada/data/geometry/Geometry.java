@@ -4,6 +4,10 @@ import net.dryanhild.jcollada.data.Asset;
 
 public interface Geometry {
 
+    String getName();
+
+    String getId();
+
     Asset getAsset();
 
     boolean hasMesh();

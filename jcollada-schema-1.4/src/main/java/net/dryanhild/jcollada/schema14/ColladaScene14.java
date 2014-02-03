@@ -1,5 +1,6 @@
 package net.dryanhild.jcollada.schema14;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import net.dryanhild.jcollada.data.Asset;
@@ -7,6 +8,8 @@ import net.dryanhild.jcollada.data.ColladaScene;
 import net.dryanhild.jcollada.data.geometry.Geometry;
 
 public class ColladaScene14 implements ColladaScene {
+
+    private final Collection<Geometry> geometries = new ArrayList<>();
 
     @Override
     public Asset getAsset() {
@@ -16,8 +19,7 @@ public class ColladaScene14 implements ColladaScene {
 
     @Override
     public Collection<Geometry> getGeometries() {
-        // TODO Auto-generated method stub
-        return null;
+        return geometries;
     }
 
 }

@@ -1,12 +1,18 @@
 package net.dryanhild.jcollada.schema14;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.regex.Pattern;
 
+import net.dryanhild.jcollada.IncorrectFormatException;
+import net.dryanhild.jcollada.ParsingException;
 import net.dryanhild.jcollada.VersionSupport;
 import net.dryanhild.jcollada.data.ColladaScene;
 import net.dryanhild.jcollada.spi.ColladaLoaderService;
 import net.dryanhild.jcollada.spi.ParsingContext;
+
+import org.apache.xmlbeans.XmlException;
+import org.collada.x2005.x11.colladaSchema.COLLADADocument;
 
 import com.google.common.collect.ImmutableList;
 
@@ -30,8 +36,18 @@ public class ColladaLoaderService14 implements ColladaLoaderService {
 
     @Override
     public ColladaScene load(ParsingContext context) {
-        // TODO Auto-generated method stub
-        return null;
+        COLLADADocument document = readMainDocument(context);
+
+        return ParsingFactory.parseDocument(document);
     }
 
+    private COLLADADocument readMainDocument(ParsingContext context) {
+        try {
+            return COLLADADocument.Factory.parse(context.getMainFileReader());
+        } catch (IOException e) {
+            throw new ParsingException("Unable to read the document!", e);
+        } catch (XmlException e) {
+            throw new IncorrectFormatException("Unable to parse the document!", e);
+        }
+    }
 }

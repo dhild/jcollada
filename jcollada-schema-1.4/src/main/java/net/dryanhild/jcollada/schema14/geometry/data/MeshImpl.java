@@ -1,4 +1,4 @@
-package net.dryanhild.jcollada.schema14.geometry;
+package net.dryanhild.jcollada.schema14.geometry.data;
 
 import java.util.Collection;
 
