@@ -29,8 +29,8 @@ public class ColladaLoaderTests {
     public Object[][] flagConfigurations() {
         return new Object[][] { //
         //
-                { false }, //
-                { true }, //
+                { Boolean.FALSE }, //
+                { Boolean.TRUE }, //
         };
     }
 

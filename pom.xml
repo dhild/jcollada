@@ -37,7 +37,9 @@
     <properties>
         <testng.version>6.1.1</testng.version>
         <assertj.version>1.5.0</assertj.version>
-        
+        <assertj.guava.version>1.1.0</assertj.guava.version>
+        <assertj.generator.version>1.2.0</assertj.generator.version>
+
         <slf4j.version>1.7.5</slf4j.version>
         <log4j.version>2.0-beta9</log4j.version>
 
@@ -112,6 +114,11 @@
                     <artifactId>xmlbeans-maven-plugin</artifactId>
                     <version>2.3.3</version>
                 </plugin>
+                <plugin>
+                    <groupId>org.assertj</groupId>
+                    <artifactId>assertj-assertions-generator-maven-plugin</artifactId>
+                    <version>${assertj.generator.version}</version>
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>
@@ -120,7 +127,6 @@
         <module>build-tools</module>
         <module>jcollada-spi</module>
         <module>jcollada-schema-1.4</module>
-        <module>jcollada-schema1.4-generated</module>
     </modules>
 
     <reporting>
@@ -179,6 +185,12 @@
                 <groupId>org.assertj</groupId>
                 <artifactId>assertj-core</artifactId>
                 <version>${assertj.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.assertj</groupId>
+                <artifactId>assertj-guava</artifactId>
+                <version>${assertj.guava.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>

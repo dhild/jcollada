@@ -3,6 +3,7 @@ package net.dryanhild.jcollada.schema14.geometry.data;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import net.dryanhild.jcollada.data.geometry.DataType;
 import net.dryanhild.jcollada.data.geometry.Mesh;
 import net.dryanhild.jcollada.data.geometry.Triangles;
 

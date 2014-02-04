@@ -10,6 +10,7 @@ import net.dryanhild.jcollada.VersionSupport;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+@Test
 public class ColladaLoaderTests {
 
     ColladaLoader loader;
@@ -19,7 +20,6 @@ public class ColladaLoaderTests {
         loader = new ColladaLoader();
     }
 
-    @Test
     public void schmema14Found() {
         Collection<VersionSupport> versions = loader.getRegisteredVersions();
         assertThat(versions).contains(ColladaLoaderService14.VERSION_1_4_0, ColladaLoaderService14.VERSION_1_4_1);

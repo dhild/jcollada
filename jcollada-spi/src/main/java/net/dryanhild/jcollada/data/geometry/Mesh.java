@@ -10,8 +10,4 @@ public interface Mesh {
 
     Collection<Triangles> getTriangles();
 
-    public enum DataType {
-        POSITION, COLOR, NORMAL, TEXTURE_COORDINATE;
-    }
-
 }

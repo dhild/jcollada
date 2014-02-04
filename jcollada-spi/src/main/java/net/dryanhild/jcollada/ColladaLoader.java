@@ -94,7 +94,6 @@ public class ColladaLoader {
         return loadImpl(reader, new DefaultParsingContext());
     }
 
-    @SuppressWarnings("resource")
     private ColladaScene loadImpl(Reader reader, DefaultParsingContext context) {
         BufferedReader bufferedReader = new BufferedReader(reader);
         context.setMainFileReader(bufferedReader);
