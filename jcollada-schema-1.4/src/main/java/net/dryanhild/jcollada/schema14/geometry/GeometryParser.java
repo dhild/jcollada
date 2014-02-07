@@ -1,25 +1,25 @@
 package net.dryanhild.jcollada.schema14.geometry;
 
-import net.dryanhild.jcollada.schema14.geometry.data.GeometryImpl;
-import net.dryanhild.jcollada.schema14.geometry.data.MeshImpl;
+import net.dryanhild.jcollada.schema14.geometry.data.GeometryResult;
+import net.dryanhild.jcollada.schema14.geometry.data.MeshResult;
 
 import org.collada.x2005.x11.colladaSchema.GeometryDocument.Geometry;
 import org.collada.x2005.x11.colladaSchema.MeshDocument.Mesh;
 
 public class GeometryParser {
 
-    public GeometryImpl parse(Geometry geom) {
-        GeometryImpl result = new GeometryImpl(geom.getId(), geom.getName());
+    public GeometryResult parse(Geometry geom) {
+        GeometryResult result = new GeometryResult(geom.getId(), geom.getName());
 
         if (geom.getMesh() != null) {
-            result.setMesh(parseMesh(geom.getMesh()));
+            MeshParser parser = new MeshParser();
+
+            Mesh mesh = geom.getMesh();
+
+            MeshResult parsed = parser.parseMesh(mesh);
+
+            result.setMesh(parsed);
         }
-
-        return result;
-    }
-
-    public MeshImpl parseMesh(Mesh mesh) {
-        MeshImpl result = new MeshImpl();
 
         return result;
     }

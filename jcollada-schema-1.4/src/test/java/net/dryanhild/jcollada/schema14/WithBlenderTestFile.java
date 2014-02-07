@@ -19,6 +19,8 @@ import org.testng.annotations.Test;
 @Test(groups = "slow")
 public class WithBlenderTestFile {
 
+    private static final int TRIANGLE_COUNT = 44;
+
     ColladaLoader loader;
     ColladaScene scene;
 
@@ -55,14 +57,32 @@ public class WithBlenderTestFile {
         assertThat(mesh.getDataTypesUsed()).contains(DataType.POSITION, DataType.NORMAL);
     }
 
-    public void cylinderMeshHasOnly44Triangles() {
+    public void cylinderMeshHasFloatArrayForPositions() {
+        Mesh mesh = getCylinderGeometryMesh();
+
+        // Test a few of the known points:
+        assertThat(mesh.getVertexDataOfType(DataType.POSITION)).containsSequence(3.561967f, 2, -1);
+        assertThat(mesh.getVertexDataOfType(DataType.POSITION)).containsSequence(2, 1, 4.561967f);
+        assertThat(mesh.getVertexDataOfType(DataType.POSITION)).containsSequence(2.561966f, 1.73205f, 1);
+    }
+
+    public void cylinderMeshHasFloatArrayForNormals() {
+        Mesh mesh = getCylinderGeometryMesh();
+
+        // Test a few of the known points:
+        assertThat(mesh.getVertexDataOfType(DataType.NORMAL)).containsSequence(0.2588191f, 0.9659258f, 0);
+        assertThat(mesh.getVertexDataOfType(DataType.NORMAL)).containsSequence(0.7071067f, 0.7071068f, 0);
+        assertThat(mesh.getVertexDataOfType(DataType.NORMAL)).containsSequence(0, 0, -1);
+    }
+
+    public void cylinderMeshHasCorrectTriangleCount() {
         Mesh mesh = getCylinderGeometryMesh();
 
         assertThat(mesh.getTriangles()).hasSize(1);
 
         Triangles triangles = mesh.getTriangles().iterator().next();
 
-        assert triangles.getCount() == 44;
-        assert triangles.getPrimitiveIndexArray().length == (44 * 3);
+        assert triangles.getCount() == TRIANGLE_COUNT;
+        assert triangles.getPrimitiveIndexArray().length == (TRIANGLE_COUNT * 3);
     }
 }

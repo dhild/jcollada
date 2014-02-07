@@ -45,6 +45,7 @@
 
         <java3d.version>1.5.2</java3d.version>
         <google.guava.version>15.0</google.guava.version>
+        <trove.version>3.0.3</trove.version>
         <spring.version>4.0.0.RELEASE</spring.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -118,6 +119,18 @@
                     <groupId>org.assertj</groupId>
                     <artifactId>assertj-assertions-generator-maven-plugin</artifactId>
                     <version>${assertj.generator.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.assertj</groupId>
+                    <artifactId>assertj-assertions-generator-maven-plugin</artifactId>
+                    <version>1.2.0</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>generate-assertions</goal>
+                            </goals>
+                        </execution>
+                    </executions>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -245,6 +258,17 @@
                 <groupId>org.apache.xmlbeans</groupId>
                 <artifactId>xmlbeans</artifactId>
                 <version>2.4.0</version>
+            </dependency>
+            <dependency>
+                <groupId>net.sf.trove4j</groupId>
+                <artifactId>trove4j</artifactId>
+                <version>${trove.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.assertj</groupId>
+                <artifactId>assertj-core</artifactId>
+                <version>1.5.0</version>
+                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import net.dryanhild.jcollada.schema14.geometry.GeometryParser;
-import net.dryanhild.jcollada.schema14.geometry.data.GeometryImpl;
+import net.dryanhild.jcollada.schema14.geometry.data.GeometryResult;
 
 import org.collada.x2005.x11.colladaSchema.COLLADADocument;
 import org.collada.x2005.x11.colladaSchema.COLLADADocument.COLLADA;
@@ -25,8 +25,8 @@ public class ParsingFactory {
         return scene;
     }
 
-    public static Collection<GeometryImpl> parseGeometries(LibraryGeometries library) {
-        Collection<GeometryImpl> geoms = new ArrayList<>();
+    public static Collection<GeometryResult> parseGeometries(LibraryGeometries library) {
+        Collection<GeometryResult> geoms = new ArrayList<>();
 
         GeometryParser parser = new GeometryParser();
 

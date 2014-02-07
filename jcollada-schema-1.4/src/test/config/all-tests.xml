@@ -4,6 +4,7 @@
   <test name="All Tests">
     <packages>
         <package name="net.dryanhild.jcollada.schema14"/>
+        <package name="net.dryanhild.jcollada.schema14.geometry.source"/>
     </packages>
   </test>
 </suite>

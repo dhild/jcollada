@@ -4,14 +4,14 @@ import net.dryanhild.jcollada.data.Asset;
 import net.dryanhild.jcollada.data.geometry.Geometry;
 import net.dryanhild.jcollada.data.geometry.Mesh;
 
-public class GeometryImpl implements Geometry {
+public class GeometryResult implements Geometry {
 
     private final String name;
     private final String id;
 
     private Mesh mesh;
 
-    public GeometryImpl(String id, String name) {
+    public GeometryResult(String id, String name) {
         this.name = name;
         this.id = id;
     }

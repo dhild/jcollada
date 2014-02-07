@@ -1,5 +1,7 @@
 package net.dryanhild.jcollada.data.geometry;
 
+import java.util.Set;
+
 public interface Triangles {
 
     String getName();
@@ -7,5 +9,7 @@ public interface Triangles {
     int getCount();
 
     int[] getPrimitiveIndexArray();
+
+    Set<DataType> getDataTypes();
 
 }
