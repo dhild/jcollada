@@ -40,6 +40,16 @@ public class SourceStream {
         return stream.fillElement(accessIndex, copyTo, copyOffset);
     }
 
+    public int getMaximumIndex() {
+        int maxIndex = 0;
+
+        for (AccessorStream stream : accessors.values()) {
+            maxIndex = Math.max(maxIndex, stream.count - 1);
+        }
+
+        return maxIndex;
+    }
+
     private class AccessorStream {
         private final int offset;
         private final int count;

@@ -12,11 +12,10 @@ public class GeometryParser {
         GeometryResult result = new GeometryResult(geom.getId(), geom.getName());
 
         if (geom.getMesh() != null) {
-            MeshParser parser = new MeshParser();
-
             Mesh mesh = geom.getMesh();
+            MeshParser parser = new MeshParser(mesh);
 
-            MeshResult parsed = parser.parseMesh(mesh);
+            MeshResult parsed = parser.parseMesh();
 
             result.setMesh(parsed);
         }

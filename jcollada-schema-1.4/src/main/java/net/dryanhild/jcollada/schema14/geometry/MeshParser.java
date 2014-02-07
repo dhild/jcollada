@@ -8,8 +8,11 @@ import gnu.trove.map.hash.TObjectIntHashMap;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import net.dryanhild.jcollada.ParsingException;
@@ -28,19 +31,26 @@ public class MeshParser {
 
     private static final float NO_DATA_VALUE = Float.NaN;
 
-    private Mesh sourceMesh;
-    private Vertices vertices;
+    private final Mesh sourceMesh;
+    private final Vertices vertices;
+    private final SourceStream sourceStream;
 
-    private final List<Triangles> triangles = new ArrayList<>();
-    private final Set<DataType> dataTypes = new HashSet<>();
-    private final TIntList[] vertexAttributeIndices = new TIntList[DataType.values().length];
+    private final List<Triangles> triangles;
+    private final Set<DataType> dataTypes;
+    private final Map<DataType, TIntList> vertexAttributeIndices;
     private final TFloatList[] vertexValues = new TFloatList[DataType.values().length];
 
-    public MeshResult parseMesh(Mesh mesh) {
+    public MeshParser(Mesh mesh) {
         sourceMesh = mesh;
         vertices = mesh.getVertices();
+        sourceStream = new SourceStream(mesh.getSourceArray());
 
-        gatherDataTypes();
+        dataTypes = gatherDataTypes();
+        triangles = new ArrayList<>();
+        vertexAttributeIndices = new HashMap<>();
+    }
+
+    public MeshResult parseMesh() {
 
         constructTriangles();
 
@@ -58,37 +68,45 @@ public class MeshParser {
         return result;
     }
 
-    private void gatherDataTypes() {
-        addTypes(vertices.getInputArray());
+    private Set<DataType> gatherDataTypes() {
+        Set<DataType> types = new HashSet<>();
+
+        types.addAll(getTypes(vertices.getInputArray()));
 
         for (Polylist polys : sourceMesh.getPolylistArray()) {
-            addTypes(polys.getInputArray());
+            types.addAll(getTypes(polys.getInputArray()));
         }
 
-        Set<DataType> types = new HashSet<>(dataTypes);
-        dataTypes.clear();
-        dataTypes.addAll(types);
+        return types;
     }
 
-    private void addTypes(InputLocal[] inputs) {
+    private Collection<DataType> getTypes(InputLocal[] inputs) {
+        Collection<DataType> types = new ArrayList<>();
         for (InputLocal in : inputs) {
-            addSemantic(in.getSemantic());
+            DataType type = getDataType(in.getSemantic());
+            if (type != null) {
+                types.add(type);
+            }
         }
+        return types;
     }
 
-    private void addTypes(InputLocalOffset[] inputs) {
+    private Collection<DataType> getTypes(InputLocalOffset[] inputs) {
+        Collection<DataType> types = new ArrayList<>();
         for (InputLocalOffset in : inputs) {
-            addSemantic(in.getSemantic());
+            DataType type = getDataType(in.getSemantic());
+            if (type != null) {
+                types.add(type);
+            }
         }
+        return types;
     }
 
-    private void addSemantic(String semantic) {
+    private DataType getDataType(String semantic) {
         if (semantic.equals("VERTEX")) {
-            return;
+            return null;
         }
-        DataType type = DataType.valueOf(semantic);
-
-        dataTypes.add(type);
+        return DataType.valueOf(semantic);
     }
 
     private void constructTriangles() {
@@ -134,7 +152,7 @@ public class MeshParser {
     private int[] attributeIndicesToSingleIndices(TIntList pValues, TObjectIntMap<DataType> inputOffsets) {
         Set<DataType> inputTypes = inputOffsets.keySet();
 
-        int[] indices = new int[vertexAttributeIndices.length];
+        int[] indices = new int[vertexAttributeIndices.size()];
         for (int i = 0; i < indices.length; i++) {
             indices[i] = -1;
         }
@@ -145,7 +163,7 @@ public class MeshParser {
                 int index = pValues.get(pIndex + inputOffsets.get(type));
                 indices[type.ordinal()] = index;
             }
-            processedPValues[pIndex] = getAttributeIndex(indices);
+            // processedPValues[pIndex] = getAttributeIndex(indices);
         }
         return processedPValues;
     }
@@ -167,27 +185,28 @@ public class MeshParser {
         return offsets;
     }
 
-    private int getAttributeIndex(int... indices) {
-        final int indexCount = vertexAttributeIndices[0].size();
-        for (int i = 0; i < indexCount; i++) {
-            // search for vertex, use if found.
-            boolean found = true;
-            for (int j = 0; j < vertexAttributeIndices.length; j++) {
-                if (indices[j] != -1) {
-                    if (indices[j] != vertexAttributeIndices[j].get(i)) {
-                        found = false;
-                        break;
-                    }
-                }
-            }
-            if (found) {
-                return i;
-            }
-        }
-
-        for (int i = 0; i < vertexAttributeIndices.length; i++) {
-            vertexAttributeIndices[i].add(indices[i]);
-        }
-        return vertexAttributeIndices[0].size() - 1;
-    }
+    // private int getAttributeIndex(int... indices) {
+    // final int indexCount =
+    // vertexAttributeIndices.get(DataType.POSITION).size();
+    // for (int i = 0; i < indexCount; i++) {
+    // // search for vertex, use if found.
+    // boolean found = true;
+    // for (int j = 0; j < vertexAttributeIndices.size(); j++) {
+    // if (indices[j] != -1) {
+    // if (indices[j] != vertexAttributeIndices[j].get(i)) {
+    // found = false;
+    // break;
+    // }
+    // }
+    // }
+    // if (found) {
+    // return i;
+    // }
+    // }
+    //
+    // for (int i = 0; i < vertexAttributeIndices.length; i++) {
+    // vertexAttributeIndices[i].add(indices[i]);
+    // }
+    // return vertexAttributeIndices[0].size() - 1;
+    // }
 }

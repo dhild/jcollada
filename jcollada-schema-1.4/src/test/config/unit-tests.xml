@@ -10,6 +10,8 @@
     </groups>
     <packages>
         <package name="net.dryanhild.jcollada.schema14"/>
+        <package name="net.dryanhild.jcollada.schema14.geometry"/>
+        <package name="net.dryanhild.jcollada.schema14.geometry.source"/>
     </packages>
   </test>
 </suite>
