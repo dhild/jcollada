@@ -8,14 +8,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import net.dryanhild.jcollada.data.geometry.DataType;
-
 public class IndexReorganizer {
 
     public static final int NO_DATA_INDICATOR = -1;
 
     private int elementCount;
-    private final Map<DataType, TIntList> indicesByElement;
+    private final Map<SourceReference, TIntList> indicesByElement;
     private final int initialCapacity;
 
     public IndexReorganizer(int maximumIndexGuess) {
@@ -27,19 +25,19 @@ public class IndexReorganizer {
         return elementCount;
     }
 
-    public Map<DataType, TIntList> getIndicesByElement() {
+    public Map<SourceReference, TIntList> getIndicesByElement() {
         return indicesByElement;
     }
 
-    public int convertToSingleIndex(TObjectIntMap<DataType> elementIndices) {
-        Set<DataType> types = elementIndices.keySet();
+    public int convertToSingleIndex(TObjectIntMap<SourceReference> elementIndices) {
+        Set<SourceReference> sources = elementIndices.keySet();
 
         int index = 0;
         while (index < elementCount) {
             final int startingIndex = index;
 
-            for (DataType type : types) {
-                index = getNextIndexOf(type, elementIndices.get(type), startingIndex);
+            for (SourceReference source : sources) {
+                index = getNextIndexOf(source, elementIndices.get(source), startingIndex);
                 if (index != startingIndex) {
                     break;
                 }
@@ -55,14 +53,14 @@ public class IndexReorganizer {
             elementCount++;
         }
 
-        for (DataType type : types) {
-            setIfNoData(type, elementIndices.get(type), index);
+        for (SourceReference source : sources) {
+            setIfNoData(source, elementIndices.get(source), index);
         }
         return index;
     }
 
-    private int getNextIndexOf(DataType type, int elementIndex, int startFrom) {
-        TIntList list = getList(type);
+    private int getNextIndexOf(SourceReference source, int elementIndex, int startFrom) {
+        TIntList list = getList(source);
 
         int foundAt = list.indexOf(startFrom, elementIndex);
         if (foundAt == -1) {
@@ -75,8 +73,8 @@ public class IndexReorganizer {
         return foundAt;
     }
 
-    private void setIfNoData(DataType type, int elementIndex, int index) {
-        TIntList list = getList(type);
+    private void setIfNoData(SourceReference source, int elementIndex, int index) {
+        TIntList list = getList(source);
 
         while (list.size() < (index + 1)) {
             list.add(NO_DATA_INDICATOR);
@@ -85,12 +83,12 @@ public class IndexReorganizer {
         list.set(index, elementIndex);
     }
 
-    private TIntList getList(DataType type) {
-        TIntList list = indicesByElement.get(type);
+    private TIntList getList(SourceReference source) {
+        TIntList list = indicesByElement.get(source);
         if (list == null) {
             int initialSize = Math.max(initialCapacity, elementCount);
             list = new TIntArrayList(initialSize, NO_DATA_INDICATOR);
-            indicesByElement.put(type, list);
+            indicesByElement.put(source, list);
         }
         return list;
     }

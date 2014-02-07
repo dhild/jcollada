@@ -17,6 +17,10 @@ import org.testng.annotations.Test;
 @Test
 public class IndexReorganizerTest {
 
+    private static final SourceReference COLORS = new SourceReference(DataType.COLOR, "normals");
+    private static final SourceReference NORMALS = new SourceReference(DataType.NORMAL, "normals");
+    private static final SourceReference POSITIONS = new SourceReference(DataType.POSITION, "positions");
+
     @DataProvider
     public static Object[][] initialSizes() {
         return new Object[][] { { Integer.valueOf(0) }, { Integer.valueOf(1) }, { Integer.valueOf(25) }, };
@@ -35,11 +39,11 @@ public class IndexReorganizerTest {
         reorganizer = new IndexReorganizer(initialCapacity);
     }
 
-    protected TObjectIntMap<DataType> getMappingPositionNormal(int posIndex, int normalIndex) {
-        TObjectIntMap<DataType> mapping = new TObjectIntHashMap<>();
+    protected TObjectIntMap<SourceReference> getMappingPositionNormal(int posIndex, int normalIndex) {
+        TObjectIntMap<SourceReference> mapping = new TObjectIntHashMap<>();
 
-        mapping.put(DataType.POSITION, posIndex);
-        mapping.put(DataType.NORMAL, normalIndex);
+        mapping.put(POSITIONS, posIndex);
+        mapping.put(NORMALS, normalIndex);
 
         return mapping;
     }
@@ -53,7 +57,7 @@ public class IndexReorganizerTest {
     public void convertIndexThenHasMatchingDataTypes() {
         reorganizer.convertToSingleIndex(getMappingPositionNormal(1, 2));
 
-        assertThat(reorganizer.getIndicesByElement().keySet()).containsOnly(DataType.POSITION, DataType.NORMAL);
+        assertThat(reorganizer.getIndicesByElement().keySet()).containsOnly(POSITIONS, NORMALS);
     }
 
     public void duplicateIndicesHaveSameValue() {
@@ -89,9 +93,9 @@ public class IndexReorganizerTest {
     }
 
     public void threeUniqueIndicesThenDuplicatesMatch() {
-        TObjectIntMap<DataType> mapping0 = getMappingPositionNormal(1, 1);
-        TObjectIntMap<DataType> mapping1 = getMappingPositionNormal(1, 2);
-        TObjectIntMap<DataType> mapping2 = getMappingPositionNormal(2, 2);
+        TObjectIntMap<SourceReference> mapping0 = getMappingPositionNormal(1, 1);
+        TObjectIntMap<SourceReference> mapping1 = getMappingPositionNormal(1, 2);
+        TObjectIntMap<SourceReference> mapping2 = getMappingPositionNormal(2, 2);
 
         int index0 = reorganizer.convertToSingleIndex(mapping0);
         int index1 = reorganizer.convertToSingleIndex(mapping1);
@@ -103,9 +107,9 @@ public class IndexReorganizerTest {
     }
 
     public void threeUniqueIndicesThenHasThreeElements() {
-        TObjectIntMap<DataType> mapping0 = getMappingPositionNormal(1, 1);
-        TObjectIntMap<DataType> mapping1 = getMappingPositionNormal(1, 2);
-        TObjectIntMap<DataType> mapping2 = getMappingPositionNormal(2, 2);
+        TObjectIntMap<SourceReference> mapping0 = getMappingPositionNormal(1, 1);
+        TObjectIntMap<SourceReference> mapping1 = getMappingPositionNormal(1, 2);
+        TObjectIntMap<SourceReference> mapping2 = getMappingPositionNormal(2, 2);
 
         reorganizer.convertToSingleIndex(mapping0);
         reorganizer.convertToSingleIndex(mapping1);
@@ -115,53 +119,53 @@ public class IndexReorganizerTest {
     }
 
     public void threeUniqueIndicesThenMatchingIndicesByElement() {
-        TObjectIntMap<DataType> mapping0 = getMappingPositionNormal(1, 1);
-        TObjectIntMap<DataType> mapping1 = getMappingPositionNormal(1, 2);
-        TObjectIntMap<DataType> mapping2 = getMappingPositionNormal(2, 2);
+        TObjectIntMap<SourceReference> mapping0 = getMappingPositionNormal(1, 1);
+        TObjectIntMap<SourceReference> mapping1 = getMappingPositionNormal(1, 2);
+        TObjectIntMap<SourceReference> mapping2 = getMappingPositionNormal(2, 2);
 
         reorganizer.convertToSingleIndex(mapping0);
         reorganizer.convertToSingleIndex(mapping1);
         reorganizer.convertToSingleIndex(mapping2);
 
-        Map<DataType, TIntList> indices = reorganizer.getIndicesByElement();
+        Map<SourceReference, TIntList> indices = reorganizer.getIndicesByElement();
 
-        int[] positions = indices.get(DataType.POSITION).toArray();
-        int[] normals = indices.get(DataType.NORMAL).toArray();
+        int[] positions = indices.get(POSITIONS).toArray();
+        int[] normals = indices.get(NORMALS).toArray();
 
         assertThat(positions).containsExactly(1, 1, 2);
         assertThat(normals).containsExactly(1, 2, 2);
     }
 
     public void twoIndicesThenAdditionalDataTypeWithNewIndicesHasThreeElements() {
-        TObjectIntMap<DataType> mapping0 = getMappingPositionNormal(1, 1);
-        TObjectIntMap<DataType> mapping1 = getMappingPositionNormal(1, 2);
-        TObjectIntMap<DataType> mapping2 = getMappingPositionNormal(2, 2);
-        mapping2.put(DataType.COLOR, 3);
+        TObjectIntMap<SourceReference> mapping0 = getMappingPositionNormal(1, 1);
+        TObjectIntMap<SourceReference> mapping1 = getMappingPositionNormal(1, 2);
+        TObjectIntMap<SourceReference> mapping2 = getMappingPositionNormal(2, 2);
+        mapping2.put(COLORS, 3);
 
         reorganizer.convertToSingleIndex(mapping0);
         reorganizer.convertToSingleIndex(mapping1);
         reorganizer.convertToSingleIndex(mapping2);
 
-        Map<DataType, TIntList> indices = reorganizer.getIndicesByElement();
+        Map<SourceReference, TIntList> indices = reorganizer.getIndicesByElement();
 
-        assertThat(indices.keySet()).containsOnly(DataType.POSITION, DataType.NORMAL, DataType.COLOR);
+        assertThat(indices.keySet()).containsOnly(POSITIONS, NORMALS, COLORS);
     }
 
     public void twoIndicesThenAdditionalDataTypeWithNewIndicesHasCorrectArrays() {
-        TObjectIntMap<DataType> mapping0 = getMappingPositionNormal(1, 1);
-        TObjectIntMap<DataType> mapping1 = getMappingPositionNormal(1, 2);
-        TObjectIntMap<DataType> mapping2 = getMappingPositionNormal(2, 2);
-        mapping2.put(DataType.COLOR, 3);
+        TObjectIntMap<SourceReference> mapping0 = getMappingPositionNormal(1, 1);
+        TObjectIntMap<SourceReference> mapping1 = getMappingPositionNormal(1, 2);
+        TObjectIntMap<SourceReference> mapping2 = getMappingPositionNormal(2, 2);
+        mapping2.put(COLORS, 3);
 
         reorganizer.convertToSingleIndex(mapping0);
         reorganizer.convertToSingleIndex(mapping1);
         reorganizer.convertToSingleIndex(mapping2);
 
-        Map<DataType, TIntList> indices = reorganizer.getIndicesByElement();
+        Map<SourceReference, TIntList> indices = reorganizer.getIndicesByElement();
 
-        int[] positions = indices.get(DataType.POSITION).toArray();
-        int[] normals = indices.get(DataType.NORMAL).toArray();
-        int[] colors = indices.get(DataType.COLOR).toArray();
+        int[] positions = indices.get(POSITIONS).toArray();
+        int[] normals = indices.get(NORMALS).toArray();
+        int[] colors = indices.get(COLORS).toArray();
 
         assertThat(positions).containsExactly(1, 1, 2);
         assertThat(normals).containsExactly(1, 2, 2);
@@ -169,20 +173,20 @@ public class IndexReorganizerTest {
     }
 
     public void twoIndicesThenAdditionalDataTypeWithOldIndicesHasCorrectArrays() {
-        TObjectIntMap<DataType> mapping0 = getMappingPositionNormal(1, 1);
-        TObjectIntMap<DataType> mapping1 = getMappingPositionNormal(2, 2);
-        TObjectIntMap<DataType> mapping2 = getMappingPositionNormal(2, 2);
-        mapping2.put(DataType.COLOR, 3);
+        TObjectIntMap<SourceReference> mapping0 = getMappingPositionNormal(1, 1);
+        TObjectIntMap<SourceReference> mapping1 = getMappingPositionNormal(2, 2);
+        TObjectIntMap<SourceReference> mapping2 = getMappingPositionNormal(2, 2);
+        mapping2.put(COLORS, 3);
 
         reorganizer.convertToSingleIndex(mapping0);
         reorganizer.convertToSingleIndex(mapping1);
         reorganizer.convertToSingleIndex(mapping2);
 
-        Map<DataType, TIntList> indices = reorganizer.getIndicesByElement();
+        Map<SourceReference, TIntList> indices = reorganizer.getIndicesByElement();
 
-        int[] positions = indices.get(DataType.POSITION).toArray();
-        int[] normals = indices.get(DataType.NORMAL).toArray();
-        int[] colors = indices.get(DataType.COLOR).toArray();
+        int[] positions = indices.get(POSITIONS).toArray();
+        int[] normals = indices.get(NORMALS).toArray();
+        int[] colors = indices.get(COLORS).toArray();
 
         assertThat(positions).containsExactly(1, 2);
         assertThat(normals).containsExactly(1, 2);
