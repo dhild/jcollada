@@ -12,7 +12,7 @@ import net.dryanhild.jcollada.data.geometry.DataType;
 
 public class IndexReorganizer {
 
-    private static final int NO_DATA_INDICATOR = -1;
+    public static final int NO_DATA_INDICATOR = -1;
 
     private int elementCount;
     private final Map<DataType, TIntList> indicesByElement;
