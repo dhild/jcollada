@@ -11,7 +11,7 @@ import org.testng.annotations.Test;
 @Test
 public class WithMultipleAccessorsSingleSource extends SourceStreamTest {
 
-    private static final String sourcePositions = //
+    private static final String SOURCE_POSITIONS = //
     "<source id=\"positions\" xmlns=\"http://www.collada.org/2005/11/COLLADASchema\">\n" + //
             "  <float_array id=\"values\" count=\"30\">\n" + //
             "    1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30\n" + //
@@ -24,7 +24,7 @@ public class WithMultipleAccessorsSingleSource extends SourceStreamTest {
             "    </accessor>\n" + //
             "  </technique_common>\n" + //
             "</source>\n";
-    private static final String sourceNormals = //
+    private static final String SOURCE_NORMALS = //
     "<source id=\"normals\" xmlns=\"http://www.collada.org/2005/11/COLLADASchema\">\n" + //
             "  <technique_common>\n" + //
             "    <accessor source=\"#values\" offset=\"3\" count=\"3\" stride=\"10\">\n" + //
@@ -34,7 +34,7 @@ public class WithMultipleAccessorsSingleSource extends SourceStreamTest {
             "    </accessor>\n" + //
             "  </technique_common>\n" + //
             "</source>\n";
-    private static final String sourceTexture1 = //
+    private static final String SOURCE_TEXTURE_1 = //
     "<source id=\"texture1\" xmlns=\"http://www.collada.org/2005/11/COLLADASchema\">\n" + //
             "  <technique_common>\n" + //
             "    <accessor source=\"#values\" offset=\"6\" count=\"3\" stride=\"10\">\n" + //
@@ -43,7 +43,7 @@ public class WithMultipleAccessorsSingleSource extends SourceStreamTest {
             "    </accessor>\n" + //
             "  </technique_common>\n" + //
             "</source>\n";
-    private static final String sourceTexture2 = //
+    private static final String SOURCE_TEXTURE_2 = //
     "<source id=\"texture2\" xmlns=\"http://www.collada.org/2005/11/COLLADASchema\">\n" + //
             "  <technique_common>\n" + //
             "    <accessor source=\"#values\" offset=\"8\"  count=\"3\" stride=\"10\">\n" + //
@@ -54,10 +54,10 @@ public class WithMultipleAccessorsSingleSource extends SourceStreamTest {
             "</source>";
 
     protected SourceStream makeStream() {
-        Source pos = getSource(sourcePositions);
-        Source nor = getSource(sourceNormals);
-        Source tex1 = getSource(sourceTexture1);
-        Source tex2 = getSource(sourceTexture2);
+        Source pos = getSource(SOURCE_POSITIONS);
+        Source nor = getSource(SOURCE_NORMALS);
+        Source tex1 = getSource(SOURCE_TEXTURE_1);
+        Source tex2 = getSource(SOURCE_TEXTURE_2);
         return new SourceStream(pos, nor, tex1, tex2);
     }
 
@@ -109,9 +109,9 @@ public class WithMultipleAccessorsSingleSource extends SourceStreamTest {
     }
 
     public void noSourceArrayFails() {
-        Source nor = getSource(sourceNormals);
-        Source tex1 = getSource(sourceTexture1);
-        Source tex2 = getSource(sourceTexture2);
+        Source nor = getSource(SOURCE_NORMALS);
+        Source tex1 = getSource(SOURCE_TEXTURE_1);
+        Source tex2 = getSource(SOURCE_TEXTURE_2);
 
         try {
             new SourceStream(nor, tex1, tex2);

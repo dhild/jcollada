@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 @Test
 public class WithSkippingAccessor extends SourceStreamTest {
 
-    private static final String skippingXML = //
+    private static final String SKIPPING_XML = //
     "<source id=\"test1\" xmlns=\"http://www.collada.org/2005/11/COLLADASchema\">\n" + //
             "  <float_array id=\"values\" count=\"9\">\n" + //
             "    1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 9.0\n" + //
@@ -25,7 +25,7 @@ public class WithSkippingAccessor extends SourceStreamTest {
             "</source>";
 
     public void oneAccess() {
-        SourceStream stream = new SourceStream(getSource(skippingXML));
+        SourceStream stream = new SourceStream(getSource(SKIPPING_XML));
 
         float[] values = stream.getElement("#test1", 1);
 
@@ -33,7 +33,7 @@ public class WithSkippingAccessor extends SourceStreamTest {
     }
 
     public void threeAccesses() {
-        SourceStream stream = new SourceStream(getSource(skippingXML));
+        SourceStream stream = new SourceStream(getSource(SKIPPING_XML));
 
         TFloatList values = new TFloatArrayList();
 

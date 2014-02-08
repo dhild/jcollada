@@ -9,7 +9,7 @@ import org.testng.annotations.Test;
 
 @Test
 public class WithThreeValueAccessor extends SourceStreamTest {
-    private static final String threeValueXML = //
+    private static final String THREE_VALUE_XML = //
     "<source id=\"test1\" xmlns=\"http://www.collada.org/2005/11/COLLADASchema\">\n" + //
             "  <float_array id=\"values\" count=\"9\">\n" + //
             "    1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 9.0\n" + //
@@ -24,7 +24,7 @@ public class WithThreeValueAccessor extends SourceStreamTest {
             "</source>";
 
     public void oneAccess() {
-        SourceStream stream = new SourceStream(getSource(threeValueXML));
+        SourceStream stream = new SourceStream(getSource(THREE_VALUE_XML));
 
         float[] values = stream.getElement("#test1", 1);
 
@@ -32,7 +32,7 @@ public class WithThreeValueAccessor extends SourceStreamTest {
     }
 
     public void threeAccesses() {
-        SourceStream stream = new SourceStream(getSource(threeValueXML));
+        SourceStream stream = new SourceStream(getSource(THREE_VALUE_XML));
 
         TFloatList values = new TFloatArrayList();
 
@@ -44,7 +44,7 @@ public class WithThreeValueAccessor extends SourceStreamTest {
     }
 
     public void badSourceNameFails() {
-        SourceStream stream = new SourceStream(getSource(threeValueXML));
+        SourceStream stream = new SourceStream(getSource(THREE_VALUE_XML));
 
         try {
             stream.getElement("#test2", 0);
@@ -56,7 +56,7 @@ public class WithThreeValueAccessor extends SourceStreamTest {
     }
 
     public void indexTooLargeFails() {
-        SourceStream stream = new SourceStream(getSource(threeValueXML));
+        SourceStream stream = new SourceStream(getSource(THREE_VALUE_XML));
 
         try {
             stream.getElement("#test1", 5);

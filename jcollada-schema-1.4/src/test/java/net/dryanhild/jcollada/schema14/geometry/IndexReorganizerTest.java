@@ -21,17 +21,17 @@ public class IndexReorganizerTest {
     private static final SourceReference NORMALS = new SourceReference(DataType.NORMAL, "normals");
     private static final SourceReference POSITIONS = new SourceReference(DataType.POSITION, "positions");
 
-    @DataProvider
-    public static Object[][] initialSizes() {
-        return new Object[][] { { Integer.valueOf(0) }, { Integer.valueOf(1) }, { Integer.valueOf(25) }, };
-    }
-
     private final int initialCapacity;
     private IndexReorganizer reorganizer;
 
     @Factory(dataProvider = "initialSizes")
     public IndexReorganizerTest(int initialCapacity) {
         this.initialCapacity = initialCapacity;
+    }
+
+    @DataProvider
+    public static Object[][] initialSizes() {
+        return new Object[][] { { Integer.valueOf(0) }, { Integer.valueOf(1) }, { Integer.valueOf(25) }, };
     }
 
     @BeforeMethod()

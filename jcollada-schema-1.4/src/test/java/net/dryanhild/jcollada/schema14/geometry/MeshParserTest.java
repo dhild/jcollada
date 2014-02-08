@@ -16,7 +16,7 @@ import org.testng.annotations.Test;
 @Test
 public class MeshParserTest {
 
-    private static final String meshXML = //
+    private static final String MESH_XML = //
     "      <mesh xmlns=\"http://www.collada.org/2005/11/COLLADASchema\">\n"
             + "        <source id=\"Cylinder_001-mesh-positions\">\n"
             + "          <float_array id=\"Cylinder_001-mesh-positions-array\" count=\"72\">"
@@ -77,7 +77,7 @@ public class MeshParserTest {
     }
 
     public void meshHasTwoDataTypes() {
-        Mesh mesh = getMesh(meshXML);
+        Mesh mesh = getMesh(MESH_XML);
         MeshParser parser = new MeshParser(mesh);
 
         MeshResult result = parser.parseMesh();
@@ -89,7 +89,7 @@ public class MeshParserTest {
 
     @Test(dependsOnMethods = "meshHasTwoDataTypes")
     public void dataArraysHaveCorrectSize() {
-        Mesh mesh = getMesh(meshXML);
+        Mesh mesh = getMesh(MESH_XML);
         MeshParser parser = new MeshParser(mesh);
 
         MeshResult result = parser.parseMesh();
@@ -101,7 +101,7 @@ public class MeshParserTest {
     }
 
     public void meshHasOneTriangle() {
-        Mesh mesh = getMesh(meshXML);
+        Mesh mesh = getMesh(MESH_XML);
         MeshParser parser = new MeshParser(mesh);
 
         MeshResult result = parser.parseMesh();
@@ -111,7 +111,7 @@ public class MeshParserTest {
 
     @Test(dependsOnMethods = { "meshHasOneTriangle", "dataArraysHaveCorrectSize" })
     public void firstVertexIsCorrect() {
-        Mesh mesh = getMesh(meshXML);
+        Mesh mesh = getMesh(MESH_XML);
         MeshParser parser = new MeshParser(mesh);
 
         MeshResult result = parser.parseMesh();
@@ -128,7 +128,7 @@ public class MeshParserTest {
 
     @Test(dependsOnMethods = { "meshHasOneTriangle", "dataArraysHaveCorrectSize" })
     public void someInteriorElementsExist() {
-        Mesh mesh = getMesh(meshXML);
+        Mesh mesh = getMesh(MESH_XML);
         MeshParser parser = new MeshParser(mesh);
 
         MeshResult result = parser.parseMesh();

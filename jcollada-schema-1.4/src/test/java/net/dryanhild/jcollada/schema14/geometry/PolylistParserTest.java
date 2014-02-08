@@ -62,7 +62,7 @@ public class PolylistParserTest {
         normInput.setOffset(BigInteger.valueOf(1));
 
         List<BigInteger> vcounts = Lists.newArrayList(BigInteger.valueOf(3));
-        List<BigInteger> p = Lists.newArrayList( //
+        List<BigInteger> p = Lists.newArrayList(//
                 BigInteger.valueOf(1), BigInteger.valueOf(3), //
                 BigInteger.valueOf(2), BigInteger.valueOf(2), //
                 BigInteger.valueOf(3), BigInteger.valueOf(1));

@@ -67,7 +67,7 @@ public class PolylistParser {
         TObjectIntMap<SourceReference> offsets = new TObjectIntHashMap<>();
 
         for (InputLocalOffset input : inputs) {
-            if (input.getSemantic().equals("VERTEX")) {
+            if ("VERTEX".equals(input.getSemantic())) {
                 for (InputLocal local : vertices.getInputArray()) {
                     DataType type = DataType.valueOf(local.getSemantic());
                     SourceReference ref = new SourceReference(type, local.getSource());
