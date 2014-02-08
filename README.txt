@@ -1,1 +1,0 @@
-JCollada loads COLLADA files into Java objects.
