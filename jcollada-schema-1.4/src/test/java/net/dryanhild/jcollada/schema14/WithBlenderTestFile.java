@@ -13,6 +13,7 @@ import net.dryanhild.jcollada.data.geometry.DataType;
 import net.dryanhild.jcollada.data.geometry.Geometry;
 import net.dryanhild.jcollada.data.geometry.Mesh;
 import net.dryanhild.jcollada.data.geometry.Triangles;
+import net.dryanhild.jcollada.data.scene.Node;
 
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -38,7 +39,7 @@ public class WithBlenderTestFile {
     }
 
     private Geometry getCylinderGeometry() {
-        return scene.getGeometryById("Cylinder.001");
+        return scene.getElementById("Cylinder_001-mesh", Geometry.class);
     }
 
     private Mesh getCylinderGeometryMesh() {
@@ -86,7 +87,14 @@ public class WithBlenderTestFile {
 
         Triangles triangles = mesh.getTriangles().iterator().next();
 
-        assert triangles.getCount() == TRIANGLE_COUNT;
-        assert triangles.getPrimitiveIndexArray().length == (TRIANGLE_COUNT * 3);
+        assertThat(triangles.getCount()).isEqualTo(TRIANGLE_COUNT);
+        assertThat(triangles.getPrimitiveIndexArray()).hasSize(TRIANGLE_COUNT * 3);
+    }
+
+    public void cylinderNodeHasCylinderGeometry() {
+        Geometry geometry = getCylinderGeometry();
+        Node node = scene.getElementById("Cylinder", Node.class);
+
+        assertThat(node.getGeometries()).contains(geometry);
     }
 }
