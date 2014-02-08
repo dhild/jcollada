@@ -7,7 +7,7 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>JCollada</name>
-    <description>A utility to load COLLADA files into Java3D</description>
+    <description>A utility to load COLLADA files for Java OpenGL rendering</description>
     <inceptionYear>2013</inceptionYear>
     <url>https://github.com/dhild/jcollada</url>
 
