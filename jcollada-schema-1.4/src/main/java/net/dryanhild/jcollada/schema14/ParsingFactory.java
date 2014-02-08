@@ -13,7 +13,7 @@ import org.collada.x2005.x11.colladaSchema.LibraryGeometriesDocument.LibraryGeom
 
 public class ParsingFactory {
 
-    public static ColladaScene14 parseDocument(COLLADADocument document) {
+    public ColladaScene14 parseDocument(COLLADADocument document) {
         ColladaScene14 scene = new ColladaScene14();
 
         COLLADA collada = document.getCOLLADA();
@@ -25,7 +25,7 @@ public class ParsingFactory {
         return scene;
     }
 
-    public static Collection<GeometryResult> parseGeometries(LibraryGeometries library) {
+    public Collection<GeometryResult> parseGeometries(LibraryGeometries library) {
         Collection<GeometryResult> geoms = new ArrayList<>();
 
         GeometryParser parser = new GeometryParser();
