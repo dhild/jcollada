@@ -7,6 +7,7 @@ import gnu.trove.map.hash.TObjectIntHashMap;
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Set;
 
 import net.dryanhild.jcollada.ParsingException;
 import net.dryanhild.jcollada.data.geometry.DataType;
@@ -15,6 +16,8 @@ import org.collada.x2005.x11.colladaSchema.InputLocal;
 import org.collada.x2005.x11.colladaSchema.InputLocalOffset;
 import org.collada.x2005.x11.colladaSchema.PolylistDocument.Polylist;
 import org.collada.x2005.x11.colladaSchema.VerticesDocument.Vertices;
+
+import com.google.common.collect.ImmutableSet;
 
 public class PolylistParser {
 
@@ -26,6 +29,17 @@ public class PolylistParser {
         polys = polyList;
         this.vertices = vertices;
         this.reorganizer = reorganizer;
+    }
+
+    public Set<DataType> getDataTypes() {
+        TObjectIntMap<SourceReference> offsets = getOffsets(polys.getInputArray());
+
+        ImmutableSet.Builder<DataType> types = ImmutableSet.builder();
+
+        for (SourceReference ref : offsets.keySet()) {
+            types.add(ref.type);
+        }
+        return types.build();
     }
 
     public int[] getTriangleIndices() {

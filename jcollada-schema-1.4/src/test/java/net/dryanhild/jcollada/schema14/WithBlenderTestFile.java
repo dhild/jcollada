@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.Map;
 
 import net.dryanhild.jcollada.ColladaLoader;
 import net.dryanhild.jcollada.data.ColladaScene;
@@ -54,25 +55,28 @@ public class WithBlenderTestFile {
     public void cylinderMeshHasPositionsAndNormals() {
         Mesh mesh = getCylinderGeometryMesh();
 
-        assertThat(mesh.getDataTypesUsed()).contains(DataType.POSITION, DataType.NORMAL);
+        Map<DataType, float[]> data = mesh.getVertexData();
+        assertThat(data.keySet()).contains(DataType.POSITION, DataType.NORMAL);
     }
 
     public void cylinderMeshHasFloatArrayForPositions() {
         Mesh mesh = getCylinderGeometryMesh();
 
+        Map<DataType, float[]> data = mesh.getVertexData();
         // Test a few of the known points:
-        assertThat(mesh.getVertexDataOfType(DataType.POSITION)).containsSequence(3.561967f, 2, -1);
-        assertThat(mesh.getVertexDataOfType(DataType.POSITION)).containsSequence(2, 1, 4.561967f);
-        assertThat(mesh.getVertexDataOfType(DataType.POSITION)).containsSequence(2.561966f, 1.73205f, 1);
+        assertThat(data.get(DataType.POSITION)).containsSequence(3.561967f, 2, -1);
+        assertThat(data.get(DataType.POSITION)).containsSequence(2, 1, 4.561967f);
+        assertThat(data.get(DataType.POSITION)).containsSequence(2.561966f, 1.73205f, 1);
     }
 
     public void cylinderMeshHasFloatArrayForNormals() {
         Mesh mesh = getCylinderGeometryMesh();
 
+        Map<DataType, float[]> data = mesh.getVertexData();
         // Test a few of the known points:
-        assertThat(mesh.getVertexDataOfType(DataType.NORMAL)).containsSequence(0.2588191f, 0.9659258f, 0);
-        assertThat(mesh.getVertexDataOfType(DataType.NORMAL)).containsSequence(0.7071067f, 0.7071068f, 0);
-        assertThat(mesh.getVertexDataOfType(DataType.NORMAL)).containsSequence(0, 0, -1);
+        assertThat(data.get(DataType.NORMAL)).containsSequence(0.2588191f, 0.9659258f, 0);
+        assertThat(data.get(DataType.NORMAL)).containsSequence(0.7071067f, 0.7071068f, 0);
+        assertThat(data.get(DataType.NORMAL)).containsSequence(0, 0, -1);
     }
 
     public void cylinderMeshHasCorrectTriangleCount() {

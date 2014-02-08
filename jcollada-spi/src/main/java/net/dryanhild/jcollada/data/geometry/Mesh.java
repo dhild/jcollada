@@ -1,13 +1,11 @@
 package net.dryanhild.jcollada.data.geometry;
 
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 public interface Mesh {
 
-    Set<DataType> getDataTypesUsed();
-
-    float[] getVertexDataOfType(DataType type);
+    Map<DataType, float[]> getVertexData();
 
     List<Triangles> getTriangles();
 
