@@ -1,6 +1,8 @@
 package net.dryanhild.jcollada.schema14.geometry.source;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import gnu.trove.list.TFloatList;
+import gnu.trove.list.array.TFloatArrayList;
 import net.dryanhild.jcollada.schema14.geometry.SourceStream;
 
 import org.testng.annotations.Test;
@@ -9,7 +11,7 @@ import org.testng.annotations.Test;
 public class WithThreeValueAccessor extends SourceStreamTest {
     private static final String threeValueXML = //
     "<source id=\"test1\" xmlns=\"http://www.collada.org/2005/11/COLLADASchema\">\n" + //
-            "  <float_array name=\"values\" count=\"9\">\n" + //
+            "  <float_array id=\"values\" count=\"9\">\n" + //
             "    1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 9.0\n" + //
             "  </float_array>\n" + //
             "  <technique_common>\n" + //
@@ -24,36 +26,32 @@ public class WithThreeValueAccessor extends SourceStreamTest {
     public void oneAccess() {
         SourceStream stream = new SourceStream(getSource(threeValueXML));
 
-        double[] values = new double[] { Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN, };
-        int elementSize = stream.fillElement("test1", 1, values, 1);
+        float[] values = stream.getElement("#test1", 1);
 
-        assertThat(elementSize).isEqualTo(3);
-        assertThat(values).containsExactly(Double.NaN, 4, 5, 6, Double.NaN);
+        assertThat(values).containsExactly(4, 5, 6);
     }
 
     public void threeAccesses() {
         SourceStream stream = new SourceStream(getSource(threeValueXML));
 
-        double[] values = new double[9];
+        TFloatList values = new TFloatArrayList();
 
-        int offset = 0;
         for (int i = 0; i < 3; i++) {
-            offset += stream.fillElement("test1", i, values, offset);
+            values.add(stream.getElement("#test1", i));
         }
 
-        assertThat(offset).isEqualTo(9);
-        assertThat(values).containsExactly(1, 2, 3, 4, 5, 6, 7, 8, 9);
+        assertThat(values.toArray()).containsExactly(1, 2, 3, 4, 5, 6, 7, 8, 9);
     }
 
     public void badSourceNameFails() {
         SourceStream stream = new SourceStream(getSource(threeValueXML));
 
         try {
-            stream.fillElement("test2", 0, new double[3], 0);
+            stream.getElement("#test2", 0);
 
             assert false : "Expected an exception!";
         } catch (IllegalArgumentException e) {
-            assertThat(e).hasMessageContaining("test2");
+            assertThat(e).hasMessageContaining("#test2");
         }
     }
 
@@ -61,7 +59,7 @@ public class WithThreeValueAccessor extends SourceStreamTest {
         SourceStream stream = new SourceStream(getSource(threeValueXML));
 
         try {
-            stream.fillElement("test1", 5, new double[3], 0);
+            stream.getElement("#test1", 5);
 
             assert false : "Expected an exception!";
         } catch (IllegalArgumentException e) {

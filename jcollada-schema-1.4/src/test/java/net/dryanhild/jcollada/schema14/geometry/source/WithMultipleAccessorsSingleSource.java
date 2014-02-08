@@ -1,6 +1,8 @@
 package net.dryanhild.jcollada.schema14.geometry.source;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import gnu.trove.list.TFloatList;
+import gnu.trove.list.array.TFloatArrayList;
 import net.dryanhild.jcollada.schema14.geometry.SourceStream;
 
 import org.collada.x2005.x11.colladaSchema.SourceDocument.Source;
@@ -11,7 +13,7 @@ public class WithMultipleAccessorsSingleSource extends SourceStreamTest {
 
     private static final String sourcePositions = //
     "<source id=\"positions\" xmlns=\"http://www.collada.org/2005/11/COLLADASchema\">\n" + //
-            "  <float_array name=\"values\" count=\"30\">\n" + //
+            "  <float_array id=\"values\" count=\"30\">\n" + //
             "    1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30\n" + //
             "  </float_array>\n" + //
             "  <technique_common>\n" + //
@@ -62,57 +64,48 @@ public class WithMultipleAccessorsSingleSource extends SourceStreamTest {
     public void oneAccessPosition() {
         SourceStream stream = makeStream();
 
-        double[] values = new double[] { Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN };
-        int elementSize = stream.fillElement("positions", 1, values, 1);
+        float[] values = stream.getElement("#positions", 1);
 
-        assertThat(elementSize).isEqualTo(3);
-        assertThat(values).containsExactly(Double.NaN, 11, 12, 13, Double.NaN);
+        assertThat(values).containsExactly(11, 12, 13);
     }
 
     public void oneAccessNormals() {
         SourceStream stream = makeStream();
 
-        double[] values = new double[] { Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN };
-        int elementSize = stream.fillElement("normals", 1, values, 1);
+        float[] values = stream.getElement("#normals", 1);
 
-        assertThat(elementSize).isEqualTo(3);
-        assertThat(values).containsExactly(Double.NaN, 14, 15, 16, Double.NaN);
+        assertThat(values).containsExactly(14, 15, 16);
     }
 
     public void oneAccessTex1() {
         SourceStream stream = makeStream();
 
-        double[] values = new double[] { Double.NaN, Double.NaN, Double.NaN, Double.NaN, };
-        int elementSize = stream.fillElement("texture1", 1, values, 1);
+        float[] values = stream.getElement("#texture1", 1);
 
-        assertThat(elementSize).isEqualTo(2);
-        assertThat(values).containsExactly(Double.NaN, 17, 18, Double.NaN);
+        assertThat(values).containsExactly(17, 18);
     }
 
     public void oneAccessTex2() {
         SourceStream stream = makeStream();
 
-        double[] values = new double[] { Double.NaN, Double.NaN, Double.NaN, Double.NaN, };
-        int elementSize = stream.fillElement("texture2", 1, values, 1);
+        float[] values = stream.getElement("#texture2", 1);
 
-        assertThat(elementSize).isEqualTo(2);
-        assertThat(values).containsExactly(Double.NaN, 19, 20, Double.NaN);
+        assertThat(values).containsExactly(19, 20);
     }
 
     public void accessEverything() {
         SourceStream stream = makeStream();
 
-        double[] values = new double[20];
-        int offset = 0;
+        TFloatList values = new TFloatArrayList();
         for (int i = 0; i < 2; i++) {
-            offset += stream.fillElement("positions", i, values, offset);
-            offset += stream.fillElement("normals", i, values, offset);
-            offset += stream.fillElement("texture1", i, values, offset);
-            offset += stream.fillElement("texture2", i, values, offset);
+            values.add(stream.getElement("#positions", i));
+            values.add(stream.getElement("#normals", i));
+            values.add(stream.getElement("#texture1", i));
+            values.add(stream.getElement("#texture2", i));
         }
 
-        assertThat(offset).isEqualTo(20);
-        assertThat(values).containsExactly(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20);
+        assertThat(values.toArray()).containsExactly(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+                20);
     }
 
     public void noSourceArrayFails() {

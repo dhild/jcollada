@@ -1,6 +1,8 @@
 package net.dryanhild.jcollada.schema14.geometry.source;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import gnu.trove.list.TFloatList;
+import gnu.trove.list.array.TFloatArrayList;
 import net.dryanhild.jcollada.schema14.geometry.SourceStream;
 
 import org.testng.annotations.Test;
@@ -10,7 +12,7 @@ public class WithSkippingAccessor extends SourceStreamTest {
 
     private static final String skippingXML = //
     "<source id=\"test1\" xmlns=\"http://www.collada.org/2005/11/COLLADASchema\">\n" + //
-            "  <float_array name=\"values\" count=\"9\">\n" + //
+            "  <float_array id=\"values\" count=\"9\">\n" + //
             "    1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 9.0\n" + //
             "  </float_array>\n" + //
             "  <technique_common>\n" + //
@@ -25,25 +27,20 @@ public class WithSkippingAccessor extends SourceStreamTest {
     public void oneAccess() {
         SourceStream stream = new SourceStream(getSource(skippingXML));
 
-        double[] values = new double[] { Double.NaN, Double.NaN, Double.NaN, Double.NaN, };
-        int elementSize = stream.fillElement("test1", 1, values, 1);
+        float[] values = stream.getElement("#test1", 1);
 
-        assertThat(elementSize).isEqualTo(2);
-        assertThat(values).containsExactly(Double.NaN, 4, 6, Double.NaN);
+        assertThat(values).containsExactly(4, 6);
     }
 
     public void threeAccesses() {
         SourceStream stream = new SourceStream(getSource(skippingXML));
 
-        double[] values = new double[6];
+        TFloatList values = new TFloatArrayList();
 
-        int offset = 0;
         for (int i = 0; i < 3; i++) {
-            offset += stream.fillElement("test1", i, values, offset);
+            values.add(stream.getElement("#test1", i));
         }
 
-        assertThat(offset).isEqualTo(6);
-        assertThat(values).containsExactly(1, 3, 4, 6, 7, 9);
+        assertThat(values.toArray()).containsExactly(1, 3, 4, 6, 7, 9);
     }
-
 }

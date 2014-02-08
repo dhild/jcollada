@@ -14,30 +14,29 @@ import com.google.common.base.Preconditions;
 
 public class SourceStream {
 
-    private final Map<String, Source> namedSources;
     private final Map<String, AccessorStream> accessors;
 
     public SourceStream(Source... sources) {
-        namedSources = new HashMap<>();
-        accessors = new HashMap<>();
 
+        Map<String, Source> namedSources = new HashMap<>();
         for (Source s : sources) {
             namedSources.put(s.getId(), s);
         }
 
+        accessors = new HashMap<>();
         for (Source s : sources) {
             Accessor a = s.getTechniqueCommon().getAccessor();
 
-            accessors.put(s.getId(), new AccessorStream(a));
+            accessors.put("#" + s.getId(), new AccessorStream(a, namedSources));
         }
     }
 
-    public int fillElement(String source, int accessIndex, double[] copyTo, int copyOffset) {
+    public float[] getElement(String source, int accessIndex) {
         AccessorStream stream = accessors.get(source);
 
         Preconditions.checkArgument(stream != null, "Source " + source + " not in this stream!");
 
-        return stream.fillElement(accessIndex, copyTo, copyOffset);
+        return stream.getElement(accessIndex);
     }
 
     public int getMaximumIndex() {
@@ -50,6 +49,14 @@ public class SourceStream {
         return maxIndex;
     }
 
+    public int getElementSize(String source) {
+        AccessorStream stream = accessors.get(source);
+
+        Preconditions.checkArgument(stream != null, "Source " + source + " not in this stream!");
+
+        return stream.accessSize;
+    }
+
     private class AccessorStream {
         private final int offset;
         private final int count;
@@ -58,7 +65,7 @@ public class SourceStream {
         private final boolean[] namedParam;
         private final int accessSize;
 
-        public AccessorStream(Accessor accessor) {
+        public AccessorStream(Accessor accessor, Map<String, Source> namedSources) {
             count = accessor.getCount().intValue();
             stride = accessor.getStride().intValue();
 
@@ -66,7 +73,7 @@ public class SourceStream {
             List<?> sourceData = null;
             for (Source source : namedSources.values()) {
                 FloatArray array = source.getFloatArray1();
-                if ((array != null) && sourceRef.equals("#" + array.getName())) {
+                if ((array != null) && sourceRef.equals("#" + array.getId())) {
                     sourceData = array.getListValue();
                     break;
                 }
@@ -91,20 +98,22 @@ public class SourceStream {
             accessSize = size;
         }
 
-        public int fillElement(int accessIndex, double[] copyTo, int copyOffset) {
+        public float[] getElement(int accessIndex) {
             Preconditions.checkArgument(accessIndex < count, "Index " + accessIndex + " is too big for data size "
                     + count);
 
             int sourceOffset = offset + (accessIndex * stride);
 
+            float[] values = new float[accessSize];
+            int i = 0;
             for (boolean access : namedParam) {
                 if (access) {
-                    copyTo[copyOffset++] = ((Double) sourceOfData.get(sourceOffset)).doubleValue();
+                    values[i++] = ((Double) sourceOfData.get(sourceOffset)).floatValue();
                 }
                 sourceOffset++;
             }
 
-            return accessSize;
+            return values;
         }
     }
 
