@@ -2,13 +2,9 @@ package net.dryanhild.jcollada;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.StringReader;
-import java.io.Writer;
 import java.util.Collection;
 
 import org.testng.annotations.DataProvider;
@@ -52,7 +48,6 @@ public class ColladaLoaderTests {
         loader.load(reader);
     }
 
-    @SuppressWarnings({ "boxing", "unchecked" })
     @Test
     public void ioExceptionInHeaderRead() throws IOException {
         Reader reader = new ErrorOnReadReader();
@@ -117,15 +112,5 @@ public class ColladaLoaderTests {
     private void checkLoadContext(boolean validate) {
         assert ColladaLoaderServiceImpl.lastContext.isValidating() == validate;
         assert ColladaLoaderServiceImpl.lastContext.getMainFileReader() != null;
-    }
-
-    private File writeTestStringToTempFile() throws IOException {
-        File tempFile = File.createTempFile("collada-loader-temp", ".file");
-        tempFile.deleteOnExit();
-        Writer output = new OutputStreamWriter(new FileOutputStream(tempFile));
-        output.write(ColladaLoaderServiceImpl.TEST_BASIC_FILE);
-        output.flush();
-        output.close();
-        return tempFile;
     }
 }
