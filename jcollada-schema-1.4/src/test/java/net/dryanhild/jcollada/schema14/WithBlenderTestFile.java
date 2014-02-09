@@ -92,7 +92,7 @@ public class WithBlenderTestFile {
     }
 
     @Test(enabled = false)
-    public void cylinderNodeHasCylinderGeometry() {
+    public void cylinderNodesHasCylinderGeometry() {
         Geometry geometry = getCylinderGeometry();
         Node node = scene.getNodes().get("#Cylinder");
 

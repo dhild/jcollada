@@ -28,6 +28,32 @@ public class NodeResult implements Node {
         transforms = new ArrayList<>();
     }
 
+    protected NodeResult(String name, NodeResult copy) {
+        this.name = name;
+        this.id = copy.id;
+        this.type = copy.type;
+
+        children = new ArrayList<>(copy.children);
+        geometries = new ArrayList<>(copy.geometries);
+        transforms = new ArrayList<>(copy.transforms);
+    }
+
+    public void addChild(NodeResult child) {
+        children.add(child);
+    }
+
+    public void addChildInstance(NodeResult child, String childName) {
+        children.add(new NodeResult(childName, child));
+    }
+
+    public void addGeometry(Geometry geometry) {
+        geometries.add(geometry);
+    }
+
+    public void addTransform(Transform transform) {
+        transforms.add(transform);
+    }
+
     @Override
     public String getName() {
         return name;

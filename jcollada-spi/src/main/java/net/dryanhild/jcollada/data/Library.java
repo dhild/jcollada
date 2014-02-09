@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface Library<LibraryType extends AddressableType> {
 
-    void add(LibraryType geometry);
+    void add(LibraryType element);
 
     List<LibraryType> getAll();
 

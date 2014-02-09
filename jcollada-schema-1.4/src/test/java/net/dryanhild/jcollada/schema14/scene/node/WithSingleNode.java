@@ -8,6 +8,7 @@ import java.util.List;
 
 import net.dryanhild.jcollada.data.scene.NodeType;
 import net.dryanhild.jcollada.data.transform.Transform;
+import net.dryanhild.jcollada.schema14.scene.NodeLibrary;
 import net.dryanhild.jcollada.schema14.scene.NodeParser;
 import net.dryanhild.jcollada.schema14.scene.data.NodeResult;
 
@@ -19,64 +20,54 @@ import org.testng.annotations.Test;
 @Test
 public class WithSingleNode {
 
-    private static final String BOTTOM_NODE_ID = "bottomNode";
-    private static final String BOTTOM_NODE_NAME = "bottomNodeName";
-    private static final String NODE_WITH_INSTANCE_ID = "topNode";
-    private Node bottomNode;
-    private Node nodeWithInstanceBottomNode;
+    private static final String NODE_ID = "bottomNode";
+    private static final String NODE_NAME = "bottomNodeName";
+    private Node node;
+    private NodeParser parser;
+    private NodeLibrary library;
 
     @BeforeMethod
     public void resetNodes() {
-        bottomNode = Node.Factory.newInstance();
-        bottomNode.setId(BOTTOM_NODE_ID);
-        bottomNode.setName(BOTTOM_NODE_NAME);
+        node = Node.Factory.newInstance();
+        node.setId(NODE_ID);
+        node.setName(NODE_NAME);
 
-        nodeWithInstanceBottomNode = Node.Factory.newInstance();
-        nodeWithInstanceBottomNode.setId(NODE_WITH_INSTANCE_ID);
+        parser = new NodeParser();
+        library = new NodeLibrary();
     }
 
-    public void bottomNodeHasName() {
-        NodeParser parser = new NodeParser(bottomNode);
+    public void nodeHasName() {
+        NodeResult result = parser.parse(node, library);
 
-        NodeResult result = parser.parse();
-
-        assertThat(result.getName()).isEqualTo(BOTTOM_NODE_NAME);
+        assertThat(result.getName()).isEqualTo(NODE_NAME);
     }
 
-    public void bottomNodeHasId() {
-        NodeParser parser = new NodeParser(bottomNode);
+    public void nodeHasId() {
+        NodeResult result = parser.parse(node, library);
 
-        NodeResult result = parser.parse();
-
-        assertThat(result.getId()).isEqualTo(BOTTOM_NODE_ID);
+        assertThat(result.getId()).isEqualTo(NODE_ID);
     }
 
-    public void bottomNodeHasTypeNode() {
-        NodeParser parser = new NodeParser(bottomNode);
-
-        NodeResult result = parser.parse();
+    public void nodeHasTypeNode() {
+        NodeResult result = parser.parse(node, library);
 
         assertThat(result.getType()).isEqualTo(NodeType.NODE);
     }
 
-    public void bottomNodeHasNoChildren() {
-        NodeParser parser = new NodeParser(bottomNode);
-
-        NodeResult result = parser.parse();
+    public void nodeHasNoChildren() {
+        NodeResult result = parser.parse(node, library);
 
         assertThat(result.getChildren()).isEmpty();
     }
 
-    public void bottomNodeHasNoGeometries() {
-        NodeParser parser = new NodeParser(bottomNode);
-
-        NodeResult result = parser.parse();
+    public void nodeHasNoGeometries() {
+        NodeResult result = parser.parse(node, library);
 
         assertThat(result.getGeometries()).isEmpty();
     }
 
     private void addSimpleMatrix() {
-        Matrix matrix = bottomNode.addNewMatrix();
+        Matrix matrix = node.addNewMatrix();
         List<Double> values = new ArrayList<>();
         for (int i = 0; i < 16; i++) {
             values.add(Double.valueOf(i));
@@ -86,9 +77,8 @@ public class WithSingleNode {
 
     public void withMatrixHasMatrixTransform() {
         addSimpleMatrix();
-        NodeParser parser = new NodeParser(bottomNode);
 
-        NodeResult result = parser.parse();
+        NodeResult result = parser.parse(node, library);
 
         assertThat(result.getTransforms()).hasSize(1);
     }
@@ -96,9 +86,8 @@ public class WithSingleNode {
     @Test(dependsOnMethods = "withMatrixHasMatrixTransform")
     public void withMatrixHasCorrectMatrixValues() {
         addSimpleMatrix();
-        NodeParser parser = new NodeParser(bottomNode);
 
-        NodeResult result = parser.parse();
+        NodeResult result = parser.parse(node, library);
 
         Transform trans = result.getTransforms().get(0);
 
@@ -123,9 +112,8 @@ public class WithSingleNode {
     @Test(dependsOnMethods = "withMatrixHasMatrixTransform")
     public void withMatrixHasCorrectFloatBufferValues() {
         addSimpleMatrix();
-        NodeParser parser = new NodeParser(bottomNode);
 
-        NodeResult result = parser.parse();
+        NodeResult result = parser.parse(node, library);
 
         Transform trans = result.getTransforms().get(0);
 

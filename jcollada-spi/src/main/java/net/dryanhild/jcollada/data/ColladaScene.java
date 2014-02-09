@@ -7,8 +7,8 @@ public interface ColladaScene {
 
     Asset getAsset();
 
-    Library<Geometry> getGeometries();
+    Library<? extends Geometry> getGeometries();
 
-    Library<Node> getNodes();
+    Library<? extends Node> getNodes();
 
 }

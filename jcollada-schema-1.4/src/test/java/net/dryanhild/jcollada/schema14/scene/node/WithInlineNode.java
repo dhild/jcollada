@@ -1,6 +1,7 @@
 package net.dryanhild.jcollada.schema14.scene.node;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import net.dryanhild.jcollada.schema14.scene.NodeLibrary;
 import net.dryanhild.jcollada.schema14.scene.NodeParser;
 import net.dryanhild.jcollada.schema14.scene.data.NodeResult;
 
@@ -16,6 +17,8 @@ public class WithInlineNode {
     private static final String BASE_NODE_ID = "node-with-sub-node";
     private Node bottomNode;
     private Node baseNode;
+    private NodeParser parser;
+    private NodeLibrary library;
 
     @BeforeMethod
     public void resetNodes() {
@@ -25,21 +28,20 @@ public class WithInlineNode {
         bottomNode = baseNode.addNewNode();
         bottomNode.setId(BOTTOM_NODE_ID);
         bottomNode.setName(BOTTOM_NODE_NAME);
+
+        parser = new NodeParser();
+        library = new NodeLibrary();
     }
 
     public void baseNodeHasOneChild() {
-        NodeParser parser = new NodeParser(baseNode);
-
-        NodeResult result = parser.parse();
+        NodeResult result = parser.parse(baseNode, library);
 
         assertThat(result.getChildren()).hasSize(1);
     }
 
     @Test(dependsOnMethods = "baseNodeHasOneChild")
     public void baseNodeHasBottomNodeChild() {
-        NodeParser parser = new NodeParser(baseNode);
-
-        NodeResult result = parser.parse();
+        NodeResult result = parser.parse(baseNode, library);
 
         NodeResult child = (NodeResult) result.getChildren().get(0);
 

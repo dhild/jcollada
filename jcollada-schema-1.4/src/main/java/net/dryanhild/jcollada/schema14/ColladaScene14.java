@@ -3,18 +3,18 @@ package net.dryanhild.jcollada.schema14;
 import net.dryanhild.jcollada.data.Asset;
 import net.dryanhild.jcollada.data.ColladaScene;
 import net.dryanhild.jcollada.data.Library;
-import net.dryanhild.jcollada.data.geometry.Geometry;
-import net.dryanhild.jcollada.data.scene.Node;
 import net.dryanhild.jcollada.schema14.geometry.ElementLibrary;
+import net.dryanhild.jcollada.schema14.geometry.data.GeometryResult;
+import net.dryanhild.jcollada.schema14.scene.NodeLibrary;
 
 public class ColladaScene14 implements ColladaScene {
 
-    private final ElementLibrary<Geometry> geometries;
-    private final ElementLibrary<Node> nodes;
+    private final ElementLibrary<GeometryResult> geometries;
+    private final NodeLibrary nodes;
 
     public ColladaScene14() {
         geometries = new ElementLibrary<>();
-        nodes = new ElementLibrary<>();
+        nodes = new NodeLibrary();
     }
 
     @Override
@@ -24,12 +24,12 @@ public class ColladaScene14 implements ColladaScene {
     }
 
     @Override
-    public Library<Geometry> getGeometries() {
+    public Library<GeometryResult> getGeometries() {
         return geometries;
     }
 
     @Override
-    public Library<Node> getNodes() {
+    public NodeLibrary getNodes() {
         return nodes;
     }
 
