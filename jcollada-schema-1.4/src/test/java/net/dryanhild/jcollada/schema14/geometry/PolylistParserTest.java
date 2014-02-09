@@ -30,6 +30,7 @@ public class PolylistParserTest {
         InputLocalOffset posInput = polys.addNewInput();
         posInput.setSemantic(DataType.POSITION.toString());
         posInput.setSource(POSITIONS);
+        posInput.setOffset(BigInteger.valueOf(0));
 
         List<BigInteger> vcounts = Lists.newArrayList(BigInteger.valueOf(3));
         List<BigInteger> p = Lists.newArrayList(BigInteger.valueOf(1), BigInteger.valueOf(2), BigInteger.valueOf(3));
@@ -56,6 +57,7 @@ public class PolylistParserTest {
         InputLocalOffset posInput = polys.addNewInput();
         posInput.setSemantic(DataType.POSITION.toString());
         posInput.setSource(POSITIONS);
+        posInput.setOffset(BigInteger.valueOf(0));
         InputLocalOffset normInput = polys.addNewInput();
         normInput.setSemantic(DataType.NORMAL.toString());
         normInput.setSource(NORMALS);
