@@ -313,17 +313,7 @@
             </dependency>
             <dependency>
                 <groupId>javax.java3d</groupId>
-                <artifactId>j3dcore</artifactId>
-                <version>${java3d.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>javax.java3d</groupId>
                 <artifactId>vecmath</artifactId>
-                <version>${java3d.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>javax.java3d</groupId>
-                <artifactId>j3dutils</artifactId>
                 <version>${java3d.version}</version>
             </dependency>
             <dependency>
