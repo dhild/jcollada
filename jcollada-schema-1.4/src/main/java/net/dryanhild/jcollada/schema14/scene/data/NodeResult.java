@@ -1,7 +1,7 @@
 package net.dryanhild.jcollada.schema14.scene.data;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 import net.dryanhild.jcollada.data.geometry.Geometry;
 import net.dryanhild.jcollada.data.scene.Node;
@@ -13,8 +13,8 @@ public class NodeResult implements Node {
     private final String id;
     private final NodeType type;
 
-    private final Collection<Node> children;
-    private final Collection<Geometry> geometries;
+    private final List<Node> children;
+    private final List<Geometry> geometries;
 
     public NodeResult(String name, String id, String type) {
         this.name = name;
@@ -41,12 +41,12 @@ public class NodeResult implements Node {
     }
 
     @Override
-    public Collection<Node> getChildren() {
+    public List<Node> getChildren() {
         return children;
     }
 
     @Override
-    public Collection<Geometry> getGeometries() {
+    public List<Geometry> getGeometries() {
         return geometries;
     }
 

@@ -15,8 +15,14 @@ public class NodeParser {
 
     public NodeResult parse() {
         NodeType.Enum typeEnum = node.getType();
-        String type = typeEnum == null ? "NODE" : typeEnum.toString();
+        String type = typeEnum.toString();
         NodeResult result = new NodeResult(node.getName(), node.getId(), type);
+
+        for (Node child : node.getNodeArray()) {
+            NodeParser parser = new NodeParser(child);
+
+            result.getChildren().add(parser.parse());
+        }
 
         return result;
     }
