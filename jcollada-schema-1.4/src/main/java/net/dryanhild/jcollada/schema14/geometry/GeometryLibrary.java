@@ -8,21 +8,21 @@ import java.util.Map;
 
 import net.dryanhild.jcollada.IncorrectFormatException;
 import net.dryanhild.jcollada.NoSuchElementIdException;
-import net.dryanhild.jcollada.data.AddressableType;
 import net.dryanhild.jcollada.data.Library;
+import net.dryanhild.jcollada.schema14.geometry.data.GeometryResult;
 
 import com.google.common.collect.ImmutableList;
 
-public class ElementLibrary<ElementType extends AddressableType> implements Library<ElementType> {
+public class GeometryLibrary implements Library<GeometryResult> {
 
-    private final Map<URI, ElementType> elements;
+    private final Map<URI, GeometryResult> elements;
 
-    public ElementLibrary() {
+    public GeometryLibrary() {
         elements = new HashMap<>();
     }
 
     @Override
-    public void add(ElementType element) {
+    public void add(GeometryResult element) {
         try {
             elements.put(new URI("#" + element.getId()), element);
         } catch (URISyntaxException e) {
@@ -31,12 +31,12 @@ public class ElementLibrary<ElementType extends AddressableType> implements Libr
     }
 
     @Override
-    public List<ElementType> getAll() {
+    public List<GeometryResult> getAll() {
         return ImmutableList.copyOf(elements.values());
     }
 
     @Override
-    public ElementType get(String uri) {
+    public GeometryResult get(String uri) {
         try {
             return get(new URI(uri));
         } catch (URISyntaxException e) {
@@ -45,12 +45,12 @@ public class ElementLibrary<ElementType extends AddressableType> implements Libr
     }
 
     @Override
-    public ElementType get(URI uri) {
-        ElementType e = elements.get(uri);
-        if (e == null) {
+    public GeometryResult get(URI uri) {
+        GeometryResult geometry = elements.get(uri);
+        if (geometry == null) {
             throw new NoSuchElementIdException("Element with uri " + uri + " does not exist");
         }
-        return e;
+        return geometry;
     }
 
 }
