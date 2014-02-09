@@ -1,6 +1,5 @@
 package net.dryanhild.jcollada.schema14.scene.node;
 
-import static net.dryanhild.jcollada.schema14.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.nio.FloatBuffer;
@@ -41,7 +40,7 @@ public class WithSingleNode {
 
         NodeResult result = parser.parse();
 
-        assertThat(result).hasName(BOTTOM_NODE_NAME);
+        assertThat(result.getName()).isEqualTo(BOTTOM_NODE_NAME);
     }
 
     public void bottomNodeHasId() {
@@ -49,7 +48,7 @@ public class WithSingleNode {
 
         NodeResult result = parser.parse();
 
-        assertThat(result).hasId(BOTTOM_NODE_ID);
+        assertThat(result.getId()).isEqualTo(BOTTOM_NODE_ID);
     }
 
     public void bottomNodeHasTypeNode() {
@@ -57,7 +56,7 @@ public class WithSingleNode {
 
         NodeResult result = parser.parse();
 
-        assertThat(result).hasType(NodeType.NODE);
+        assertThat(result.getType()).isEqualTo(NodeType.NODE);
     }
 
     public void bottomNodeHasNoChildren() {

@@ -45,15 +45,6 @@
                     </descriptorRefs>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.assertj</groupId>
-                <artifactId>assertj-assertions-generator-maven-plugin</artifactId>
-                <configuration>
-                    <packages>
-                        <param>net.dryanhild.jcollada.schema14</param>
-                    </packages>
-                </configuration>
-            </plugin>
         </plugins>
         <resources>
             <resource>

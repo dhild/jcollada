@@ -19,7 +19,9 @@ public class ParsingFactory {
         COLLADA collada = document.getCOLLADA();
 
         for (LibraryGeometries lib : collada.getLibraryGeometriesArray()) {
-            scene.getGeometries().addAll(parseGeometries(lib));
+            for (GeometryResult g : parseGeometries(lib)) {
+                scene.getGeometries().add(g);
+            }
         }
 
         return scene;

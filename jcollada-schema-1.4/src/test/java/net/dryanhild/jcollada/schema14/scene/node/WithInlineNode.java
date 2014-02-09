@@ -1,6 +1,5 @@
 package net.dryanhild.jcollada.schema14.scene.node;
 
-import static net.dryanhild.jcollada.schema14.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThat;
 import net.dryanhild.jcollada.schema14.scene.NodeParser;
 import net.dryanhild.jcollada.schema14.scene.data.NodeResult;
@@ -44,8 +43,8 @@ public class WithInlineNode {
 
         NodeResult child = (NodeResult) result.getChildren().get(0);
 
-        assertThat(child).hasId(BOTTOM_NODE_ID);
-        assertThat(child).hasName(BOTTOM_NODE_NAME);
+        assertThat(child.getId()).isEqualTo(BOTTOM_NODE_ID);
+        assertThat(child.getName()).isEqualTo(BOTTOM_NODE_NAME);
     }
 
 }

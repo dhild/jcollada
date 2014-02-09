@@ -39,7 +39,7 @@ public class WithBlenderTestFile {
     }
 
     private Geometry getCylinderGeometry() {
-        return scene.getElementById("Cylinder_001-mesh", Geometry.class);
+        return scene.getGeometries().get("#Cylinder_001-mesh");
     }
 
     private Mesh getCylinderGeometryMesh() {
@@ -94,7 +94,7 @@ public class WithBlenderTestFile {
     @Test(enabled = false)
     public void cylinderNodeHasCylinderGeometry() {
         Geometry geometry = getCylinderGeometry();
-        Node node = scene.getElementById("Cylinder", Node.class);
+        Node node = scene.getNodes().get("#Cylinder");
 
         assertThat(node.getGeometries()).contains(geometry);
     }
