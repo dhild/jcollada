@@ -27,6 +27,12 @@
         <url>https://github.com/dhild/jcollada/issues</url>
     </issueManagement>
 
+    <ciManagement>
+      <system>jenkins</system>
+      <url>http://mcsrv.dryanhild.net:8080/job/JCollada/</url>
+      
+    </ciManagement>
+
     <licenses>
         <license>
             <name>MIT-License</name>
