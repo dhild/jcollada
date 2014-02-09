@@ -1,6 +1,8 @@
 package net.dryanhild.jcollada.schema14.scene.node;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import net.dryanhild.jcollada.schema14.geometry.DefaultLibrary;
+import net.dryanhild.jcollada.schema14.geometry.data.GeometryResult;
 import net.dryanhild.jcollada.schema14.scene.NodeLibrary;
 import net.dryanhild.jcollada.schema14.scene.NodeParser;
 import net.dryanhild.jcollada.schema14.scene.data.NodeResult;
@@ -18,6 +20,7 @@ public class WithInlineNode {
     private Node bottomNode;
     private Node baseNode;
     private NodeParser parser;
+    private DefaultLibrary<GeometryResult> geometries;
     private NodeLibrary library;
 
     @BeforeMethod
@@ -29,21 +32,23 @@ public class WithInlineNode {
         bottomNode.setId(BOTTOM_NODE_ID);
         bottomNode.setName(BOTTOM_NODE_NAME);
 
-        parser = new NodeParser();
         library = new NodeLibrary();
+        geometries = new DefaultLibrary<>();
+        parser = new NodeParser(library, geometries);
     }
 
     public void baseNodeHasOneChild() {
-        NodeResult result = parser.parse(baseNode, library);
+        parser.parse(baseNode);
 
-        assertThat(result.getChildren()).hasSize(1);
+        assertThat(library.get("#" + BASE_NODE_ID).getChildren()).hasSize(1);
     }
 
     @Test(dependsOnMethods = "baseNodeHasOneChild")
     public void baseNodeHasBottomNodeChild() {
-        NodeResult result = parser.parse(baseNode, library);
+        parser.parse(baseNode);
 
-        NodeResult child = (NodeResult) result.getChildren().get(0);
+        NodeResult base = library.get("#" + BASE_NODE_ID);
+        NodeResult child = (NodeResult) base.getChildren().get(0);
 
         assertThat(child.getId()).isEqualTo(BOTTOM_NODE_ID);
         assertThat(child.getName()).isEqualTo(BOTTOM_NODE_NAME);

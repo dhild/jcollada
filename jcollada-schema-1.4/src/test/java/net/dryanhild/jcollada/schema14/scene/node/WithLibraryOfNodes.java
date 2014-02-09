@@ -3,7 +3,6 @@ package net.dryanhild.jcollada.schema14.scene.node;
 import static org.assertj.core.api.Assertions.assertThat;
 import net.dryanhild.jcollada.data.scene.Node;
 import net.dryanhild.jcollada.schema14.ParsingFactory;
-import net.dryanhild.jcollada.schema14.scene.NodeLibrary;
 
 import org.collada.x2005.x11.colladaSchema.InstanceWithExtra;
 import org.collada.x2005.x11.colladaSchema.LibraryNodesDocument.LibraryNodes;
@@ -51,56 +50,50 @@ public class WithLibraryOfNodes {
     }
 
     public void libraryHasTwoBaseNodes() {
-        NodeLibrary nodes = new NodeLibrary();
-        parsingFactory.parseNodes(library, nodes);
+        parsingFactory.parseNodes(library);
 
-        assertThat(nodes.getAll()).hasSize(2);
+        assertThat(parsingFactory.getNodes().getAll()).hasSize(2);
     }
 
     public void instanceNodeAccessibleById() {
-        NodeLibrary nodes = new NodeLibrary();
-        parsingFactory.parseNodes(library, nodes);
+        parsingFactory.parseNodes(library);
 
-        Node node = nodes.get("#" + NODE_WITH_INSTANCE_NODE_ID);
+        Node node = parsingFactory.getNodes().get("#" + NODE_WITH_INSTANCE_NODE_ID);
 
         assertThat(node.getId()).isEqualTo(NODE_WITH_INSTANCE_NODE_ID);
         assertThat(node.getName()).isEqualTo(INSTANCE_NODE_NAME);
     }
 
     public void subNodeAccessibleById() {
-        NodeLibrary nodes = new NodeLibrary();
-        parsingFactory.parseNodes(library, nodes);
+        parsingFactory.parseNodes(library);
 
-        Node node = nodes.get("#" + NODE_WITH_SUB_NODE_ID);
+        Node node = parsingFactory.getNodes().get("#" + NODE_WITH_SUB_NODE_ID);
 
         assertThat(node.getId()).isEqualTo(NODE_WITH_SUB_NODE_ID);
         assertThat(node.getName()).isEqualTo(NODE_WITH_SUB_NODE_NAME);
     }
 
     public void leafNodeAccessibleById() {
-        NodeLibrary nodes = new NodeLibrary();
-        parsingFactory.parseNodes(library, nodes);
+        parsingFactory.parseNodes(library);
 
-        Node node = nodes.get("#" + SUB_NODE_ID);
+        Node node = parsingFactory.getNodes().get("#" + SUB_NODE_ID);
 
         assertThat(node.getId()).isEqualTo(SUB_NODE_ID);
         assertThat(node.getName()).isEqualTo(SUB_NODE_NAME);
     }
 
     public void instanceNodeHasOneChild() {
-        NodeLibrary nodes = new NodeLibrary();
-        parsingFactory.parseNodes(library, nodes);
+        parsingFactory.parseNodes(library);
 
-        Node node = nodes.get("#" + NODE_WITH_INSTANCE_NODE_ID);
+        Node node = parsingFactory.getNodes().get("#" + NODE_WITH_INSTANCE_NODE_ID);
         assertThat(node.getChildren()).hasSize(1);
     }
 
     @Test(dependsOnMethods = "instanceNodeHasOneChild")
     public void instanceNodeHasChildWithCorrectName() {
-        NodeLibrary nodes = new NodeLibrary();
-        parsingFactory.parseNodes(library, nodes);
+        parsingFactory.parseNodes(library);
 
-        Node node = nodes.get("#" + NODE_WITH_INSTANCE_NODE_ID);
+        Node node = parsingFactory.getNodes().get("#" + NODE_WITH_INSTANCE_NODE_ID);
         Node child = node.getChildren().get(0);
 
         assertThat(child.getName()).isEqualTo(INSTANCE_SUB_NODE_NAME);

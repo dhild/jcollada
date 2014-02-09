@@ -6,6 +6,7 @@
         <package name="net.dryanhild.jcollada.schema14"/>
         <package name="net.dryanhild.jcollada.schema14.geometry"/>
         <package name="net.dryanhild.jcollada.schema14.geometry.source"/>
+        <package name="net.dryanhild.jcollada.schema14.scene"/>
         <package name="net.dryanhild.jcollada.schema14.scene.node"/>
     </packages>
   </test>

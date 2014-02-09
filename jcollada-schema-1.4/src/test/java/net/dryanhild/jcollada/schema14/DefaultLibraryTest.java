@@ -3,22 +3,22 @@ package net.dryanhild.jcollada.schema14;
 import static org.assertj.core.api.Assertions.assertThat;
 import net.dryanhild.jcollada.IncorrectFormatException;
 import net.dryanhild.jcollada.NoSuchElementIdException;
-import net.dryanhild.jcollada.schema14.geometry.GeometryLibrary;
+import net.dryanhild.jcollada.schema14.geometry.DefaultLibrary;
 import net.dryanhild.jcollada.schema14.geometry.data.GeometryResult;
 
 import org.testng.annotations.Test;
 
 @Test
-public class GeometryLibraryTest {
+public class DefaultLibraryTest {
 
     public void freshLibraryHasNoElements() {
-        GeometryLibrary library = new GeometryLibrary();
+        DefaultLibrary<GeometryResult> library = new DefaultLibrary<>();
         assertThat(library.getAll()).isEmpty();
     }
 
     public void elementCanBeAccessedById() {
         GeometryResult geometry = new GeometryResult("test-id", "test-name");
-        GeometryLibrary library = new GeometryLibrary();
+        DefaultLibrary<GeometryResult> library = new DefaultLibrary<>();
         library.add(geometry);
 
         assertThat(library.get("#test-id")).isEqualTo(geometry);
@@ -28,7 +28,7 @@ public class GeometryLibraryTest {
             expectedExceptionsMessageRegExp = "Element with uri #test-id2 does not exist")
     public void badIdThrowsException() {
         GeometryResult geometry = new GeometryResult("test-id", "test-name");
-        GeometryLibrary library = new GeometryLibrary();
+        DefaultLibrary<GeometryResult> library = new DefaultLibrary<>();
         library.add(geometry);
 
         library.get("#test-id2");
@@ -37,7 +37,7 @@ public class GeometryLibraryTest {
     @Test(expectedExceptions = IncorrectFormatException.class,
             expectedExceptionsMessageRegExp = "Unable to create a URI from test uri")
     public void badURIThrowsException() {
-        GeometryLibrary library = new GeometryLibrary();
+        DefaultLibrary<GeometryResult> library = new DefaultLibrary<>();
 
         library.get("test uri");
     }

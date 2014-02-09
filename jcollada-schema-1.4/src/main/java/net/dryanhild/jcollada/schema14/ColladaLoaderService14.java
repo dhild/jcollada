@@ -39,7 +39,9 @@ public class ColladaLoaderService14 implements ColladaLoaderService {
         COLLADADocument document = readMainDocument(context);
 
         ParsingFactory parser = new ParsingFactory();
-        return parser.parseDocument(document);
+        parser.parseDocument(document);
+
+        return parser.getScene();
     }
 
     private COLLADADocument readMainDocument(ParsingContext context) {

@@ -8,6 +8,8 @@ import java.util.List;
 
 import net.dryanhild.jcollada.data.scene.NodeType;
 import net.dryanhild.jcollada.data.transform.Transform;
+import net.dryanhild.jcollada.schema14.geometry.DefaultLibrary;
+import net.dryanhild.jcollada.schema14.geometry.data.GeometryResult;
 import net.dryanhild.jcollada.schema14.scene.NodeLibrary;
 import net.dryanhild.jcollada.schema14.scene.NodeParser;
 import net.dryanhild.jcollada.schema14.scene.data.NodeResult;
@@ -24,6 +26,7 @@ public class WithSingleNode {
     private static final String NODE_NAME = "bottomNodeName";
     private Node node;
     private NodeParser parser;
+    private DefaultLibrary<GeometryResult> geometries;
     private NodeLibrary library;
 
     @BeforeMethod
@@ -32,36 +35,37 @@ public class WithSingleNode {
         node.setId(NODE_ID);
         node.setName(NODE_NAME);
 
-        parser = new NodeParser();
         library = new NodeLibrary();
+        geometries = new DefaultLibrary<>();
+        parser = new NodeParser(library, geometries);
     }
 
     public void nodeHasName() {
-        NodeResult result = parser.parse(node, library);
+        NodeResult result = parser.parse(node);
 
         assertThat(result.getName()).isEqualTo(NODE_NAME);
     }
 
     public void nodeHasId() {
-        NodeResult result = parser.parse(node, library);
+        NodeResult result = parser.parse(node);
 
         assertThat(result.getId()).isEqualTo(NODE_ID);
     }
 
     public void nodeHasTypeNode() {
-        NodeResult result = parser.parse(node, library);
+        NodeResult result = parser.parse(node);
 
         assertThat(result.getType()).isEqualTo(NodeType.NODE);
     }
 
     public void nodeHasNoChildren() {
-        NodeResult result = parser.parse(node, library);
+        NodeResult result = parser.parse(node);
 
         assertThat(result.getChildren()).isEmpty();
     }
 
     public void nodeHasNoGeometries() {
-        NodeResult result = parser.parse(node, library);
+        NodeResult result = parser.parse(node);
 
         assertThat(result.getGeometries()).isEmpty();
     }
@@ -78,7 +82,7 @@ public class WithSingleNode {
     public void withMatrixHasMatrixTransform() {
         addSimpleMatrix();
 
-        NodeResult result = parser.parse(node, library);
+        NodeResult result = parser.parse(node);
 
         assertThat(result.getTransforms()).hasSize(1);
     }
@@ -87,7 +91,7 @@ public class WithSingleNode {
     public void withMatrixHasCorrectMatrixValues() {
         addSimpleMatrix();
 
-        NodeResult result = parser.parse(node, library);
+        NodeResult result = parser.parse(node);
 
         Transform trans = result.getTransforms().get(0);
 
@@ -113,7 +117,7 @@ public class WithSingleNode {
     public void withMatrixHasCorrectFloatBufferValues() {
         addSimpleMatrix();
 
-        NodeResult result = parser.parse(node, library);
+        NodeResult result = parser.parse(node);
 
         Transform trans = result.getTransforms().get(0);
 

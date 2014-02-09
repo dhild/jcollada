@@ -14,6 +14,7 @@ import net.dryanhild.jcollada.data.geometry.Geometry;
 import net.dryanhild.jcollada.data.geometry.Mesh;
 import net.dryanhild.jcollada.data.geometry.Triangles;
 import net.dryanhild.jcollada.data.scene.Node;
+import net.dryanhild.jcollada.data.scene.VisualScene;
 
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -91,11 +92,23 @@ public class WithBlenderTestFile {
         assertThat(triangles.getPrimitiveIndexArray()).hasSize(TRIANGLE_COUNT * 3);
     }
 
-    @Test(enabled = false)
+    public void visualSceneHasCylinderNodes() {
+        VisualScene visualScene = scene.getVisualScenes().get("#Scene");
+
+        assertThat(visualScene.getNodes()).hasSize(1);
+        assertThat(visualScene.getNodes().get(0).getId()).isEqualTo("Cylinder");
+    }
+
     public void cylinderNodesHasCylinderGeometry() {
-        Geometry geometry = getCylinderGeometry();
         Node node = scene.getNodes().get("#Cylinder");
 
-        assertThat(node.getGeometries()).contains(geometry);
+        assertThat(node.getGeometries()).hasSize(1);
+        assertThat(node.getGeometries().get(0).getId()).isEqualTo("Cylinder_001-mesh");
+    }
+
+    public void mainSceneHasCorrectId() {
+        VisualScene mainScene = scene.getMainScene();
+
+        assertThat(mainScene.getId()).isEqualTo("Scene");
     }
 }

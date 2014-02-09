@@ -8,7 +8,13 @@ import org.collada.x2005.x11.colladaSchema.MeshDocument.Mesh;
 
 public class GeometryParser {
 
-    public GeometryResult parse(Geometry geom) {
+    private final DefaultLibrary<GeometryResult> library;
+
+    public GeometryParser(DefaultLibrary<GeometryResult> library) {
+        this.library = library;
+    }
+
+    public void parse(Geometry geom) {
         GeometryResult result = new GeometryResult(geom.getId(), geom.getName());
 
         if (geom.getMesh() != null) {
@@ -20,7 +26,7 @@ public class GeometryParser {
             result.setMesh(parsed);
         }
 
-        return result;
+        library.add(result);
     }
 
 }
