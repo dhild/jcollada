@@ -73,14 +73,14 @@ public class PolylistParser {
                     SourceReference ref = new SourceReference(type, local.getSource());
                     assert !offsets.containsKey(ref) : "Two input elements reference the same source!";
                     BigInteger offset = input.getOffset();
-                    offsets.put(ref, offset == null ? 0 : offset.intValue());
+                    offsets.put(ref, offset.intValue());
                 }
             } else {
                 DataType type = DataType.valueOf(input.getSemantic());
                 SourceReference ref = new SourceReference(type, input.getSource());
                 assert !offsets.containsKey(ref) : "Two input elements reference the same source!";
                 BigInteger offset = input.getOffset();
-                offsets.put(ref, offset == null ? 0 : offset.intValue());
+                offsets.put(ref, offset.intValue());
             }
         }
         return offsets;
