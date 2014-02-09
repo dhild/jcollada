@@ -2,12 +2,16 @@ package net.dryanhild.jcollada.schema14.geometry;
 
 import net.dryanhild.jcollada.data.geometry.DataType;
 
+import com.google.common.base.Preconditions;
+
 public class SourceReference {
 
     public final DataType type;
     public final String source;
 
     public SourceReference(DataType type, String source) {
+        Preconditions.checkArgument(type != null, "Data type cannot be null");
+        Preconditions.checkArgument(source != null, "Data type cannot be null");
         this.type = type;
         this.source = source;
     }
@@ -16,8 +20,8 @@ public class SourceReference {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = (prime * result) + ((source == null) ? 0 : source.hashCode());
-        result = (prime * result) + ((type == null) ? 0 : type.hashCode());
+        result = (prime * result) + (source.hashCode());
+        result = (prime * result) + (type.hashCode());
         return result;
     }
 
@@ -33,11 +37,7 @@ public class SourceReference {
             return false;
         }
         SourceReference other = (SourceReference) obj;
-        if (source == null) {
-            if (other.source != null) {
-                return false;
-            }
-        } else if (!source.equals(other.source)) {
+        if (!source.equals(other.source)) {
             return false;
         }
         if (type != other.type) {

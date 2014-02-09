@@ -1,6 +1,5 @@
 package net.dryanhild.jcollada.schema14.geometry;
 
-import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -81,8 +80,7 @@ public class SourceStream {
             sourceOfData = sourceData;
             Preconditions.checkState(sourceOfData != null, "Unable to locate the source array " + sourceRef);
 
-            BigInteger off = accessor.getOffset();
-            offset = off == null ? 0 : off.intValue();
+            offset = accessor.getOffset().intValue();
 
             Param[] params = accessor.getParamArray();
             namedParam = new boolean[params.length];
