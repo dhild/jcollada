@@ -91,6 +91,7 @@ public class WithBlenderTestFile {
         assertThat(triangles.getPrimitiveIndexArray()).hasSize(TRIANGLE_COUNT * 3);
     }
 
+    @Test(enabled = false)
     public void cylinderNodeHasCylinderGeometry() {
         Geometry geometry = getCylinderGeometry();
         Node node = scene.getElementById("Cylinder", Node.class);

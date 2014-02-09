@@ -1,14 +1,14 @@
 package net.dryanhild.jcollada;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.Writer;
-import java.net.URL;
 import java.util.Collection;
 
 import org.testng.annotations.DataProvider;
@@ -44,48 +44,68 @@ public class ColladaLoaderTests {
         checkLoadContext(validate);
     }
 
-    @Test(dataProvider = "flagConfigurations")
-    public void loadFile(boolean validate) throws IOException {
-        ColladaLoader loader = createLoader(validate);
-
-        File tempFile = writeTestStringToTempFile();
-
-        loader.load(tempFile.getAbsolutePath());
-
-        checkLoadContext(validate);
-    }
-
-    @Test(dataProvider = "flagConfigurations")
-    public void loadURL(boolean validate) throws IOException {
-        ColladaLoader loader = createLoader(validate);
-
-        File tempFile = writeTestStringToTempFile();
-
-        loader.load(tempFile.toURI().toURL());
-
-        checkLoadContext(validate);
-    }
-
-    @Test(expectedExceptions = FileNotFoundException.class)
-    public void loadBadFile() throws IOException {
-        ColladaLoader loader = new ColladaLoader();
-
-        loader.load("non existant file");
-    }
-
-    @Test(expectedExceptions = FileNotFoundException.class)
-    public void loadBadUrl() throws IOException {
-        ColladaLoader loader = new ColladaLoader();
-
-        loader.load(new URL("file:///non existant file"));
-    }
-
     @Test(expectedExceptions = IncorrectFormatException.class)
     public void loadNonImplementedLoader() {
         ColladaLoader loader = new ColladaLoader();
 
         Reader reader = new StringReader("Bad input.");
         loader.load(reader);
+    }
+
+    @SuppressWarnings({ "boxing", "unchecked" })
+    @Test
+    public void ioExceptionInHeaderRead() throws IOException {
+        Reader reader = new ErrorOnReadReader();
+        ColladaLoader loader = new ColladaLoader();
+        try {
+            loader.load(reader);
+
+            assert false : "Expected an IOException to be thrown!";
+        } catch (ParsingException e) {
+            assertThat(e).hasMessageContaining("while reading");
+            assertThat(e).hasCauseInstanceOf(IOException.class);
+        }
+    }
+
+    @Test
+    public void ioExceptionInClose() throws IOException {
+        Reader reader = new ErrorOnCloseReader();
+        ColladaLoader loader = new ColladaLoader();
+        try {
+            loader.load(reader);
+
+            assert false : "Expected an IOException to be thrown!";
+        } catch (ParsingException e) {
+            assertThat(e).hasMessageContaining("while closing");
+            assertThat(e).hasCauseInstanceOf(IOException.class);
+        }
+    }
+
+    private class ErrorOnReadReader extends Reader {
+        @Override
+        public void close() throws IOException {
+            // Doesn't matter here.
+        }
+
+        @Override
+        public int read(char[] cbuf, int off, int len) throws IOException {
+            throw new IOException();
+        }
+    }
+
+    private class ErrorOnCloseReader extends Reader {
+        private final StringReader reader = new StringReader(ColladaLoaderServiceImpl.TEST_BASIC_FILE);
+
+        @Override
+        public void close() throws IOException {
+            throw new IOException();
+        }
+
+        @Override
+        public int read(char[] cbuf, int off, int len) throws IOException {
+            return reader.read(cbuf, off, len);
+        }
+
     }
 
     private ColladaLoader createLoader(boolean validate) {

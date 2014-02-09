@@ -1,13 +1,8 @@
 package net.dryanhild.jcollada;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.Reader;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -65,29 +60,6 @@ public class ColladaLoader {
         }
 
         return versions;
-    }
-
-    public ColladaScene load(String fileName) throws FileNotFoundException {
-        File file = new File(fileName);
-        try (FileReader reader = new FileReader(file)) {
-            return loadImpl(reader, new DefaultParsingContext());
-        } catch (FileNotFoundException e) {
-            // FileNotFound exceptions should be preserved.
-            throw e;
-        } catch (IOException e) {
-            throw new ParsingException("IOException encountered while parsing!", e);
-        }
-    }
-
-    public ColladaScene load(URL url) throws FileNotFoundException {
-        try (InputStreamReader reader = new InputStreamReader(url.openStream())) {
-            return loadImpl(reader, new DefaultParsingContext());
-        } catch (FileNotFoundException e) {
-            // FileNotFound exceptions should be preserved.
-            throw e;
-        } catch (IOException e) {
-            throw new ParsingException("Exception encountered while parsing!", e);
-        }
     }
 
     public ColladaScene load(Reader reader) {

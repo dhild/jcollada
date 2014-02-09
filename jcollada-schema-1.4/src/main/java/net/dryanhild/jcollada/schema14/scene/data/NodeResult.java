@@ -5,12 +5,13 @@ import java.util.Collection;
 
 import net.dryanhild.jcollada.data.geometry.Geometry;
 import net.dryanhild.jcollada.data.scene.Node;
+import net.dryanhild.jcollada.data.scene.NodeType;
 
 public class NodeResult implements Node {
 
     private final String name;
     private final String id;
-    private final Type type;
+    private final NodeType type;
 
     private final Collection<Node> children;
     private final Collection<Geometry> geometries;
@@ -18,7 +19,7 @@ public class NodeResult implements Node {
     public NodeResult(String name, String id, String type) {
         this.name = name;
         this.id = id;
-        this.type = Type.valueOf(type);
+        this.type = NodeType.valueOf(type);
 
         children = new ArrayList<>();
         geometries = new ArrayList<>();
@@ -35,7 +36,7 @@ public class NodeResult implements Node {
     }
 
     @Override
-    public Type getType() {
+    public NodeType getType() {
         return type;
     }
 

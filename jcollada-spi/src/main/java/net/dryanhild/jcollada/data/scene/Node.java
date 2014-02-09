@@ -10,11 +10,7 @@ public interface Node {
 
     String getId();
 
-    Type getType();
-
-    public enum Type {
-        JOINT, NODE
-    }
+    NodeType getType();
 
     Collection<Node> getChildren();
 
