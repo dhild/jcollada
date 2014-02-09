@@ -29,7 +29,7 @@
 
     <ciManagement>
       <system>jenkins</system>
-      <url>http://mcsrv.dryanhild.net:8080/job/JCollada/</url>
+      <url>http://mcsrv.dryanhild.net:8080/jenkins/job/JCollada/</url>
       
     </ciManagement>
 
