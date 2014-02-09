@@ -27,7 +27,7 @@ public class ColladaScene14 implements ColladaScene {
 
     @Override
     public <T> T getElementById(String id, Class<T> type) {
-        if (type.isAssignableFrom(Geometry.class)) {
+        if (Geometry.class.isAssignableFrom(type)) {
             for (Geometry g : geometries) {
                 if (id.equals(g.getId())) {
                     return type.cast(g);
@@ -35,7 +35,7 @@ public class ColladaScene14 implements ColladaScene {
             }
             throw new NoSuchElementIdException("Geometry with id " + id + " does not exist!");
         }
-        if (type.isAssignableFrom(Node.class)) {
+        if (Node.class.isAssignableFrom(type)) {
             for (Node n : nodes) {
                 if (id.equals(n.getId())) {
                     return type.cast(n);
