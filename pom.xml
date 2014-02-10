@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>net.dryanhild.jcollada</groupId>
-    <artifactId>jcollada</artifactId>
+    <groupId>net.dryanhild.collada</groupId>
+    <artifactId>opuntia</artifactId>
     <version>1.1-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>JCollada</name>
+    <name>Opuntia</name>
     <description>A utility to load COLLADA files for Java OpenGL rendering</description>
     <inceptionYear>2013</inceptionYear>
-    <url>https://github.com/dhild/jcollada</url>
+    <url>https://github.com/dhild/opuntia</url>
 
     <modules>
-        <module>jcollada-spi</module>
-        <module>jcollada-schema-1.4</module>
+        <module>opuntia-spi</module>
+        <module>opuntia-schema-1.4</module>
     </modules>
 
     <scm>
-        <developerConnection>scm:git:git@github.com:dhild/jcollada.git</developerConnection>
-        <connection>scm:git:git@github.com:dhild/jcollada.git</connection>
-        <url>scm:git:git@github.com:dhild/jcollada.git</url>
+        <developerConnection>scm:git:git@github.com:dhild/opuntia.git</developerConnection>
+        <connection>scm:git:git@github.com:dhild/opuntia.git</connection>
+        <url>scm:git:git@github.com:dhild/opuntia.git</url>
       <tag>HEAD</tag>
   </scm>
 
     <issueManagement>
         <system>github</system>
-        <url>https://github.com/dhild/jcollada/issues</url>
+        <url>https://github.com/dhild/opuntia/issues</url>
     </issueManagement>
 
     <ciManagement>
       <system>jenkins</system>
-      <url>http://mcsrv.dryanhild.net:8080/jenkins/job/JCollada/</url>
+      <url>http://mcsrv.dryanhild.net:8080/jenkins/job/Opuntia/</url>
       
     </ciManagement>
 
@@ -42,7 +42,7 @@
     <distributionManagement>
         <site>
             <id>dryanhild.net</id>
-            <url>scp://dryanhild.net:22345/var/www/maven-sites/jcollada</url>
+            <url>scp://dryanhild.net:22345/var/www/maven-sites/opuntia</url>
         </site>
     </distributionManagement>
 
