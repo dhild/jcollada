@@ -13,7 +13,8 @@
     <modules>
         <module>opuntia-spi</module>
         <module>opuntia-schema-1.4</module>
-    </modules>
+    <module>opuntia-schema-1.5</module>
+  </modules>
 
     <scm>
         <developerConnection>scm:git:git@github.com:dhild/opuntia.git</developerConnection>
@@ -197,7 +198,7 @@
                         </goals>
                         <configuration>
                             <rules>
-                                <DependencyConvergence />
+                                <DependencyConvergence/>
                                 <requireJavaVersion>
                                     <version>1.7</version>
                                 </requireJavaVersion>

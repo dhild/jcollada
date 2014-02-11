@@ -6,8 +6,6 @@ import net.dryanhild.collada.data.scene.VisualScene;
 
 public interface ColladaScene {
 
-    Asset getAsset();
-
     Library<? extends Geometry> getGeometries();
 
     Library<? extends Node> getNodes();

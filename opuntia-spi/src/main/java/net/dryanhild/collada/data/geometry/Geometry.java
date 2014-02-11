@@ -1,7 +1,6 @@
 package net.dryanhild.collada.data.geometry;
 
 import net.dryanhild.collada.data.AddressableType;
-import net.dryanhild.collada.data.Asset;
 
 public interface Geometry extends AddressableType {
 
@@ -9,8 +8,6 @@ public interface Geometry extends AddressableType {
 
     @Override
     String getId();
-
-    Asset getAsset();
 
     boolean hasMesh();
 

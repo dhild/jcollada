@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="All Tests" parallel="tests">
+  <test name="All Tests">
+    <packages>
+        <package name="net.dryanhild.jcollada.schema15"/>
+    </packages>
+  </test>
+</suite>

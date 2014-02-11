@@ -1,6 +1,5 @@
 package net.dryanhild.collada.schema14;
 
-import net.dryanhild.collada.data.Asset;
 import net.dryanhild.collada.data.ColladaScene;
 import net.dryanhild.collada.data.scene.VisualScene;
 import net.dryanhild.collada.schema14.geometry.DefaultLibrary;
@@ -20,12 +19,6 @@ public class ColladaScene14 implements ColladaScene {
         geometries = new DefaultLibrary<>();
         visualScenes = new DefaultLibrary<>();
         nodes = new NodeLibrary();
-    }
-
-    @Override
-    public Asset getAsset() {
-        // TODO Auto-generated method stub
-        return null;
     }
 
     @Override

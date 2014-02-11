@@ -1,6 +1,5 @@
 package net.dryanhild.collada.schema14.geometry.data;
 
-import net.dryanhild.collada.data.Asset;
 import net.dryanhild.collada.data.geometry.Geometry;
 import net.dryanhild.collada.data.geometry.Mesh;
 
@@ -24,12 +23,6 @@ public class GeometryResult implements Geometry {
     @Override
     public String getId() {
         return id;
-    }
-
-    @Override
-    public Asset getAsset() {
-        // TODO Auto-generated method stub
-        return null;
     }
 
     @Override
