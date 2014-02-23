@@ -1,5 +1,6 @@
 package net.dryanhild.collada.hk2spi;
 
+import java.io.InputStream;
 import java.net.URL;
 
 /**
@@ -12,6 +13,8 @@ public interface ParsingContext {
     boolean isValidating();
 
     byte[] getMainFileHeader();
+
+    InputStream getMainFileInputStream();
 
     URL getMainFileURL();
 
