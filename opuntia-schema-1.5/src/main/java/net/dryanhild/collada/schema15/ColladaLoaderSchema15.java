@@ -1,38 +1,40 @@
 package net.dryanhild.collada.schema15;
 
-import java.net.URI;
-import java.util.Collection;
-
+import com.google.common.collect.ImmutableList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import net.dryanhild.collada.VersionSupport;
 import net.dryanhild.collada.data.ColladaScene;
-import net.dryanhild.collada.spi.ColladaLoaderService;
-import net.dryanhild.collada.spi.ParsingContext;
+import net.dryanhild.collada.hk2spi.ColladaLoader;
+import net.dryanhild.collada.hk2spi.ParsingContext;
+import org.jvnet.hk2.annotations.Service;
 
-import com.google.common.collect.ImmutableList;
+@Service
+@Schema15
+public class ColladaLoaderSchema15 implements ColladaLoader {
 
-public class ColladaLoaderSchema15 implements ColladaLoaderService {
+    public static final VersionSupport VERSION_1_5_0
+            = new VersionSupport(1, 5, 0);
 
-    public static final VersionSupport VERSION_1_5_0 = new VersionSupport(1, 5, 0);
+    private static final Pattern SCHEMA_PATTERN = Pattern.
+            compile(".*COLLADA[^>]+version\\s?=\\s?\\\"1\\.5\\.0\\\".*", Pattern.DOTALL);
 
     @Override
-    public Collection<VersionSupport> getColladaVersions() {
+    public Iterable<VersionSupport> getColladaVersions() {
         return ImmutableList.of(VERSION_1_5_0);
     }
 
     @Override
-    public boolean canLoad(CharSequence header) {
-        // TODO Auto-generated method stub
-        return false;
+    public boolean canLoad(ParsingContext context) {
+        byte[] header = context.getMainFileHeader();
+        String headerString = new String(header);
+        Matcher matcher = SCHEMA_PATTERN.matcher(headerString);
+        return matcher.matches();
     }
 
     @Override
     public ColladaScene load(ParsingContext context) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public ColladaScene load(URI input) {
-        return null;
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
 }
