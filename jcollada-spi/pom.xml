@@ -4,11 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>net.dryanhild.collada</groupId>
-        <artifactId>opuntia</artifactId>
+        <artifactId>jcollada</artifactId>
         <version>1.1-SNAPSHOT</version>
     </parent>
-    <artifactId>opuntia-spi</artifactId>
-    <name>Opuntia SPI</name>
+    <artifactId>jcollada-spi</artifactId>
+    <name>JCollada SPI</name>
     <description>Service interface for loading COLLADA files into Java</description>
 
     <build>

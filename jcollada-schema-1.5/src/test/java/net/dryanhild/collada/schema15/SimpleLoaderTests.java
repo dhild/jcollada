@@ -34,9 +34,6 @@ import net.dryanhild.collada.hk2spi.ColladaLoader;
 import net.dryanhild.collada.hk2spi.ParsingContext;
 import org.apache.xmlbeans.impl.common.ReaderInputStream;
 import static org.assertj.core.api.Assertions.assertThat;
-import org.glassfish.hk2.api.ServiceLocator;
-import org.glassfish.hk2.api.ServiceLocatorFactory;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 /**
@@ -55,11 +52,8 @@ public class SimpleLoaderTests {
 
     private ColladaLoader loader;
 
-    @BeforeMethod
     public void resetLoader() {
-        ServiceLocatorFactory factory = ServiceLocatorFactory.getInstance();
-        ServiceLocator locator = factory.create(SimpleLoaderTests.class.getName());
-        loader = locator.getService(ColladaLoader.class, new Schema15Literal());
+        loader = new ColladaLoaderSchema15();
     }
 
     public void versionHas150SupportOnly() {

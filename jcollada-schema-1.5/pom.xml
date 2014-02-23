@@ -4,11 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>net.dryanhild.collada</groupId>
-        <artifactId>opuntia</artifactId>
+        <artifactId>jcollada</artifactId>
         <version>1.1-SNAPSHOT</version>
     </parent>
-    <artifactId>opuntia-schema-1.5</artifactId>
-    <name>Opuntia Loader for 1.5</name>
+    <artifactId>jcollada-schema-1.5</artifactId>
+    <name>JCollada Loader for 1.5</name>
     <description>Provides the loading implementation for COLLADA files adhering to schema version 1.5</description>
 
     <build>
@@ -58,7 +58,7 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>opuntia-spi</artifactId>
+            <artifactId>jcollada-spi</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
