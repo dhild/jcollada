@@ -13,7 +13,6 @@
 
     <modules>
         <module>jcollada-spi</module>
-        <module>jcollada-schema-1.4</module>
         <module>jcollada-schema-1.5</module>
     </modules>
 
