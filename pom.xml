@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.dryanhild.collada</groupId>
     <artifactId>opuntia</artifactId>
@@ -13,15 +14,15 @@
     <modules>
         <module>opuntia-spi</module>
         <module>opuntia-schema-1.4</module>
-    <module>opuntia-schema-1.5</module>
-  </modules>
+        <module>opuntia-schema-1.5</module>
+    </modules>
 
     <scm>
         <developerConnection>scm:git:git@github.com:dhild/opuntia.git</developerConnection>
         <connection>scm:git:git@github.com:dhild/opuntia.git</connection>
         <url>scm:git:git@github.com:dhild/opuntia.git</url>
-      <tag>HEAD</tag>
-  </scm>
+        <tag>HEAD</tag>
+    </scm>
 
     <issueManagement>
         <system>github</system>
@@ -29,9 +30,9 @@
     </issueManagement>
 
     <ciManagement>
-      <system>jenkins</system>
-      <url>http://mcsrv.dryanhild.net:8080/jenkins/job/Opuntia/</url>
-      
+        <system>jenkins</system>
+        <url>http://mcsrv.dryanhild.net:8080/jenkins/job/Opuntia/</url>
+
     </ciManagement>
 
     <licenses>
@@ -55,18 +56,18 @@
 
         <slf4j.version>1.7.5</slf4j.version>
         <log4j.version>2.0-beta9</log4j.version>
+        <hk2.version>2.3.0-b01</hk2.version>
 
         <java3d.version>1.5.2</java3d.version>
         <google.guava.version>15.0</google.guava.version>
         <trove.version>3.0.3</trove.version>
-        <spring.version>4.0.0.RELEASE</spring.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <license.licenseName>mit</license.licenseName>
     </properties>
 
     <build>
-        <defaultGoal>clean install</defaultGoal>
+        <defaultGoal>install</defaultGoal>
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -133,6 +134,18 @@
             </plugins>
         </pluginManagement>
         <plugins>
+            <plugin>
+                <groupId>org.glassfish.hk2</groupId>
+                <artifactId>hk2-inhabitant-generator</artifactId>
+                <version>${hk2.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate-inhabitants</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -333,6 +346,11 @@
                 <artifactId>log4j-slf4j-impl</artifactId>
                 <version>${log4j.version}</version>
                 <scope>runtime</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.hk2</groupId>
+                <artifactId>hk2-locator</artifactId>
+                <version>${hk2.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.google.guava</groupId>
