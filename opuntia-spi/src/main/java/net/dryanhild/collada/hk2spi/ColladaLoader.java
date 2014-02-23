@@ -1,7 +1,7 @@
 package net.dryanhild.collada.hk2spi;
 
 import net.dryanhild.collada.VersionSupport;
-import net.dryanhild.collada.data.ColladaScene;
+import net.dryanhild.collada.data.ColladaDocument;
 import org.jvnet.hk2.annotations.Contract;
 
 /**
@@ -16,6 +16,6 @@ public interface ColladaLoader {
 
     boolean canLoad(ParsingContext context);
 
-    ColladaScene load(ParsingContext context);
+    ColladaDocument load(ParsingContext context);
 
 }

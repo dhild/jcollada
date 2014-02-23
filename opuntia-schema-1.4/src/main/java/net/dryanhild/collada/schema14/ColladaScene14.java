@@ -1,13 +1,13 @@
 package net.dryanhild.collada.schema14;
 
-import net.dryanhild.collada.data.ColladaScene;
+import net.dryanhild.collada.data.ColladaDocument;
 import net.dryanhild.collada.data.scene.VisualScene;
 import net.dryanhild.collada.schema14.geometry.DefaultLibrary;
 import net.dryanhild.collada.schema14.geometry.data.GeometryResult;
 import net.dryanhild.collada.schema14.scene.NodeLibrary;
 import net.dryanhild.collada.schema14.scene.data.VisualSceneResult;
 
-public class ColladaScene14 implements ColladaScene {
+public class ColladaScene14 implements ColladaDocument {
 
     private final DefaultLibrary<GeometryResult> geometries;
     private final DefaultLibrary<VisualSceneResult> visualScenes;

@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 import net.dryanhild.collada.IncorrectFormatException;
 import net.dryanhild.collada.ParsingException;
 import net.dryanhild.collada.VersionSupport;
-import net.dryanhild.collada.data.ColladaScene;
+import net.dryanhild.collada.data.ColladaDocument;
 import net.dryanhild.collada.spi.ColladaLoaderService;
 import net.dryanhild.collada.spi.ParsingContext;
 
@@ -35,7 +35,7 @@ public class ColladaLoaderService14 implements ColladaLoaderService {
     }
 
     @Override
-    public ColladaScene load(ParsingContext context) {
+    public ColladaDocument load(ParsingContext context) {
         COLLADADocument document = readMainDocument(context);
 
         ParsingFactory parser = new ParsingFactory();

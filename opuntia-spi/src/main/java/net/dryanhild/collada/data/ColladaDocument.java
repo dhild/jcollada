@@ -21,15 +21,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package net.dryanhild.collada.data.geometry;
+package net.dryanhild.collada.data;
 
-import java.util.List;
-import java.util.Map;
+import net.dryanhild.collada.data.geometry.Geometry;
+import net.dryanhild.collada.data.scene.Node;
+import net.dryanhild.collada.data.scene.VisualScene;
 
-public interface Mesh {
+public interface ColladaDocument {
 
-    Map<DataType, float[]> getVertexData();
+    Library<? extends Geometry> getGeometries();
 
-    List<Triangles> getTriangles();
+    Library<? extends Node> getNodes();
+
+    Library<? extends VisualScene> getVisualScenes();
+
+    VisualScene getMainScene();
 
 }

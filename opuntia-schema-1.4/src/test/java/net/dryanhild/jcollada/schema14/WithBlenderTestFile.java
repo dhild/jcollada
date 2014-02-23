@@ -8,7 +8,7 @@ import java.io.Reader;
 import java.util.Map;
 
 import net.dryanhild.collada.ColladaLoader;
-import net.dryanhild.collada.data.ColladaScene;
+import net.dryanhild.collada.data.ColladaDocument;
 import net.dryanhild.collada.data.geometry.DataType;
 import net.dryanhild.collada.data.geometry.Geometry;
 import net.dryanhild.collada.data.geometry.Mesh;
@@ -25,7 +25,7 @@ public class WithBlenderTestFile {
     private static final int TRIANGLE_COUNT = 44;
 
     ColladaLoader loader;
-    ColladaScene scene;
+    ColladaDocument scene;
 
     @BeforeMethod
     public void reset() {

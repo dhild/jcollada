@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.ServiceLoader;
 
-import net.dryanhild.collada.data.ColladaScene;
+import net.dryanhild.collada.data.ColladaDocument;
 import net.dryanhild.collada.spi.ColladaLoaderService;
 
 import org.slf4j.Logger;
@@ -62,11 +62,11 @@ public class ColladaLoader {
         return versions;
     }
 
-    public ColladaScene load(Reader reader) {
+    public ColladaDocument load(Reader reader) {
         return loadImpl(reader, new DefaultParsingContext());
     }
 
-    private ColladaScene loadImpl(Reader reader, DefaultParsingContext context) {
+    private ColladaDocument loadImpl(Reader reader, DefaultParsingContext context) {
         BufferedReader bufferedReader = new BufferedReader(reader);
         context.setMainFileReader(bufferedReader);
         context.setValidating(isValidating());
@@ -86,10 +86,10 @@ public class ColladaLoader {
         throw new IncorrectFormatException("Format of input data not recognized by any loaders on the classpath.");
     }
 
-    private ColladaScene loadWithService(Reader reader, DefaultParsingContext context, ColladaLoaderService loader) {
+    private ColladaDocument loadWithService(Reader reader, DefaultParsingContext context, ColladaLoaderService loader) {
         logger.debug("Attempting load with class {}", loader.getClass().getName());
 
-        ColladaScene scene = loader.load(context);
+        ColladaDocument scene = loader.load(context);
 
         try {
             reader.close();

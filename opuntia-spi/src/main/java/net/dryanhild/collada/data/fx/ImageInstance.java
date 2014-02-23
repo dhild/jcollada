@@ -21,15 +21,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package net.dryanhild.collada.data.geometry;
+package net.dryanhild.collada.data.fx;
 
-import java.util.List;
-import java.util.Map;
+/**
+ * Indicates an instance of an image.
+ *
+ */
+public interface ImageInstance {
 
-public interface Mesh {
+    int getWidth();
 
-    Map<DataType, float[]> getVertexData();
+    int getHeight();
 
-    List<Triangles> getTriangles();
+    byte[] getImageData();
 
 }

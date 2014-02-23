@@ -21,15 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package net.dryanhild.collada.data.geometry;
+package net.dryanhild.collada.data.fx.glsl;
 
-import java.util.List;
-import java.util.Map;
+import java.util.Set;
+import net.dryanhild.collada.data.AddressableType;
+import net.dryanhild.collada.data.fx.Sampler;
 
-public interface Mesh {
+/**
+ * Defines a shader program.
+ *
+ * A single instance of this class may end up using the same backend data as another shader.
+ *
+ */
+public interface ShaderProgram extends AddressableType {
 
-    Map<DataType, float[]> getVertexData();
+    Set<String> getAttributes();
 
-    List<Triangles> getTriangles();
+    String getAttributeSemantic();
+
+    Set<String> getUniforms();
+
+    ParamType getUniformDescriptor(String uniform);
+
+    byte[] getUniformData(String uniform);
+
+    Set<Sampler> getSamplers();
+
+    Set<ShaderStage> getStages();
+
+    String getSource(ShaderStage stage);
 
 }

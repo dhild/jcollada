@@ -21,15 +21,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package net.dryanhild.collada.data.geometry;
+package net.dryanhild.collada.data.fx;
 
-import java.util.List;
-import java.util.Map;
+public interface Sampler {
 
-public interface Mesh {
+    ImageInstance getImage();
 
-    Map<DataType, float[]> getVertexData();
+    ImageWrapStyle getWrapS();
 
-    List<Triangles> getTriangles();
+    ImageWrapStyle getWrapT();
+
+    ImageWrapStyle getWrapP();
+
+    FilterStyle getMinFilter();
+
+    FilterStyle getMagFilter();
+
+    FilterStyle getMipFilter();
+
+    float[] getBorderColor();
 
 }

@@ -23,13 +23,12 @@
  */
 package net.dryanhild.collada.data.geometry;
 
-import java.util.List;
-import java.util.Map;
+import net.dryanhild.collada.data.fx.glsl.ShaderInstance;
 
-public interface Mesh {
+public interface GeometryInstance extends Geometry {
 
-    Map<DataType, float[]> getVertexData();
+    boolean hasShader();
 
-    List<Triangles> getTriangles();
+    ShaderInstance getShader();
 
 }

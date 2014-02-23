@@ -3,7 +3,7 @@ package net.dryanhild.collada;
 import java.util.Collection;
 
 import net.dryanhild.collada.VersionSupport;
-import net.dryanhild.collada.data.ColladaScene;
+import net.dryanhild.collada.data.ColladaDocument;
 import net.dryanhild.collada.spi.ColladaLoaderService;
 import net.dryanhild.collada.spi.ParsingContext;
 
@@ -30,9 +30,9 @@ public class ColladaLoaderServiceImpl implements ColladaLoaderService {
     }
 
     @Override
-    public ColladaScene load(ParsingContext context) {
+    public ColladaDocument load(ParsingContext context) {
         lastContext = context;
-        return Mockito.mock(ColladaScene.class);
+        return Mockito.mock(ColladaDocument.class);
     }
 
 }

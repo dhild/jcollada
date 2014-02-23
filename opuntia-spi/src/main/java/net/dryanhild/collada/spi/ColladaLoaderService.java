@@ -3,7 +3,7 @@ package net.dryanhild.collada.spi;
 import java.util.Collection;
 
 import net.dryanhild.collada.VersionSupport;
-import net.dryanhild.collada.data.ColladaScene;
+import net.dryanhild.collada.data.ColladaDocument;
 
 public interface ColladaLoaderService {
 
@@ -11,6 +11,6 @@ public interface ColladaLoaderService {
 
     boolean canLoad(CharSequence header);
 
-    ColladaScene load(ParsingContext context);
+    ColladaDocument load(ParsingContext context);
 
 }

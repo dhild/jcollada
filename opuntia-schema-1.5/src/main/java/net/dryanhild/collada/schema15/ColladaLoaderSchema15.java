@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import net.dryanhild.collada.VersionSupport;
-import net.dryanhild.collada.data.ColladaScene;
+import net.dryanhild.collada.data.ColladaDocument;
 import net.dryanhild.collada.hk2spi.ColladaLoader;
 import net.dryanhild.collada.hk2spi.ParsingContext;
 import org.jvnet.hk2.annotations.Service;
@@ -33,7 +33,7 @@ public class ColladaLoaderSchema15 implements ColladaLoader {
     }
 
     @Override
-    public ColladaScene load(ParsingContext context) {
+    public ColladaDocument load(ParsingContext context) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

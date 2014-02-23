@@ -21,15 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package net.dryanhild.collada.data.geometry;
+package net.dryanhild.collada.data.fx.glsl;
 
-import java.util.List;
-import java.util.Map;
+public enum ParamType {
 
-public interface Mesh {
-
-    Map<DataType, float[]> getVertexData();
-
-    List<Triangles> getTriangles();
+    BOOL, BOOL2, BOOL3, BOOL4, //
+    INT, INT2, INT3, INT4, //
+    FLOAT, FLOAT2, FLOAT3, FLOAT4, //
+    FLOAT2x2, FLOAT3x3, FLOAT4x4
 
 }

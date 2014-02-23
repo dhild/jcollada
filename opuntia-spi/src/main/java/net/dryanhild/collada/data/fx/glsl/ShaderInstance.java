@@ -21,15 +21,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package net.dryanhild.collada.data.geometry;
+package net.dryanhild.collada.data.fx.glsl;
 
-import java.util.List;
-import java.util.Map;
+import java.util.Set;
+import net.dryanhild.collada.data.fx.Sampler;
 
-public interface Mesh {
+/**
+ * Designates a Shader instance.
+ *
+ * The reason for the separation is that a single ShaderProgram may be instantiated multiple times. This does not
+ * necessitate recompiling the shader's source, but may override the shader uniforms.
+ */
+public interface ShaderInstance extends ShaderProgram {
 
-    Map<DataType, float[]> getVertexData();
+    @Override
+    byte[] getUniformData(String uniform);
 
-    List<Triangles> getTriangles();
+    @Override
+    Set<Sampler> getSamplers();
 
 }

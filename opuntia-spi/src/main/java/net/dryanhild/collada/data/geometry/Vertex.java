@@ -23,13 +23,8 @@
  */
 package net.dryanhild.collada.data.geometry;
 
-import java.util.List;
-import java.util.Map;
+public interface Vertex {
 
-public interface Mesh {
-
-    Map<DataType, float[]> getVertexData();
-
-    List<Triangles> getTriangles();
+    byte[] getData(String semantic);
 
 }
