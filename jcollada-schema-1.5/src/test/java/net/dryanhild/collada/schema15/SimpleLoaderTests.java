@@ -23,17 +23,23 @@
  */
 package net.dryanhild.collada.schema15;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.InputStream;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+
 import net.dryanhild.collada.VersionSupport;
 import net.dryanhild.collada.data.ColladaDocument;
 import net.dryanhild.collada.hk2spi.ColladaLoader;
 import net.dryanhild.collada.hk2spi.ParsingContext;
+
 import org.apache.xmlbeans.impl.common.ReaderInputStream;
-import static org.assertj.core.api.Assertions.assertThat;
+import org.glassfish.hk2.api.ServiceLocator;
+import org.glassfish.hk2.utilities.ServiceLocatorUtilities;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 /**
@@ -43,17 +49,16 @@ import org.testng.annotations.Test;
 public class SimpleLoaderTests {
 
     private static final String BARE_COLLADA_FILE = "<?xml version=\"1.0\"?>\n"
-            + "<COLLADA xmlns=\"http://www.collada.org/2008/03/COLLADASchema\" version=\"1.5.0\">\n"
-            + " <asset>\n"
-            + "   <created>2007-12-11T14:24:00Z</created>\n"
-            + "   <modified>2007-12-11T14:24:00Z</modified>\n"
-            + " </asset>\n"
-            + "</COLLADA>";
+            + "<COLLADA xmlns=\"http://www.collada.org/2008/03/COLLADASchema\" version=\"1.5.0\">\n" + " <asset>\n"
+            + "   <created>2007-12-11T14:24:00Z</created>\n" + "   <modified>2007-12-11T14:24:00Z</modified>\n"
+            + " </asset>\n" + "</COLLADA>";
 
     private ColladaLoader loader;
 
+    @BeforeMethod
     public void resetLoader() {
-        loader = new ColladaLoaderSchema15();
+        ServiceLocator locator = ServiceLocatorUtilities.createAndPopulateServiceLocator();
+        loader = locator.getService(ColladaLoaderSchema15.class);
     }
 
     public void versionHas150SupportOnly() {
@@ -78,8 +83,7 @@ public class SimpleLoaderTests {
             public InputStream getMainFileInputStream() {
                 try {
                     return new ReaderInputStream(new StringReader(BARE_COLLADA_FILE), "UTF-8");
-                }
-                catch (UnsupportedEncodingException ex) {
+                } catch (UnsupportedEncodingException ex) {
                     throw new RuntimeException(ex);
                 }
             }
@@ -88,8 +92,7 @@ public class SimpleLoaderTests {
             public URL getMainFileURL() {
                 try {
                     return new URL("http://localhost/dummy/url");
-                }
-                catch (MalformedURLException ex) {
+                } catch (MalformedURLException ex) {
                     throw new RuntimeException(ex);
                 }
             }
@@ -105,10 +108,9 @@ public class SimpleLoaderTests {
         ParsingContext context = createContext();
 
         ColladaDocument document = loader.load(context);
-        assertThat(document.getGeometries().getAll()).isEmpty();
-        assertThat(document.getNodes().getAll()).isEmpty();
-        assertThat(document.getVisualScenes().getAll()).isEmpty();
-        assertThat(document.getMainScene()).isNull();
+        assertThat(document.getGeometries()).isEmpty();
+        assertThat(document.getNodes()).isEmpty();
+        assertThat(document.getVisualScenes()).isEmpty();
     }
 
 }

@@ -1,23 +1,31 @@
 package net.dryanhild.collada.schema15;
 
-import com.google.common.collect.ImmutableList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.inject.Inject;
+
 import net.dryanhild.collada.VersionSupport;
 import net.dryanhild.collada.data.ColladaDocument;
 import net.dryanhild.collada.hk2spi.ColladaLoader;
 import net.dryanhild.collada.hk2spi.ParsingContext;
+import net.dryanhild.collada.schema15.parser.DAEParser;
+
 import org.jvnet.hk2.annotations.Service;
+
+import com.google.common.collect.ImmutableList;
 
 @Service
 @Schema15
 public class ColladaLoaderSchema15 implements ColladaLoader {
 
-    public static final VersionSupport VERSION_1_5_0
-            = new VersionSupport(1, 5, 0);
+    public static final VersionSupport VERSION_1_5_0 = new VersionSupport(1, 5, 0);
 
-    private static final Pattern SCHEMA_PATTERN = Pattern.
-            compile(".*COLLADA[^>]+version\\s?=\\s?\\\"1\\.5\\.0\\\".*", Pattern.DOTALL);
+    private static final Pattern SCHEMA_PATTERN = Pattern.compile(".*COLLADA[^>]+version\\s?=\\s?\\\"1\\.5\\.0\\\".*",
+            Pattern.DOTALL);
+
+    @Inject
+    private DAEParser parser;
 
     @Override
     public Iterable<VersionSupport> getColladaVersions() {
@@ -34,7 +42,6 @@ public class ColladaLoaderSchema15 implements ColladaLoader {
 
     @Override
     public ColladaDocument load(ParsingContext context) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return parser.parse(context.getMainFileInputStream());
     }
-
 }
