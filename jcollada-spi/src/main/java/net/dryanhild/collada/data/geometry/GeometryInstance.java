@@ -23,12 +23,12 @@
  */
 package net.dryanhild.collada.data.geometry;
 
-import net.dryanhild.collada.data.fx.glsl.ShaderInstance;
+import net.dryanhild.collada.data.fx.Material;
 
 public interface GeometryInstance extends Geometry {
 
-    boolean hasShader();
+    boolean hasMaterial();
 
-    ShaderInstance getShader();
+    Material getMaterial();
 
 }

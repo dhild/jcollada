@@ -23,17 +23,33 @@
  */
 package net.dryanhild.collada.data;
 
+import net.dryanhild.collada.data.fx.Effect;
+import net.dryanhild.collada.data.fx.Material;
 import net.dryanhild.collada.data.geometry.Geometry;
 import net.dryanhild.collada.data.scene.Node;
 import net.dryanhild.collada.data.scene.VisualScene;
 
 public interface ColladaDocument {
 
-    Library<? extends Geometry> getGeometries();
+    Iterable<Geometry> getGeometries();
 
-    Library<? extends Node> getNodes();
+    Geometry getGeometry(String id);
 
-    Library<? extends VisualScene> getVisualScenes();
+    Iterable<Node> getNodes();
+
+    Node getNode(String id);
+
+    Iterable<VisualScene> getVisualScenes();
+
+    VisualScene getVisualScene(String id);
+
+    Iterable<? extends Effect> getEffects();
+
+    Effect getEffect(String id);
+
+    Iterable<? extends Material> getMaterials();
+
+    Material getMaterial(String id);
 
     VisualScene getMainScene();
 

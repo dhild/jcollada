@@ -24,16 +24,19 @@
 package net.dryanhild.collada.data.fx.glsl;
 
 import java.util.Set;
+
 import net.dryanhild.collada.data.AddressableType;
+import net.dryanhild.collada.data.ScopeAddressableType;
 import net.dryanhild.collada.data.fx.Sampler;
 
 /**
  * Defines a shader program.
- *
- * A single instance of this class may end up using the same backend data as another shader.
- *
+ * 
+ * A single instance of this class may end up using the same backend data as
+ * another shader.
+ * 
  */
-public interface ShaderProgram extends AddressableType {
+public interface ShaderProgram extends AddressableType, ScopeAddressableType {
 
     Set<String> getAttributes();
 
@@ -41,11 +44,15 @@ public interface ShaderProgram extends AddressableType {
 
     Set<String> getUniforms();
 
+    UniformType getUniform(String name);
+
     ParamType getUniformDescriptor(String uniform);
 
     byte[] getUniformData(String uniform);
 
-    Set<Sampler> getSamplers();
+    Set<String> getSamplers();
+
+    Sampler getSampler(String name);
 
     Set<ShaderStage> getStages();
 

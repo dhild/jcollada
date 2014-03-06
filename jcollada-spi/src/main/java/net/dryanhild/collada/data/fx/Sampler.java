@@ -27,6 +27,8 @@ public interface Sampler {
 
     ImageInstance getImage();
 
+    int getDimensions();
+
     ImageWrapStyle getWrapS();
 
     ImageWrapStyle getWrapT();

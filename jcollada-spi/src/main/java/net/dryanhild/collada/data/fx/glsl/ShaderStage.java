@@ -28,6 +28,6 @@ package net.dryanhild.collada.data.fx.glsl;
  */
 public enum ShaderStage {
 
-    VERTEX, FRAGMENT
+    TESSELATION, GEOMETRY, VERTEX, FRAGMENT
 
 }
