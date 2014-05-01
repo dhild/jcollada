@@ -1,20 +1,20 @@
 package net.dryanhild.collada.schema14;
 
-import java.io.IOException;
-import java.util.Collection;
-import java.util.regex.Pattern;
-
-import net.dryanhild.collada.IncorrectFormatException;
+import com.google.common.collect.ImmutableList;
 import net.dryanhild.collada.ParsingException;
 import net.dryanhild.collada.VersionSupport;
 import net.dryanhild.collada.data.ColladaDocument;
+import net.dryanhild.collada.schema14.parser.DocumentParser;
 import net.dryanhild.collada.spi.ColladaLoaderService;
 import net.dryanhild.collada.spi.ParsingContext;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
 
-import org.apache.xmlbeans.XmlException;
-import org.collada.x2005.x11.colladaSchema.COLLADADocument;
-
-import com.google.common.collect.ImmutableList;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.util.Collection;
+import java.util.regex.Pattern;
 
 public class ColladaLoaderService14 implements ColladaLoaderService {
 
@@ -23,6 +23,8 @@ public class ColladaLoaderService14 implements ColladaLoaderService {
 
     private static final Pattern VERSION_PATTERN = Pattern.compile(
             ".*COLLADA[^>]+version\\s?=\\s?\\\"1\\.4\\.[01]\\\".*", Pattern.DOTALL);
+
+    private DocumentParser documentParser = new DocumentParser();
 
     @Override
     public Collection<VersionSupport> getColladaVersions() {
@@ -36,21 +38,17 @@ public class ColladaLoaderService14 implements ColladaLoaderService {
 
     @Override
     public ColladaDocument load(ParsingContext context) {
-        COLLADADocument document = readMainDocument(context);
-
-        ParsingFactory parser = new ParsingFactory();
-        parser.parseDocument(document);
-
-        return parser.getScene();
-    }
-
-    private COLLADADocument readMainDocument(ParsingContext context) {
         try {
-            return COLLADADocument.Factory.parse(context.getMainFileReader());
-        } catch (IOException e) {
-            throw new ParsingException("Unable to read the document!", e);
-        } catch (XmlException e) {
-            throw new IncorrectFormatException("Unable to parse the document!", e);
+            XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+            factory.setNamespaceAware(true);
+            factory.setValidating(context.isValidating());
+            XmlPullParser parser = factory.newPullParser();
+            Reader reader = new InputStreamReader(context.getMainFileInputStream(), context.getCharset());
+            parser.setInput(reader);
+
+            return documentParser.parse(parser);
+        } catch (XmlPullParserException e) {
+            throw new ParsingException("Unable to parse document!", e);
         }
     }
 }

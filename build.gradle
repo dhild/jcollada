@@ -1,5 +1,5 @@
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.12'
+    gradleVersion = '1.11'
 }
 
 subprojects {
@@ -23,6 +23,7 @@ subprojects {
     dependencies {
         compile "com.google.guava:guava:${googleGuavaVersion}"
         compile "org.slf4j:slf4j-api:${slf4jVersion}"
+        compile "javax.validation:validation-api:1.1.0.Final"
 
         testCompile "org.testng:testng:${testngVersion}"
         testCompile "org.assertj:assertj-core:${assertjVersion}"

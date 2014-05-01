@@ -1,1 +1,3 @@
 include 'jcollada-spi'
+include 'jcollada-schema-1.4'
+

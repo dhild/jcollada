@@ -1,16 +1,17 @@
 package net.dryanhild.collada.spi;
 
-import java.util.Collection;
-
 import net.dryanhild.collada.VersionSupport;
 import net.dryanhild.collada.data.ColladaDocument;
+
+import javax.validation.constraints.NotNull;
+import java.util.Collection;
 
 public interface ColladaLoaderService {
 
     Collection<VersionSupport> getColladaVersions();
 
-    boolean canLoad(CharSequence header);
+    boolean canLoad(@NotNull CharSequence header);
 
-    ColladaDocument load(ParsingContext context);
+    ColladaDocument load(@NotNull ParsingContext context);
 
 }

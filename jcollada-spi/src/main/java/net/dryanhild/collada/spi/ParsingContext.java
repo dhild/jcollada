@@ -1,10 +1,15 @@
 package net.dryanhild.collada.spi;
 
-import java.io.Reader;
+import java.io.InputStream;
+import java.nio.charset.Charset;
 
 public interface ParsingContext {
 
     boolean isValidating();
 
-    Reader getMainFileReader();
+    CharSequence getMainFileHeader();
+
+    InputStream getMainFileInputStream();
+
+    Charset getCharset();
 }

@@ -1,18 +1,20 @@
 package net.dryanhild.collada;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.Reader;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.ServiceLoader;
-
+import com.google.common.collect.Lists;
 import net.dryanhild.collada.data.ColladaDocument;
 import net.dryanhild.collada.spi.ColladaLoaderService;
-
+import net.dryanhild.collada.spi.ParsingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.ServiceLoader;
 
 public class ColladaLoader {
 
@@ -24,25 +26,13 @@ public class ColladaLoader {
 
     private boolean validating = true;
 
-    /**
-     * Creates a new ColladaLoader, using the current thread's context class
-     * loader to locate service implementations.
-     */
+    private Charset charset = StandardCharsets.UTF_8;
+
     public ColladaLoader() {
-        this(Thread.currentThread().getContextClassLoader());
-    }
-
-    public ColladaLoader(ClassLoader classLoader) {
-        loaders = new ArrayList<>();
-        reloadServices(classLoader);
-    }
-
-    public void reloadServices(ClassLoader classLoader) {
+        loaders = Lists.newArrayList();
         loaders.clear();
-        ServiceLoader<ColladaLoaderService> serviceLoader = ServiceLoader.load(ColladaLoaderService.class, classLoader);
-        Iterator<ColladaLoaderService> serviceImplementations = serviceLoader.iterator();
-        while (serviceImplementations.hasNext()) {
-            ColladaLoaderService service = serviceImplementations.next();
+        ServiceLoader<ColladaLoaderService> serviceLoader = ServiceLoader.load(ColladaLoaderService.class);
+        for (ColladaLoaderService service : serviceLoader) {
             loaders.add(service);
 
             for (VersionSupport version : service.getColladaVersions()) {
@@ -53,7 +43,7 @@ public class ColladaLoader {
     }
 
     public Collection<VersionSupport> getRegisteredVersions() {
-        ArrayList<VersionSupport> versions = new ArrayList<>();
+        ArrayList<VersionSupport> versions = Lists.newArrayList();
 
         for (ColladaLoaderService service : loaders) {
             versions.addAll(service.getColladaVersions());
@@ -62,20 +52,18 @@ public class ColladaLoader {
         return versions;
     }
 
-    public ColladaDocument load(Reader reader) {
-        return loadImpl(reader, new DefaultParsingContext());
+    public ColladaDocument load(URL url) throws IOException {
+        return load(url.openStream());
     }
 
-    private ColladaDocument loadImpl(Reader reader, DefaultParsingContext context) {
-        BufferedReader bufferedReader = new BufferedReader(reader);
-        context.setMainFileReader(bufferedReader);
-        context.setValidating(isValidating());
+    public ColladaDocument load(InputStream input) throws IOException {
+        return loadImpl(new DefaultParsingContext(validating, input, charset));
+    }
 
-        String header = readHeader(bufferedReader);
-
+    private ColladaDocument loadImpl(ParsingContext context) throws IOException {
         for (ColladaLoaderService loader : loaders) {
-            if (loader.canLoad(header)) {
-                return loadWithService(reader, context, loader);
+            if (loader.canLoad(context.getMainFileHeader())) {
+                return loadWithService(context, loader);
             }
         }
 
@@ -86,31 +74,14 @@ public class ColladaLoader {
         throw new IncorrectFormatException("Format of input data not recognized by any loaders on the classpath.");
     }
 
-    private ColladaDocument loadWithService(Reader reader, DefaultParsingContext context, ColladaLoaderService loader) {
+    private ColladaDocument loadWithService(ParsingContext context, ColladaLoaderService loader) throws IOException {
         logger.debug("Attempting load with class {}", loader.getClass().getName());
 
         ColladaDocument scene = loader.load(context);
 
-        try {
-            reader.close();
-        } catch (IOException e) {
-            throw new ParsingException("Error encountered while closing output stream!", e);
-        }
+        context.getMainFileInputStream().close();
 
         return scene;
-    }
-
-    private String readHeader(BufferedReader bufferedReader) {
-        char[] header = new char[HEADER_LENGTH];
-        int read = 0;
-        try {
-            bufferedReader.mark(HEADER_LENGTH);
-            read = bufferedReader.read(header);
-            bufferedReader.reset();
-        } catch (IOException ex) {
-            throw new ParsingException("IOException while reading: ", ex);
-        }
-        return new String(header, 0, read);
     }
 
     public boolean isValidating() {
@@ -121,4 +92,11 @@ public class ColladaLoader {
         this.validating = validating;
     }
 
+    public Charset getCharset() {
+        return charset;
+    }
+
+    public void setCharset(Charset charset) {
+        this.charset = charset;
+    }
 }
