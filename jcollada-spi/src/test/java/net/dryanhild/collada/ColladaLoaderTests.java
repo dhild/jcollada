@@ -7,11 +7,6 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.util.Collection;
 
-import net.dryanhild.collada.ColladaLoader;
-import net.dryanhild.collada.IncorrectFormatException;
-import net.dryanhild.collada.ParsingException;
-import net.dryanhild.collada.VersionSupport;
-
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 

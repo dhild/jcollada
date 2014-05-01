@@ -1,7 +1,5 @@
 package net.dryanhild.collada;
 
-import net.dryanhild.collada.VersionSupport;
-
 import org.testng.annotations.Test;
 
 public class VersionTests {

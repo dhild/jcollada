@@ -5,7 +5,27 @@ task wrapper(type: Wrapper) {
 subprojects {
     apply plugin: 'java'
     apply plugin: 'checkstyle'
-    apply plugin: 'findbugs'
+//    apply plugin: 'findbugs'
     apply plugin: 'jdepend'
     apply plugin: 'jacoco'
+
+    sourceCompatibility = '1.7'
+    version = '1.0-SNAPSHOT'
+
+    repositories {
+        mavenCentral()
+    }
+
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << "-Xlint" << "-Werror"
+    }
+
+    dependencies {
+        compile "com.google.guava:guava:${googleGuavaVersion}"
+        compile "org.slf4j:slf4j-api:${slf4jVersion}"
+
+        testCompile "org.testng:testng:${testngVersion}"
+        testCompile "org.assertj:assertj-core:${assertjVersion}"
+        testCompile "org.mockito:mockito-all:${mockitoVersion}"
+    }
 }

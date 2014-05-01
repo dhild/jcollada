@@ -2,7 +2,6 @@ package net.dryanhild.collada;
 
 import java.util.Collection;
 
-import net.dryanhild.collada.VersionSupport;
 import net.dryanhild.collada.data.ColladaDocument;
 import net.dryanhild.collada.spi.ColladaLoaderService;
 import net.dryanhild.collada.spi.ParsingContext;

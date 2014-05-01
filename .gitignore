@@ -13,3 +13,5 @@ target
 */nb-configuration.xml
 .gradle
 .idea
+*/build
+*/out
