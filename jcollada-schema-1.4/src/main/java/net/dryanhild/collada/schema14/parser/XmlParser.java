@@ -22,20 +22,10 @@
 
 package net.dryanhild.collada.schema14.parser;
 
-import net.dryanhild.collada.schema14.ColladaDocument14;
 import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
 
-public class DocumentParser extends AbstractParser<ColladaDocument14> {
-    @Override
-    protected String getExpectedTag() {
-        return "COLLADA";
-    }
+public interface XmlParser<OutputType> {
 
-    protected ColladaDocument14 parseImpl(XmlPullParser parser) {
-        ColladaDocument14 document = new ColladaDocument14();
-
-
-
-        return document;
-    }
+    OutputType parse(XmlPullParser parser) throws XmlPullParserException;
 }

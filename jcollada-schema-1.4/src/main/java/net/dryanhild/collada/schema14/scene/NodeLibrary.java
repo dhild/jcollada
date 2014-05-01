@@ -22,19 +22,18 @@
 
 package net.dryanhild.collada.schema14.scene;
 
+import com.google.common.collect.ImmutableList;
+import net.dryanhild.collada.IncorrectFormatException;
+import net.dryanhild.collada.NoSuchElementIdException;
+import net.dryanhild.collada.data.Library;
+import net.dryanhild.collada.schema14.scene.data.NodeResult;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import net.dryanhild.collada.IncorrectFormatException;
-import net.dryanhild.collada.NoSuchElementIdException;
-import net.dryanhild.collada.data.Library;
-import net.dryanhild.collada.schema14.scene.data.NodeResult;
-
-import com.google.common.collect.ImmutableList;
 
 public class NodeLibrary implements Library<NodeResult> {
 
@@ -46,7 +45,6 @@ public class NodeLibrary implements Library<NodeResult> {
         topNodes = new ArrayList<>();
     }
 
-    @Override
     public void add(NodeResult node) {
         addToIds(node);
         topNodes.add(node);

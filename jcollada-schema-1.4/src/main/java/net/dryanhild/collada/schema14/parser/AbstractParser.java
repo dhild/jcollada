@@ -22,20 +22,32 @@
 
 package net.dryanhild.collada.schema14.parser;
 
-import net.dryanhild.collada.schema14.ColladaDocument14;
+import com.google.common.base.Preconditions;
 import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
 
-public class DocumentParser extends AbstractParser<ColladaDocument14> {
-    @Override
-    protected String getExpectedTag() {
-        return "COLLADA";
+public abstract class AbstractParser<OutputType> implements XmlParser<OutputType> {
+
+    protected int getExpectedEventType() {
+        return XmlPullParser.START_TAG;
     }
 
-    protected ColladaDocument14 parseImpl(XmlPullParser parser) {
-        ColladaDocument14 document = new ColladaDocument14();
+    protected abstract String getExpectedTag();
 
+    protected void validate(XmlPullParser parser) throws XmlPullParserException {
+        Preconditions.checkState(parser.getEventType() == getExpectedEventType());
+        Preconditions.checkState(parser.getName().equals(getExpectedTag()));
 
-
-        return document;
+        validateImpl(parser);
     }
+
+    protected void validateImpl(XmlPullParser parser) throws XmlPullParserException {
+    }
+
+    public final OutputType parse(XmlPullParser parser) throws XmlPullParserException {
+        validate(parser);
+        return parseImpl(parser);
+    }
+
+    protected abstract OutputType parseImpl(XmlPullParser parser) throws XmlPullParserException;
 }
