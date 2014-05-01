@@ -1,4 +1,5 @@
 *~
+*.iml
 .project
 .settings
 */target
@@ -9,3 +10,8 @@
 */test-output
 target
 /settings.xml
+*/nb-configuration.xml
+.gradle
+.idea
+*/build
+*/out
