@@ -1,4 +1,5 @@
 *~
+*.iml
 .project
 .settings
 */target
@@ -11,3 +12,4 @@ target
 /settings.xml
 */nb-configuration.xml
 .gradle
+.idea
