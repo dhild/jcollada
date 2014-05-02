@@ -22,15 +22,15 @@
 
 package net.dryanhild.collada;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
-import java.util.Collection;
-
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Collection;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ColladaLoaderTests {
 
@@ -45,34 +45,34 @@ public class ColladaLoaderTests {
 
     @DataProvider
     public Object[][] flagConfigurations() {
-        return new Object[][] { //
-        //
-                { Boolean.FALSE }, //
-                { Boolean.TRUE }, //
+        return new Object[][]{ //
+                //
+                {Boolean.FALSE}, //
+                {Boolean.TRUE}, //
         };
     }
 
     @Test(dataProvider = "flagConfigurations")
-    public void loadReader(boolean validate) {
+    public void loadReader(boolean validate) throws IOException {
         ColladaLoader loader = createLoader(validate);
 
-        Reader reader = new StringReader(ColladaLoaderServiceImpl.TEST_BASIC_FILE);
+        InputStream reader = new ByteArrayInputStream(ColladaLoaderServiceImpl.TEST_BASIC_FILE.getBytes());
         loader.load(reader);
 
         checkLoadContext(validate);
     }
 
     @Test(expectedExceptions = IncorrectFormatException.class)
-    public void loadNonImplementedLoader() {
+    public void loadNonImplementedLoader() throws IOException {
         ColladaLoader loader = new ColladaLoader();
 
-        Reader reader = new StringReader("Bad input.");
+        InputStream reader = new ByteArrayInputStream("Bad input.".getBytes());
         loader.load(reader);
     }
 
     @Test
     public void ioExceptionInHeaderRead() throws IOException {
-        Reader reader = new ErrorOnReadReader();
+        InputStream reader = new ErrorOnReadReader();
         ColladaLoader loader = new ColladaLoader();
         try {
             loader.load(reader);
@@ -86,7 +86,7 @@ public class ColladaLoaderTests {
 
     @Test
     public void ioExceptionInClose() throws IOException {
-        Reader reader = new ErrorOnCloseReader();
+        InputStream reader = new ErrorOnCloseReader();
         ColladaLoader loader = new ColladaLoader();
         try {
             loader.load(reader);
@@ -98,20 +98,16 @@ public class ColladaLoaderTests {
         }
     }
 
-    private class ErrorOnReadReader extends Reader {
+    private class ErrorOnReadReader extends InputStream {
         @Override
-        public void close() throws IOException {
-            // Doesn't matter here.
-        }
-
-        @Override
-        public int read(char[] cbuf, int off, int len) throws IOException {
+        public int read() throws IOException {
             throw new IOException();
         }
     }
 
-    private class ErrorOnCloseReader extends Reader {
-        private final StringReader reader = new StringReader(ColladaLoaderServiceImpl.TEST_BASIC_FILE);
+    private class ErrorOnCloseReader extends InputStream {
+        private final InputStream reader =
+                new ByteArrayInputStream(ColladaLoaderServiceImpl.TEST_BASIC_FILE.getBytes());
 
         @Override
         public void close() throws IOException {
@@ -119,8 +115,8 @@ public class ColladaLoaderTests {
         }
 
         @Override
-        public int read(char[] cbuf, int off, int len) throws IOException {
-            return reader.read(cbuf, off, len);
+        public int read() throws IOException {
+            return reader.read();
         }
 
     }
@@ -133,6 +129,6 @@ public class ColladaLoaderTests {
 
     private void checkLoadContext(boolean validate) {
         assert ColladaLoaderServiceImpl.lastContext.isValidating() == validate;
-        assert ColladaLoaderServiceImpl.lastContext.getMainFileReader() != null;
+        assert ColladaLoaderServiceImpl.lastContext.getMainFileInputStream() != null;
     }
 }
