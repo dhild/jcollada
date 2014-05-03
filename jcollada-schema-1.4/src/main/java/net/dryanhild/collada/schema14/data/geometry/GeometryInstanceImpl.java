@@ -19,17 +19,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package net.dryanhild.collada.data;
 
-import java.net.URI;
-import java.util.List;
+package net.dryanhild.collada.schema14.data.geometry;
 
-public interface Library<LibraryType extends AddressableType> {
+import net.dryanhild.collada.data.fx.Material;
+import net.dryanhild.collada.data.geometry.GeometryInstance;
+import net.dryanhild.collada.schema14.data.SoftReference;
 
-    List<LibraryType> getAll();
+public class GeometryInstanceImpl extends SoftReference<GeometryInstance> {
 
-    LibraryType get(String id);
+    public static GeometryInstance createSoftReference(String url) {
+        return createSoftReferenceImpl(GeometryInstance.class, new GeometryInstanceImpl(url));
+    }
 
-    LibraryType get(URI uri);
+    private Material material;
 
+    protected GeometryInstanceImpl(String url) {
+        super(url);
+    }
+
+    public boolean hasMaterial() {
+        return material == null;
+    }
+
+    public Material getMaterial() {
+        return material;
+    }
 }

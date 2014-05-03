@@ -20,9 +20,10 @@
  * THE SOFTWARE.
  */
 
-package net.dryanhild.collada.schema14.structure;
+package net.dryanhild.collada.schema14.parser;
 
-import net.dryanhild.collada.schema14.parser.AbstractParser;
+import net.dryanhild.collada.schema14.data.ColladaDocument14;
+import net.dryanhild.collada.schema14.parser.scene.NodeLibraryParser;
 import org.jvnet.hk2.annotations.Service;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -37,11 +38,11 @@ public class DocumentParser extends AbstractParser<ColladaDocument14> {
     private NodeLibraryParser nodeLibraryParser;
 
     @Override
-    protected String getExpectedTag() {
+    public String getExpectedTag() {
         return "COLLADA";
     }
 
-    protected ColladaDocument14 parseImpl(XmlPullParser parser) throws IOException, XmlPullParserException {
+    protected ColladaDocument14 createObject(XmlPullParser parser) throws IOException, XmlPullParserException {
         skipUntil(parser, nodeLibraryParser.getExpectedTag());
         ColladaDocument14 document = new ColladaDocument14();
 

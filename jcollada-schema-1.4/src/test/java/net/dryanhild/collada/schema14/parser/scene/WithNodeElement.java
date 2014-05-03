@@ -20,11 +20,12 @@
  * THE SOFTWARE.
  */
 
-package net.dryanhild.collada.schema14.structure;
+package net.dryanhild.collada.schema14.parser.scene;
 
 import net.dryanhild.collada.data.scene.Node;
 import net.dryanhild.collada.data.scene.NodeType;
 import net.dryanhild.collada.schema14.parser.BaseParserTest;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -38,6 +39,8 @@ public class WithNodeElement extends BaseParserTest {
     @Inject
     private NodeParser nodeParser;
 
+    private Node node;
+
     @Override
     protected String getDataString() {
         return "<node id=\"CylinderId\" name=\"Cylinder\" type=\"NODE\">\n" +
@@ -46,24 +49,38 @@ public class WithNodeElement extends BaseParserTest {
                 "      </node>";
     }
 
-    @Test
-    public void nameIsCorrect() throws IOException, XmlPullParserException {
-        Node node = nodeParser.parse(xmlPullParser);
+    @BeforeMethod
+    public void setNode() throws IOException, XmlPullParserException {
+        node = nodeParser.parse(xmlPullParser);
+    }
 
+    @Test
+    public void nameIsCorrect(){
         assertThat(node.getName()).isEqualTo("Cylinder");
     }
 
     @Test
-    public void idIsCorrect() throws IOException, XmlPullParserException {
-        Node node = nodeParser.parse(xmlPullParser);
-
+    public void idIsCorrect() {
         assertThat(node.getId()).isEqualTo("CylinderId");
     }
 
     @Test
-    public void typeIsCorrect() throws IOException, XmlPullParserException {
-        Node node = nodeParser.parse(xmlPullParser);
-
+    public void typeIsCorrect() {
         assertThat(node.getType()).isEqualTo(NodeType.NODE);
+    }
+
+    @Test
+    public void oneTransformExists() {
+        assertThat(node.getTransforms()).hasSize(1);
+    }
+
+    @Test
+    public void oneGeometryExists() {
+        assertThat(node.getGeometries()).hasSize(1);
+    }
+
+    @Test
+    public void noChildrenExist() {
+        assertThat(node.getChildren()).isEmpty();
     }
 }

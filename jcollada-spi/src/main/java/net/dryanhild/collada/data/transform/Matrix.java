@@ -22,7 +22,7 @@
 
 package net.dryanhild.collada.data.transform;
 
-public interface Matrix {
+public interface Matrix extends Transform {
 
     float[] getValues();
 

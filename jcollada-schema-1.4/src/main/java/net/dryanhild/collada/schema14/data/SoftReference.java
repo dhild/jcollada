@@ -20,40 +20,34 @@
  * THE SOFTWARE.
  */
 
-package net.dryanhild.collada.schema14;
+package net.dryanhild.collada.schema14.data;
 
-import net.dryanhild.collada.schema14.parser.DocumentParser;
-import net.dryanhild.collada.schema14.parser.XmlParser;
-import net.dryanhild.collada.schema14.data.ColladaDocument14;
-import org.glassfish.hk2.api.ServiceLocator;
-import org.glassfish.hk2.api.ServiceLocatorFactory;
-import org.glassfish.hk2.utilities.ServiceLocatorUtilities;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 
-public class ColladaServiceRegistry {
+public class SoftReference<ReferenceType> implements InvocationHandler {
 
-    public static final String SERVICE_NAME = "JCollada-Schema-1.4";
-
-    private final ServiceLocator locator;
-
-    public ColladaServiceRegistry() {
-        locator = getLocator();
+    public static <ReferenceType> ReferenceType createSoftReference(String url, Class<ReferenceType> typeClass) {
+        return createSoftReferenceImpl(typeClass, new SoftReference<ReferenceType>(url));
     }
 
-    private static synchronized ServiceLocator getLocator() {
-        ServiceLocatorFactory factory = ServiceLocatorFactory.getInstance();
-
-        if (factory.find(SERVICE_NAME) != null) {
-            return factory.find(SERVICE_NAME);
-        }
-
-        ServiceLocator locator = ServiceLocatorUtilities.createAndPopulateServiceLocator(SERVICE_NAME);
-        ServiceLocatorUtilities.enablePerThreadScope(locator);
-
-        return locator;
+    protected static <ReferenceType> ReferenceType createSoftReferenceImpl(Class<ReferenceType> typeClass, SoftReference<ReferenceType> ref) {
+        InvocationHandler handler = ref;
+        ClassLoader loader = typeClass.getClassLoader();
+        Object proxyObject = Proxy.newProxyInstance(loader, new Class<?>[]{typeClass}, handler);
+        return typeClass.cast(proxyObject);
     }
 
-    public XmlParser<ColladaDocument14> getParser() {
-        return locator.getService(DocumentParser.class);
+    protected String url;
+
+    protected SoftReference(String url) {
+        this.url = url;
     }
 
+    @Override
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        // TODO: Translate the url into a hard reference.
+        throw new UnsupportedOperationException("Reference resolutions are not yet supported!");
+    }
 }

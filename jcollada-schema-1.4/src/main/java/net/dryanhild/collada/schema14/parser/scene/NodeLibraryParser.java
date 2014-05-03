@@ -20,64 +20,39 @@
  * THE SOFTWARE.
  */
 
-package net.dryanhild.collada.schema14.structure;
+package net.dryanhild.collada.schema14.parser.scene;
 
 import com.google.common.collect.Lists;
-import net.dryanhild.collada.data.geometry.Geometry;
 import net.dryanhild.collada.data.scene.Node;
-import net.dryanhild.collada.data.scene.NodeType;
-import net.dryanhild.collada.data.transform.Transform;
+import net.dryanhild.collada.schema14.parser.AbstractParser;
+import org.jvnet.hk2.annotations.Service;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
 
+import javax.inject.Inject;
+import java.io.IOException;
 import java.util.List;
 
-public class NodeImpl implements Node {
+@Service
+public class NodeLibraryParser extends AbstractParser<List<Node>> {
 
-    private String name;
-    private String id;
-    private NodeType type;
-    private final List<NodeImpl> children = Lists.newArrayList();
-    private final List<Geometry> geometries = Lists.newArrayList();
-    private final List<Transform> transforms = Lists.newArrayList();
+    @Inject
+    private NodeParser nodeParser;
 
     @Override
-    public String getName() {
-        return null;
+    public String getExpectedTag() {
+        return "library_nodes";
     }
 
     @Override
-    public String getId() {
-        return null;
-    }
+    protected List<Node> createObject(XmlPullParser parser) throws XmlPullParserException, IOException {
+        skipUntil(parser, nodeParser.getExpectedTag());
+        List<Node> nodes = Lists.newArrayList();
 
-    @Override
-    public NodeType getType() {
-        return null;
-    }
+        while (parser.getName().equals(nodeParser.getExpectedTag())) {
+            nodes.add(nodeParser.parse(parser));
+        }
 
-    @Override
-    public List<Node> getChildren() {
-        return null;
-    }
-
-    @Override
-    public List<Geometry> getGeometries() {
-        return null;
-    }
-
-    @Override
-    public List<Transform> getTransforms() {
-        return null;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public void setType(NodeType type) {
-        this.type = type;
+        return nodes;
     }
 }

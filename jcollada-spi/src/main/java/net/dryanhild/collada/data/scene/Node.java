@@ -22,10 +22,11 @@
 
 package net.dryanhild.collada.data.scene;
 
-import java.util.List;
 import net.dryanhild.collada.data.AddressableType;
-import net.dryanhild.collada.data.geometry.Geometry;
+import net.dryanhild.collada.data.geometry.GeometryInstance;
 import net.dryanhild.collada.data.transform.Transform;
+
+import java.util.List;
 
 public interface Node extends AddressableType {
 
@@ -38,7 +39,7 @@ public interface Node extends AddressableType {
 
     List<Node> getChildren();
 
-    List<Geometry> getGeometries();
+    List<GeometryInstance> getGeometries();
 
     List<Transform> getTransforms();
 

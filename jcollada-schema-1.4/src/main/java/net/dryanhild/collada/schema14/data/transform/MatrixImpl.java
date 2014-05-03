@@ -20,40 +20,28 @@
  * THE SOFTWARE.
  */
 
-package net.dryanhild.collada.schema14;
+package net.dryanhild.collada.schema14.data.transform;
 
-import net.dryanhild.collada.schema14.parser.DocumentParser;
-import net.dryanhild.collada.schema14.parser.XmlParser;
-import net.dryanhild.collada.schema14.data.ColladaDocument14;
-import org.glassfish.hk2.api.ServiceLocator;
-import org.glassfish.hk2.api.ServiceLocatorFactory;
-import org.glassfish.hk2.utilities.ServiceLocatorUtilities;
+import net.dryanhild.collada.data.transform.Matrix;
 
-public class ColladaServiceRegistry {
+import java.nio.FloatBuffer;
 
-    public static final String SERVICE_NAME = "JCollada-Schema-1.4";
+public class MatrixImpl implements Matrix {
 
-    private final ServiceLocator locator;
+    private final float[] values = new float[16];
 
-    public ColladaServiceRegistry() {
-        locator = getLocator();
+    @Override
+    public float[] getValues() {
+        return values;
     }
 
-    private static synchronized ServiceLocator getLocator() {
-        ServiceLocatorFactory factory = ServiceLocatorFactory.getInstance();
-
-        if (factory.find(SERVICE_NAME) != null) {
-            return factory.find(SERVICE_NAME);
-        }
-
-        ServiceLocator locator = ServiceLocatorUtilities.createAndPopulateServiceLocator(SERVICE_NAME);
-        ServiceLocatorUtilities.enablePerThreadScope(locator);
-
-        return locator;
+    @Override
+    public Matrix toMatrix() {
+        return this;
     }
 
-    public XmlParser<ColladaDocument14> getParser() {
-        return locator.getService(DocumentParser.class);
+    @Override
+    public void putAsColumnMatrix(FloatBuffer buffer) {
+        buffer.put(values);
     }
-
 }

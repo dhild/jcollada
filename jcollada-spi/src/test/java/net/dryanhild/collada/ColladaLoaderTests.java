@@ -30,8 +30,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 public class ColladaLoaderTests {
 
     @Test
@@ -70,32 +68,18 @@ public class ColladaLoaderTests {
         loader.load(reader);
     }
 
-    @Test
+    @Test(expectedExceptions = IOException.class)
     public void ioExceptionInHeaderRead() throws IOException {
         InputStream reader = new ErrorOnReadReader();
         ColladaLoader loader = new ColladaLoader();
-        try {
-            loader.load(reader);
-
-            assert false : "Expected an IOException to be thrown!";
-        } catch (ParsingException e) {
-            assertThat(e).hasMessageContaining("while reading");
-            assertThat(e).hasCauseInstanceOf(IOException.class);
-        }
+        loader.load(reader);
     }
 
-    @Test
+    @Test(expectedExceptions = IOException.class)
     public void ioExceptionInClose() throws IOException {
         InputStream reader = new ErrorOnCloseReader();
         ColladaLoader loader = new ColladaLoader();
-        try {
-            loader.load(reader);
-
-            assert false : "Expected an IOException to be thrown!";
-        } catch (ParsingException e) {
-            assertThat(e).hasMessageContaining("while closing");
-            assertThat(e).hasCauseInstanceOf(IOException.class);
-        }
+        loader.load(reader);
     }
 
     private class ErrorOnReadReader extends InputStream {

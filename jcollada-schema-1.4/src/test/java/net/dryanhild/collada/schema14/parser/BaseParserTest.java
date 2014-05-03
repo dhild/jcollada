@@ -31,7 +31,7 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import java.io.IOException;
 import java.io.StringReader;
 
-@HK2
+@HK2(enablePerThread = true)
 public abstract class BaseParserTest {
 
     protected abstract String getDataString();

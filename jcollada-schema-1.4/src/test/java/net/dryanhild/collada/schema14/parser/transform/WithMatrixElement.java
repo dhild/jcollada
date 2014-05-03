@@ -20,39 +20,39 @@
  * THE SOFTWARE.
  */
 
-package net.dryanhild.collada.schema14.structure;
+package net.dryanhild.collada.schema14.parser.transform;
 
-import com.google.common.collect.Lists;
-import net.dryanhild.collada.data.scene.Node;
-import net.dryanhild.collada.schema14.parser.AbstractParser;
-import org.jvnet.hk2.annotations.Service;
-import org.xmlpull.v1.XmlPullParser;
+import net.dryanhild.collada.data.transform.Matrix;
+import net.dryanhild.collada.schema14.parser.BaseParserTest;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 import org.xmlpull.v1.XmlPullParserException;
 
 import javax.inject.Inject;
 import java.io.IOException;
-import java.util.List;
 
-@Service
-public class NodeLibraryParser extends AbstractParser<List<Node>> {
+import static org.assertj.core.api.Assertions.assertThat;
+
+public class WithMatrixElement extends BaseParserTest {
 
     @Inject
-    private NodeParser nodeParser;
+    private MatrixParser matrixParser;
+
+    private Matrix matrix;
 
     @Override
-    protected String getExpectedTag() {
-        return "library_nodes";
+    protected String getDataString() {
+        return "<matrix sid=\"transform\">1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16</matrix>";
     }
 
-    @Override
-    protected List<Node> parseImpl(XmlPullParser parser) throws XmlPullParserException, IOException {
-        skipUntil(parser, nodeParser.getExpectedTag());
-        List<Node> nodes = Lists.newArrayList();
-
-        while (parser.getName().equals(nodeParser.getExpectedTag())) {
-            nodes.add(nodeParser.parse(parser));
-        }
-
-        return nodes;
+    @BeforeMethod
+    public void setNode() throws IOException, XmlPullParserException {
+        matrix = matrixParser.parse(xmlPullParser);
     }
+
+    @Test
+    public void matrixHasCorrectValues() {
+        assertThat(matrix.getValues()).containsExactly(1, 5, 9, 13, 2, 6, 10, 14, 3, 7, 11, 15, 4, 8, 12, 16);
+    }
+
 }

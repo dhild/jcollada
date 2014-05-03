@@ -1,6 +1,14 @@
-[net.dryanhild.collada.schema14.structure.DocumentParser]S
+#
+# Generated on Sat May 03 15:17:31 MDT 2014 by hk2-inhabitant-generator
+#
 
-[net.dryanhild.collada.schema14.structure.NodeLibraryParser]S
+[net.dryanhild.collada.schema14.parser.DocumentParser]S
 
-[net.dryanhild.collada.schema14.structure.NodeParser]S
+[net.dryanhild.collada.schema14.parser.geometry.GeometryInstanceParser]S
+
+[net.dryanhild.collada.schema14.parser.scene.NodeLibraryParser]S
+
+[net.dryanhild.collada.schema14.parser.scene.NodeParser]S
+
+[net.dryanhild.collada.schema14.parser.transform.MatrixParser]S
 

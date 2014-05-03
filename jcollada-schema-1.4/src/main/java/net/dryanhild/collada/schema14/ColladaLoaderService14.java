@@ -27,7 +27,7 @@ import net.dryanhild.collada.ParsingException;
 import net.dryanhild.collada.VersionSupport;
 import net.dryanhild.collada.data.ColladaDocument;
 import net.dryanhild.collada.schema14.parser.XmlParser;
-import net.dryanhild.collada.schema14.structure.ColladaDocument14;
+import net.dryanhild.collada.schema14.data.ColladaDocument14;
 import net.dryanhild.collada.spi.ColladaLoaderService;
 import net.dryanhild.collada.spi.ParsingContext;
 import org.xmlpull.v1.XmlPullParser;

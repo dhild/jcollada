@@ -20,30 +20,33 @@
  * THE SOFTWARE.
  */
 
-package net.dryanhild.collada.schema14.structure;
+package net.dryanhild.collada.schema14.parser.geometry;
 
-import net.dryanhild.collada.data.scene.Node;
+import net.dryanhild.collada.data.geometry.GeometryInstance;
+import net.dryanhild.collada.schema14.data.geometry.GeometryInstanceImpl;
 import net.dryanhild.collada.schema14.parser.AbstractParser;
-import org.glassfish.hk2.api.PerThread;
 import org.jvnet.hk2.annotations.Service;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 @Service
-@PerThread
-public class NodeParser extends AbstractParser<Node> {
-
-
+public class GeometryInstanceParser extends AbstractParser<GeometryInstance> {
 
     @Override
-    protected String getExpectedTag() {
-        return "node";
+    public String getExpectedTag() {
+        return "instance_geometry";
     }
 
     @Override
-    protected Node parseImpl(XmlPullParser parser) throws XmlPullParserException {
-        NodeImpl node = new NodeImpl();
+    protected GeometryInstance createObject(XmlPullParser parser) throws XmlPullParserException {
+        return setAttributes(parser, null);
+    }
 
-        return node;
+    @Override
+    protected GeometryInstance handleAttribute(GeometryInstance object, String attribute, String value) {
+        if (attribute.equals("url")) {
+            return GeometryInstanceImpl.createSoftReference(value);
+        }
+        return object;
     }
 }

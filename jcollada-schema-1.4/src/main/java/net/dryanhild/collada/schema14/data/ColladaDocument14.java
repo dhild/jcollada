@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  */
 
-package net.dryanhild.collada.schema14.structure;
+package net.dryanhild.collada.schema14.data;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
