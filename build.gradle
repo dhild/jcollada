@@ -25,10 +25,10 @@ task wrapper(type: Wrapper) {
 }
 
 subprojects {
+    apply plugin: 'project-report'
     apply plugin: 'java'
     apply plugin: 'checkstyle'
 //    apply plugin: 'findbugs'
-    apply plugin: 'jdepend'
     apply plugin: 'jacoco'
 
     sourceCompatibility = '1.7'
