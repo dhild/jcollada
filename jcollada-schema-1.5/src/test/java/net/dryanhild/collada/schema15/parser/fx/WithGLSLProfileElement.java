@@ -1,11 +1,11 @@
-package net.dryanhild.collada.schema15.parser.fx;
+package net.dryanhild.collada.schema14.parser.fx;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import net.dryanhild.collada.data.fx.glsl.FloatUniformType;
 import net.dryanhild.collada.data.fx.glsl.ParamType;
 import net.dryanhild.collada.data.fx.glsl.ShaderProgram;
 import net.dryanhild.collada.data.fx.glsl.ShaderStage;
-import net.dryanhild.collada.schema15.data.fx.glsl.Sampler2DUniform;
+import net.dryanhild.collada.schema14.data.fx.glsl.Sampler2DUniform;
 
 import org.apache.xmlbeans.XmlException;
 import org.collada.x2008.x03.colladaSchema.ProfileGlslType;

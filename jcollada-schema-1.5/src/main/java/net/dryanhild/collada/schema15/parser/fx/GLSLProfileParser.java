@@ -1,4 +1,4 @@
-package net.dryanhild.collada.schema15.parser.fx;
+package net.dryanhild.collada.schema14.parser.fx;
 
 import java.util.List;
 import java.util.Map;
@@ -10,10 +10,10 @@ import net.dryanhild.collada.data.fx.Sampler;
 import net.dryanhild.collada.data.fx.glsl.ShaderProgram;
 import net.dryanhild.collada.data.fx.glsl.ShaderStage;
 import net.dryanhild.collada.data.fx.glsl.UniformType;
-import net.dryanhild.collada.schema15.data.fx.glsl.FloatUniform;
-import net.dryanhild.collada.schema15.data.fx.glsl.Sampler2DUniform;
-import net.dryanhild.collada.schema15.data.fx.glsl.ShaderProgramImpl;
-import net.dryanhild.collada.schema15.parser.AbstractParser;
+import net.dryanhild.collada.schema14.data.fx.glsl.FloatUniform;
+import net.dryanhild.collada.schema14.data.fx.glsl.Sampler2DUniform;
+import net.dryanhild.collada.schema14.data.fx.glsl.ShaderProgramImpl;
+import net.dryanhild.collada.schema14.parser.AbstractParser;
 
 import org.collada.x2008.x03.colladaSchema.FxCodeType;
 import org.collada.x2008.x03.colladaSchema.FxPipelineStageEnum;

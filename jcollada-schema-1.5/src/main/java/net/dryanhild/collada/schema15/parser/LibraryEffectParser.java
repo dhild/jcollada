@@ -1,10 +1,10 @@
-package net.dryanhild.collada.schema15.parser;
+package net.dryanhild.collada.schema14.parser;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import net.dryanhild.collada.data.fx.Effect;
-import net.dryanhild.collada.schema15.ColladaDocument15;
+import net.dryanhild.collada.schema14.ColladaDocument15;
 
 import org.collada.x2008.x03.colladaSchema.EffectType;
 import org.collada.x2008.x03.colladaSchema.LibraryEffectsType;

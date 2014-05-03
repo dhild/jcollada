@@ -1,4 +1,4 @@
-package net.dryanhild.collada.schema15;
+package net.dryanhild.collada.schema14;
 
 import java.util.Collections;
 import java.util.List;

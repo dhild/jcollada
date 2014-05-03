@@ -20,9 +20,35 @@
  * THE SOFTWARE.
  */
 
+configurations {
+    hk2Generator {
+        extendsFrom compile
+    }
+}
+
 dependencies {
     compile project(':jcollada-spi')
 
-    compile "xmlpull:xmlpull:1.1.3.1"
-    runtime "org.codehaus.woodstox:woodstox-core-asl:4.3.0"
+    compile "xmlpull:xmlpull:${xmlpullVersion}"
+    compile "org.glassfish.hk2:hk2:${hk2Version}"
+
+    hk2Generator "org.glassfish.hk2:hk2-inhabitant-generator:${hk2Version}"
+
+    runtime "org.codehaus.woodstox:woodstox-core-asl:${woodstoxVersion}"
 }
+
+task (generateHK2, type: JavaExec) {
+    outputs.dir (sourceSets.main.output.resourcesDir.path  + "/META-INF/hk2-locator")
+    inputs.dir sourceSets.main.output.classesDir
+    dependsOn compileJava, processResources
+
+    classpath configurations.hk2Generator.asPath
+
+    args "--locator", "JCollada-Schema-1.4",
+         "--directory", sourceSets.main.output.resourcesDir.path + "/META-INF/hk2-locator",
+         "--file", sourceSets.main.output.classesDir.path
+
+    main "org.jvnet.hk2.generator.HabitatGenerator"
+}
+
+jar.dependsOn generateHK2

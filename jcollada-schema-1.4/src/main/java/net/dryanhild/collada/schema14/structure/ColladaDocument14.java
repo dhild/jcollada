@@ -20,8 +20,11 @@
  * THE SOFTWARE.
  */
 
-package net.dryanhild.collada.schema14;
+package net.dryanhild.collada.schema14.structure;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import net.dryanhild.collada.NoSuchElementIdException;
 import net.dryanhild.collada.data.ColladaDocument;
 import net.dryanhild.collada.data.fx.Effect;
 import net.dryanhild.collada.data.fx.Material;
@@ -29,7 +32,14 @@ import net.dryanhild.collada.data.geometry.Geometry;
 import net.dryanhild.collada.data.scene.Node;
 import net.dryanhild.collada.data.scene.VisualScene;
 
+import java.util.List;
+import java.util.Set;
+
 public class ColladaDocument14 implements ColladaDocument {
+
+    private final Set<String> documentLocations = Sets.newHashSet();
+
+    private final List<Node> nodes = Lists.newArrayList();
 
     private VisualScene mainScene;
 
@@ -43,7 +53,12 @@ public class ColladaDocument14 implements ColladaDocument {
 
     @Override
     public Node getNode(String id) {
-        return null;
+        for (Node node : nodes) {
+            if (node.getId().equals(id)) {
+                return node;
+            }
+        }
+        throw new NoSuchElementIdException("Could not find node " + id);
     }
 
     @Override
@@ -78,7 +93,7 @@ public class ColladaDocument14 implements ColladaDocument {
 
     @Override
     public Iterable<Node> getNodes() {
-        return null;
+        return nodes;
     }
 
     @Override
@@ -93,6 +108,11 @@ public class ColladaDocument14 implements ColladaDocument {
     @Override
     public VisualScene getMainScene() {
         return mainScene;
+    }
+
+
+    public void addNode(Node node) {
+        nodes.add(node);
     }
 
 }

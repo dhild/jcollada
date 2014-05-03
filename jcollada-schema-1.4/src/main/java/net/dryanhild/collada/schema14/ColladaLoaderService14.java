@@ -26,13 +26,15 @@ import com.google.common.collect.ImmutableList;
 import net.dryanhild.collada.ParsingException;
 import net.dryanhild.collada.VersionSupport;
 import net.dryanhild.collada.data.ColladaDocument;
-import net.dryanhild.collada.schema14.parser.DocumentParser;
+import net.dryanhild.collada.schema14.parser.XmlParser;
+import net.dryanhild.collada.schema14.structure.ColladaDocument14;
 import net.dryanhild.collada.spi.ColladaLoaderService;
 import net.dryanhild.collada.spi.ParsingContext;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.Collection;
@@ -46,7 +48,7 @@ public class ColladaLoaderService14 implements ColladaLoaderService {
     private static final Pattern VERSION_PATTERN = Pattern.compile(
             ".*COLLADA[^>]+version\\s?=\\s?\\\"1\\.4\\.[01]\\\".*", Pattern.DOTALL);
 
-    private DocumentParser documentParser = new DocumentParser();
+    private ColladaServiceRegistry serviceRegistry = new ColladaServiceRegistry();
 
     @Override
     public Collection<VersionSupport> getColladaVersions() {
@@ -59,7 +61,7 @@ public class ColladaLoaderService14 implements ColladaLoaderService {
     }
 
     @Override
-    public ColladaDocument load(ParsingContext context) {
+    public ColladaDocument load(ParsingContext context) throws IOException {
         try {
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
             factory.setNamespaceAware(true);
@@ -68,7 +70,8 @@ public class ColladaLoaderService14 implements ColladaLoaderService {
             Reader reader = new InputStreamReader(context.getMainFileInputStream(), context.getCharset());
             parser.setInput(reader);
 
-            return documentParser.parse(parser);
+            XmlParser<ColladaDocument14> xmlParser = serviceRegistry.getParser();
+            return xmlParser.parse(parser);
         } catch (XmlPullParserException e) {
             throw new ParsingException("Unable to parse document!", e);
         }

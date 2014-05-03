@@ -20,4 +20,4 @@
 # THE SOFTWARE.
 #
 
-net.dryanhild.collada.schema15.ColladaLoaderService15
+schema14.ColladaLoaderService15

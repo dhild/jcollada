@@ -26,6 +26,7 @@ import net.dryanhild.collada.VersionSupport;
 import net.dryanhild.collada.data.ColladaDocument;
 
 import javax.validation.constraints.NotNull;
+import java.io.IOException;
 import java.util.Collection;
 
 public interface ColladaLoaderService {
@@ -34,6 +35,6 @@ public interface ColladaLoaderService {
 
     boolean canLoad(@NotNull CharSequence header);
 
-    ColladaDocument load(@NotNull ParsingContext context);
+    ColladaDocument load(@NotNull ParsingContext context) throws IOException;
 
 }

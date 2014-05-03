@@ -22,6 +22,7 @@
 
 package net.dryanhild.collada.spi;
 
+import javax.validation.constraints.NotNull;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 

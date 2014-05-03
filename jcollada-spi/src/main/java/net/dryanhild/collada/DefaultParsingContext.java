@@ -22,6 +22,7 @@
 
 package net.dryanhild.collada;
 
+import com.google.common.collect.Maps;
 import net.dryanhild.collada.spi.ParsingContext;
 
 import java.io.BufferedInputStream;
@@ -29,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
 public class DefaultParsingContext implements ParsingContext {
 

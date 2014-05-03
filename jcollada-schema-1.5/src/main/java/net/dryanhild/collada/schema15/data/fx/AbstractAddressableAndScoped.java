@@ -1,7 +1,7 @@
-package net.dryanhild.collada.schema15.data.fx;
+package net.dryanhild.collada.schema14.data.fx;
 
 import net.dryanhild.collada.data.ScopeAddressableType;
-import net.dryanhild.collada.schema15.data.AbstractAddressable;
+import net.dryanhild.collada.schema14.data.AbstractAddressable;
 
 public abstract class AbstractAddressableAndScoped extends AbstractAddressable implements ScopeAddressableType {
 

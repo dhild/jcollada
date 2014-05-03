@@ -1,4 +1,4 @@
-package net.dryanhild.collada.schema15.data.fx.glsl;
+package net.dryanhild.collada.schema14.data.fx.glsl;
 
 import java.util.Map;
 import java.util.Set;
@@ -8,7 +8,7 @@ import net.dryanhild.collada.data.fx.glsl.ParamType;
 import net.dryanhild.collada.data.fx.glsl.ShaderProgram;
 import net.dryanhild.collada.data.fx.glsl.ShaderStage;
 import net.dryanhild.collada.data.fx.glsl.UniformType;
-import net.dryanhild.collada.schema15.data.fx.AbstractAddressableAndScoped;
+import net.dryanhild.collada.schema14.data.fx.AbstractAddressableAndScoped;
 
 import com.google.common.collect.Maps;
 

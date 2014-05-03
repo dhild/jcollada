@@ -20,14 +20,31 @@
  * THE SOFTWARE.
  */
 
-package net.dryanhild.collada.schema14.parser;
+package net.dryanhild.collada.schema14.structure;
 
+import net.dryanhild.collada.schema14.parser.AbstractParser;
+import org.jvnet.hk2.annotations.Service;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
+import javax.inject.Inject;
 import java.io.IOException;
 
-public interface XmlParser<OutputType> {
+@Service
+public class DocumentParser extends AbstractParser<ColladaDocument14> {
 
-    OutputType parse(XmlPullParser parser) throws XmlPullParserException, IOException;
+    @Inject
+    private NodeLibraryParser nodeLibraryParser;
+
+    @Override
+    protected String getExpectedTag() {
+        return "COLLADA";
+    }
+
+    protected ColladaDocument14 parseImpl(XmlPullParser parser) throws IOException, XmlPullParserException {
+        skipUntil(parser, nodeLibraryParser.getExpectedTag());
+        ColladaDocument14 document = new ColladaDocument14();
+
+        return document;
+    }
 }

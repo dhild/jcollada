@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package net.dryanhild.collada.schema15;
+package net.dryanhild.collada.schema14;
 
 import org.glassfish.hk2.api.AnnotationLiteral;
 

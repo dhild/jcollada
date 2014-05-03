@@ -20,14 +20,28 @@
  * THE SOFTWARE.
  */
 
-package net.dryanhild.collada.schema14.parser;
+package net.dryanhild.collada.schema14.structure;
 
+import net.dryanhild.collada.data.scene.Node;
+import net.dryanhild.collada.schema14.parser.AbstractParser;
+import org.jvnet.hk2.annotations.Service;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
-import java.io.IOException;
+@Service
+public class NodeParser extends AbstractParser<Node> {
 
-public interface XmlParser<OutputType> {
 
-    OutputType parse(XmlPullParser parser) throws XmlPullParserException, IOException;
+
+    @Override
+    protected String getExpectedTag() {
+        return "node";
+    }
+
+    @Override
+    protected Node parseImpl(XmlPullParser parser) throws XmlPullParserException {
+        NodeImpl node = new NodeImpl();
+
+        return node;
+    }
 }

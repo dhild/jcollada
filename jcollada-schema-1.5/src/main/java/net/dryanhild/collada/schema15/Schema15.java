@@ -1,4 +1,4 @@
-package net.dryanhild.collada.schema15;
+package net.dryanhild.collada.schema14;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;

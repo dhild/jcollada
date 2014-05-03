@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package net.dryanhild.collada.schema15;
+package net.dryanhild.collada.schema14;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -1,13 +1,13 @@
-package net.dryanhild.collada.schema15.parser.fx;
+package net.dryanhild.collada.schema14.parser.fx;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import net.dryanhild.collada.data.fx.Effect;
 import net.dryanhild.collada.data.fx.glsl.ShaderProgram;
-import net.dryanhild.collada.schema15.data.fx.EffectImpl;
-import net.dryanhild.collada.schema15.parser.AbstractParser;
-import net.dryanhild.collada.schema15.parser.Schema15Parser;
+import net.dryanhild.collada.schema14.data.fx.EffectImpl;
+import net.dryanhild.collada.schema14.parser.AbstractParser;
+import net.dryanhild.collada.schema14.parser.Schema15Parser;
 
 import org.collada.x2008.x03.colladaSchema.EffectType;
 import org.collada.x2008.x03.colladaSchema.ProfileGlslType;

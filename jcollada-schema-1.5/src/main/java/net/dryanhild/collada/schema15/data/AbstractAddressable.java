@@ -1,4 +1,4 @@
-package net.dryanhild.collada.schema15.data;
+package net.dryanhild.collada.schema14.data;
 
 import net.dryanhild.collada.data.AddressableType;
 

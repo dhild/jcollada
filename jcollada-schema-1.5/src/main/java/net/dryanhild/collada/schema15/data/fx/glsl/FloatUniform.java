@@ -1,4 +1,4 @@
-package net.dryanhild.collada.schema15.data.fx.glsl;
+package net.dryanhild.collada.schema14.data.fx.glsl;
 
 import java.nio.ByteBuffer;
 

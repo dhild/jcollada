@@ -20,14 +20,39 @@
  * THE SOFTWARE.
  */
 
-package net.dryanhild.collada.schema14.parser;
+package net.dryanhild.collada.schema14.structure;
 
+import com.google.common.collect.Lists;
+import net.dryanhild.collada.data.scene.Node;
+import net.dryanhild.collada.schema14.parser.AbstractParser;
+import org.jvnet.hk2.annotations.Service;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
+import javax.inject.Inject;
 import java.io.IOException;
+import java.util.List;
 
-public interface XmlParser<OutputType> {
+@Service
+public class NodeLibraryParser extends AbstractParser<List<Node>> {
 
-    OutputType parse(XmlPullParser parser) throws XmlPullParserException, IOException;
+    @Inject
+    private NodeParser nodeParser;
+
+    @Override
+    protected String getExpectedTag() {
+        return "library_nodes";
+    }
+
+    @Override
+    protected List<Node> parseImpl(XmlPullParser parser) throws XmlPullParserException, IOException {
+        skipUntil(parser, nodeParser.getExpectedTag());
+        List<Node> nodes = Lists.newArrayList();
+
+        while (parser.getName().equals(nodeParser.getExpectedTag())) {
+            nodes.add(nodeParser.parse(parser));
+        }
+
+        return nodes;
+    }
 }

@@ -1,10 +1,10 @@
-package net.dryanhild.collada.schema15.data.fx;
+package net.dryanhild.collada.schema14.data.fx;
 
 import java.util.List;
 
 import net.dryanhild.collada.data.fx.Effect;
 import net.dryanhild.collada.data.fx.glsl.ShaderProgram;
-import net.dryanhild.collada.schema15.data.AbstractAddressableNameable;
+import net.dryanhild.collada.schema14.data.AbstractAddressableNameable;
 
 import com.google.common.collect.Lists;
 

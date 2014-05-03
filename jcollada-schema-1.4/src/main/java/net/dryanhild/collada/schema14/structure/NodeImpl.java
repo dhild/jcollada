@@ -20,22 +20,52 @@
  * THE SOFTWARE.
  */
 
-package net.dryanhild.collada.schema14.parser;
+package net.dryanhild.collada.schema14.structure;
 
-import net.dryanhild.collada.schema14.ColladaDocument14;
-import org.xmlpull.v1.XmlPullParser;
+import com.google.common.collect.Lists;
+import net.dryanhild.collada.data.geometry.Geometry;
+import net.dryanhild.collada.data.scene.Node;
+import net.dryanhild.collada.data.scene.NodeType;
+import net.dryanhild.collada.data.transform.Transform;
 
-public class DocumentParser extends AbstractParser<ColladaDocument14> {
+import java.util.List;
+
+public class NodeImpl implements Node{
+
+    private String name;
+    private String id;
+    private NodeType type;
+    private final List<NodeImpl> children = Lists.newArrayList();
+    private final List<Geometry> geometries = Lists.newArrayList();
+    private final List<Transform> transforms = Lists.newArrayList();
+
     @Override
-    protected String getExpectedTag() {
-        return "COLLADA";
+    public String getName() {
+        return null;
     }
 
-    protected ColladaDocument14 parseImpl(XmlPullParser parser) {
-        ColladaDocument14 document = new ColladaDocument14();
+    @Override
+    public String getId() {
+        return null;
+    }
 
+    @Override
+    public NodeType getType() {
+        return null;
+    }
 
+    @Override
+    public List<Node> getChildren() {
+        return null;
+    }
 
-        return document;
+    @Override
+    public List<Geometry> getGeometries() {
+        return null;
+    }
+
+    @Override
+    public List<Transform> getTransforms() {
+        return null;
     }
 }

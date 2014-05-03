@@ -1,4 +1,4 @@
-package net.dryanhild.collada.schema15.parser;
+package net.dryanhild.collada.schema14.parser;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,7 +7,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import net.dryanhild.collada.ParsingException;
-import net.dryanhild.collada.schema15.ColladaDocument15;
+import net.dryanhild.collada.schema14.ColladaDocument15;
 
 import org.apache.xmlbeans.XmlException;
 import org.collada.x2008.x03.colladaSchema.COLLADADocument;

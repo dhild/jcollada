@@ -1,4 +1,4 @@
-package net.dryanhild.collada.schema15.parser;
+package net.dryanhild.collada.schema14.parser;
 
 import org.jvnet.hk2.annotations.Contract;
 

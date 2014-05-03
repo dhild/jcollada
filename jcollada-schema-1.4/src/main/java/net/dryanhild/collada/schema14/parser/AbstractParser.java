@@ -23,10 +23,18 @@
 package net.dryanhild.collada.schema14.parser;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Sets;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
+import java.io.IOException;
+import java.util.Set;
+
 public abstract class AbstractParser<OutputType> implements XmlParser<OutputType> {
+
+    private static final Logger logger = LoggerFactory.getLogger(AbstractParser.class);
 
     protected int getExpectedEventType() {
         return XmlPullParser.START_TAG;
@@ -34,20 +42,59 @@ public abstract class AbstractParser<OutputType> implements XmlParser<OutputType
 
     protected abstract String getExpectedTag();
 
-    protected void validate(XmlPullParser parser) throws XmlPullParserException {
+    protected void validate(XmlPullParser parser) throws XmlPullParserException, IOException {
         Preconditions.checkState(parser.getEventType() == getExpectedEventType());
         Preconditions.checkState(parser.getName().equals(getExpectedTag()));
 
         validateImpl(parser);
     }
 
-    protected void validateImpl(XmlPullParser parser) throws XmlPullParserException {
+    protected void validateImpl(XmlPullParser parser) throws XmlPullParserException, IOException {
     }
 
-    public final OutputType parse(XmlPullParser parser) throws XmlPullParserException {
+    public final OutputType parse(XmlPullParser parser) throws XmlPullParserException, IOException {
         validate(parser);
-        return parseImpl(parser);
+        OutputType output = parseImpl(parser);
+
+        int token = parser.next();
+        while (token != XmlPullParser.END_TAG) {
+            if (token == XmlPullParser.START_TAG) {
+                skipElement(parser);
+            } else {
+                token = parser.next();
+            }
+        }
+
+        return output;
     }
 
-    protected abstract OutputType parseImpl(XmlPullParser parser) throws XmlPullParserException;
+    protected abstract OutputType parseImpl(XmlPullParser parser) throws XmlPullParserException, IOException;
+
+    protected void skipElement(XmlPullParser parser) throws XmlPullParserException, IOException {
+        Preconditions.checkState(parser.getEventType() == XmlPullParser.START_TAG);
+
+        logger.trace("Skipping element {%s}%s", parser.getNamespace(), parser.getName());
+
+        int tokenCount = 0;
+        int token = parser.next();
+        while (token != XmlPullParser.END_TAG || tokenCount > 0) {
+            if (token == XmlPullParser.START_TAG) {
+                tokenCount++;
+            }
+            if (token == XmlPullParser.END_TAG) {
+                tokenCount--;
+            }
+
+            token = parser.next();
+        }
+
+        logger.trace("Finished kipping element {%s}%s", parser.getNamespace(), parser.getName());
+    }
+
+    protected void skipUntil(XmlPullParser parser, String ... tags) throws IOException, XmlPullParserException {
+        Set<String> tagSet = Sets.newHashSet(tags);
+        while (!tagSet.contains(parser.getName())) {
+            skipElement(parser);
+        }
+    }
 }

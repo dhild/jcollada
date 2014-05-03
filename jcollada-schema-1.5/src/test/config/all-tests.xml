@@ -25,8 +25,8 @@
 <suite name="All Tests" parallel="tests">
   <test name="All Tests">
     <packages>
-        <package name="net.dryanhild.collada.schema15"/>
-        <package name="net.dryanhild.collada.schema15.parser.fx"/>
+        <package name="net.dryanhild.collada.schema14"/>
+        <package name="net.dryanhild.collada.schema14.parser.fx"/>
     </packages>
   </test>
 </suite>
