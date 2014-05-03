@@ -23,27 +23,47 @@
 package net.dryanhild.collada.schema14.structure;
 
 import net.dryanhild.collada.data.scene.Node;
-import net.dryanhild.collada.schema14.parser.AbstractParser;
-import org.glassfish.hk2.api.PerThread;
-import org.jvnet.hk2.annotations.Service;
-import org.xmlpull.v1.XmlPullParser;
+import net.dryanhild.collada.data.scene.NodeType;
+import net.dryanhild.collada.schema14.parser.BaseParserTest;
+import org.testng.annotations.Test;
 import org.xmlpull.v1.XmlPullParserException;
 
-@Service
-@PerThread
-public class NodeParser extends AbstractParser<Node> {
+import javax.inject.Inject;
+import java.io.IOException;
 
+import static org.assertj.core.api.Assertions.assertThat;
 
+public class WithNodeElement extends BaseParserTest {
+
+    @Inject
+    private NodeParser nodeParser;
 
     @Override
-    protected String getExpectedTag() {
-        return "node";
+    protected String getDataString() {
+        return "<node id=\"CylinderId\" name=\"Cylinder\" type=\"NODE\">\n" +
+                "        <matrix sid=\"transform\">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>\n" +
+                "        <instance_geometry url=\"#Cylinder_001-mesh\"/>\n" +
+                "      </node>";
     }
 
-    @Override
-    protected Node parseImpl(XmlPullParser parser) throws XmlPullParserException {
-        NodeImpl node = new NodeImpl();
+    @Test
+    public void nameIsCorrect() throws IOException, XmlPullParserException {
+        Node node = nodeParser.parse(xmlPullParser);
 
-        return node;
+        assertThat(node.getName()).isEqualTo("Cylinder");
+    }
+
+    @Test
+    public void idIsCorrect() throws IOException, XmlPullParserException {
+        Node node = nodeParser.parse(xmlPullParser);
+
+        assertThat(node.getId()).isEqualTo("CylinderId");
+    }
+
+    @Test
+    public void typeIsCorrect() throws IOException, XmlPullParserException {
+        Node node = nodeParser.parse(xmlPullParser);
+
+        assertThat(node.getType()).isEqualTo(NodeType.NODE);
     }
 }

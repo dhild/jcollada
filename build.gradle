@@ -47,6 +47,8 @@ subprojects {
         compile "org.slf4j:slf4j-api:${slf4jVersion}"
         compile "javax.validation:validation-api:1.1.0.Final"
 
+        runtime "org.slf4j:slf4j-jdk14:${slf4jVersion}"
+
         testCompile "org.testng:testng:${testngVersion}"
         testCompile "org.assertj:assertj-core:${assertjVersion}"
         testCompile "org.mockito:mockito-all:${mockitoVersion}"

@@ -1,3 +1,5 @@
+import com.sun.org.apache.xalan.internal.xsltc.compiler.Copy
+
 /*
  * Copyright (c) 2014 D. Ryan Hild <d.ryan.hild@gmail.com>
  *
@@ -34,21 +36,41 @@ dependencies {
 
     hk2Generator "org.glassfish.hk2:hk2-inhabitant-generator:${hk2Version}"
 
-    runtime "org.codehaus.woodstox:woodstox-core-asl:${woodstoxVersion}"
+    runtime "net.sf.kxml:kxml2:2.2.2"
+
+    testCompile "org.glassfish.hk2:hk2-testng:${hk2Version}"
 }
 
 task (generateHK2, type: JavaExec) {
-    outputs.dir (sourceSets.main.output.resourcesDir.path  + "/META-INF/hk2-locator")
+    outputs.dir "${buildDir}/generated/hk2"
     inputs.dir sourceSets.main.output.classesDir
     dependsOn compileJava, processResources
 
     classpath configurations.hk2Generator.asPath
 
     args "--locator", "JCollada-Schema-1.4",
-         "--directory", sourceSets.main.output.resourcesDir.path + "/META-INF/hk2-locator",
+         "--directory", "${buildDir}/generated/hk2/META-INF/hk2-locator",
          "--file", sourceSets.main.output.classesDir.path
 
     main "org.jvnet.hk2.generator.HabitatGenerator"
 }
 
-jar.dependsOn generateHK2
+task copyHK2Test(type: org.gradle.api.tasks.Copy) {
+    dependsOn processTestResources
+    from "${buildDir}/generated/hk2"
+    into sourceSets.test.output.resourcesDir
+    rename "JCollada-Schema-1.4", "default"
+}
+
+test.dependsOn copyHK2Test
+
+jar {
+    dependsOn generateHK2
+    from {
+        files("${buildDir}/generated/hk2") {
+            filter {
+                it.name.contains("default")
+            }
+        }
+    }
+}

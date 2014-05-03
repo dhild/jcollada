@@ -30,7 +30,7 @@ import net.dryanhild.collada.data.transform.Transform;
 
 import java.util.List;
 
-public class NodeImpl implements Node{
+public class NodeImpl implements Node {
 
     private String name;
     private String id;
@@ -67,5 +67,17 @@ public class NodeImpl implements Node{
     @Override
     public List<Transform> getTransforms() {
         return null;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setType(NodeType type) {
+        this.type = type;
     }
 }

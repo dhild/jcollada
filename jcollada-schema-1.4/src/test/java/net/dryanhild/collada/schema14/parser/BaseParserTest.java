@@ -20,30 +20,36 @@
  * THE SOFTWARE.
  */
 
-package net.dryanhild.collada.schema14.structure;
+package net.dryanhild.collada.schema14.parser;
 
-import net.dryanhild.collada.data.scene.Node;
-import net.dryanhild.collada.schema14.parser.AbstractParser;
-import org.glassfish.hk2.api.PerThread;
-import org.jvnet.hk2.annotations.Service;
+import org.jvnet.testing.hk2testng.HK2;
+import org.testng.annotations.BeforeMethod;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
 
-@Service
-@PerThread
-public class NodeParser extends AbstractParser<Node> {
+import java.io.IOException;
+import java.io.StringReader;
 
+@HK2
+public abstract class BaseParserTest {
 
+    protected abstract String getDataString();
 
-    @Override
-    protected String getExpectedTag() {
-        return "node";
+    protected XmlPullParser xmlPullParser;
+
+    @BeforeMethod
+    public void resetParser() throws XmlPullParserException, IOException {
+        XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+        factory.setNamespaceAware(true);
+        factory.setValidating(false);
+        xmlPullParser = factory.newPullParser();
+        StringReader reader = new StringReader(getDataString());
+        xmlPullParser.setInput(reader);
+
+        while (xmlPullParser.getEventType() != XmlPullParser.START_TAG) {
+            xmlPullParser.next();
+        }
     }
 
-    @Override
-    protected Node parseImpl(XmlPullParser parser) throws XmlPullParserException {
-        NodeImpl node = new NodeImpl();
-
-        return node;
-    }
 }

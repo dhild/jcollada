@@ -56,12 +56,13 @@ public abstract class AbstractParser<OutputType> implements XmlParser<OutputType
         validate(parser);
         OutputType output = parseImpl(parser);
 
-        int token = parser.next();
+        int token = parser.getEventType();
         while (token != XmlPullParser.END_TAG) {
             if (token == XmlPullParser.START_TAG) {
                 skipElement(parser);
             } else {
-                token = parser.next();
+                parser.next();
+                token = parser.getEventType();
             }
         }
 
