@@ -1,8 +1,8 @@
 package net.dryanhild.collada.schema14.parser;
 
-import java.util.List;
-
 import com.google.common.collect.Lists;
+
+import java.util.List;
 
 public abstract class AbstractParser<SourceType, ResultType> implements Schema15Parser<SourceType, ResultType> {
 

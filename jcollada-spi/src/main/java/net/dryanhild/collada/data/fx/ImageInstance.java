@@ -23,7 +23,6 @@ package net.dryanhild.collada.data.fx;
 
 /**
  * Indicates an instance of an image.
- *
  */
 public interface ImageInstance {
 

@@ -1,9 +1,7 @@
 package net.dryanhild.collada.schema14;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import net.dryanhild.collada.NoSuchElementIdException;
 import net.dryanhild.collada.data.ColladaDocument;
 import net.dryanhild.collada.data.fx.Effect;
@@ -12,8 +10,9 @@ import net.dryanhild.collada.data.geometry.Geometry;
 import net.dryanhild.collada.data.scene.Node;
 import net.dryanhild.collada.data.scene.VisualScene;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 public class ColladaDocument15 implements ColladaDocument {
 

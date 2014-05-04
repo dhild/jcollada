@@ -22,8 +22,9 @@
 
 package net.dryanhild.collada.data.scene;
 
-import java.util.List;
 import net.dryanhild.collada.data.AddressableType;
+
+import java.util.List;
 
 public interface VisualScene extends AddressableType {
 

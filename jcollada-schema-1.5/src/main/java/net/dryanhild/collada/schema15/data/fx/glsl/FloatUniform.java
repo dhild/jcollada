@@ -1,9 +1,9 @@
 package net.dryanhild.collada.schema14.data.fx.glsl;
 
-import java.nio.ByteBuffer;
-
 import net.dryanhild.collada.data.fx.glsl.FloatUniformType;
 import net.dryanhild.collada.data.fx.glsl.ParamType;
+
+import java.nio.ByteBuffer;
 
 public class FloatUniform implements FloatUniformType {
 
@@ -21,14 +21,14 @@ public class FloatUniform implements FloatUniformType {
     @Override
     public ParamType getType() {
         switch (value.length) {
-        case 4:
-            return ParamType.FLOAT4;
-        case 3:
-            return ParamType.FLOAT3;
-        case 2:
-            return ParamType.FLOAT2;
-        default:
-            return ParamType.FLOAT;
+            case 4:
+                return ParamType.FLOAT4;
+            case 3:
+                return ParamType.FLOAT3;
+            case 2:
+                return ParamType.FLOAT2;
+            default:
+                return ParamType.FLOAT;
         }
     }
 

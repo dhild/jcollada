@@ -20,18 +20,24 @@
  * THE SOFTWARE.
  */
 
-package net.dryanhild.collada.spi;
+package net.dryanhild.collada.schema14.parser.geometry;
 
-import java.io.InputStream;
-import java.nio.charset.Charset;
+import net.dryanhild.collada.data.geometry.Geometry;
+import net.dryanhild.collada.schema14.parser.AbstractParser;
+import org.jvnet.hk2.annotations.Service;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
 
-public interface ParsingContext {
+@Service
+public class GeometryParser extends AbstractParser<Geometry> {
 
-    boolean isValidating();
+    @Override
+    public String getExpectedTag() {
+        return "geometry";
+    }
 
-    CharSequence getMainFileHeader();
-
-    InputStream getMainFileInputStream();
-
-    Charset getCharset();
+    @Override
+    protected Geometry createObject(XmlPullParser parser) throws XmlPullParserException {
+        return null;
+    }
 }

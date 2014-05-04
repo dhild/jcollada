@@ -20,10 +20,9 @@
  * THE SOFTWARE.
  */
 
-package net.dryanhild.collada.schema14.parser.scene;
+package net.dryanhild.collada.schema14.parser.geometry.source;
 
-import net.dryanhild.collada.data.scene.Node;
-import net.dryanhild.collada.data.scene.NodeType;
+import net.dryanhild.collada.schema14.data.geometry.source.FloatArray;
 import net.dryanhild.collada.schema14.parser.BaseParserTest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -34,53 +33,35 @@ import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class WithNodeElement extends BaseParserTest {
+public class WithFloatArray extends BaseParserTest {
 
     @Inject
-    private NodeParser nodeParser;
+    private FloatArrayParser floatArrayParser;
 
-    private Node node;
+    private FloatArray floatArray;
 
     @Override
     protected String getDataString() {
-        return "<node id=\"CylinderId\" name=\"Cylinder\" type=\"NODE\">\n" +
-               "        <matrix sid=\"transform\">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>\n" +
-               "        <instance_geometry url=\"#Cylinder_001-mesh\"/>\n" +
-               "      </node>";
+        return "<float_array id=\"testId\" count=\"9\">0 0 -1 1 0 -1 0 1 -1</float_array>";
     }
 
     @BeforeMethod
     public void setNode() throws IOException, XmlPullParserException {
-        node = nodeParser.parse(xmlPullParser);
-    }
-
-    @Test
-    public void nameIsCorrect() {
-        assertThat(node.getName()).isEqualTo("Cylinder");
+        floatArray = floatArrayParser.parse(xmlPullParser);
     }
 
     @Test
     public void idIsCorrect() {
-        assertThat(node.getId()).isEqualTo("CylinderId");
+        assertThat(floatArray.getId()).isEqualTo("testId");
     }
 
     @Test
-    public void typeIsCorrect() {
-        assertThat(node.getType()).isEqualTo(NodeType.NODE);
+    public void countIsCorrect() {
+        assertThat(floatArray.getValues()).hasSize(9);
     }
 
     @Test
-    public void oneTransformExists() {
-        assertThat(node.getTransforms()).hasSize(1);
-    }
-
-    @Test
-    public void oneGeometryExists() {
-        assertThat(node.getGeometries()).hasSize(1);
-    }
-
-    @Test
-    public void noChildrenExist() {
-        assertThat(node.getChildren()).isEmpty();
+    public void dataIsCorrect() {
+        assertThat(floatArray.getValues()).containsExactly(0, 0, -1, 1, 0, -1, 0, 1, -1);
     }
 }

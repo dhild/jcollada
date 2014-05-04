@@ -22,7 +22,6 @@
 package net.dryanhild.collada.data.fx;
 
 /**
- *
  * @author D. Ryan Hild <d.ryan.hild@gmail.com>
  */
 public enum FilterStyle {

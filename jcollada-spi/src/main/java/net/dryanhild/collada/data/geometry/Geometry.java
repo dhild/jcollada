@@ -21,8 +21,9 @@
  */
 package net.dryanhild.collada.data.geometry;
 
-import java.util.Set;
 import net.dryanhild.collada.data.AddressableType;
+
+import java.util.Set;
 
 public interface Geometry extends AddressableType {
 

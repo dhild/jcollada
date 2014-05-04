@@ -22,9 +22,9 @@
 
 package net.dryanhild.collada.schema14;
 
+import net.dryanhild.collada.schema14.data.ColladaDocument14;
 import net.dryanhild.collada.schema14.parser.DocumentParser;
 import net.dryanhild.collada.schema14.parser.XmlParser;
-import net.dryanhild.collada.schema14.data.ColladaDocument14;
 import org.glassfish.hk2.api.ServiceLocator;
 import org.glassfish.hk2.api.ServiceLocatorFactory;
 import org.glassfish.hk2.utilities.ServiceLocatorUtilities;

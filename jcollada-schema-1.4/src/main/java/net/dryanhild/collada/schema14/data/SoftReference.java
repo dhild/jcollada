@@ -32,7 +32,8 @@ public class SoftReference<ReferenceType> implements InvocationHandler {
         return createSoftReferenceImpl(typeClass, new SoftReference<ReferenceType>(url));
     }
 
-    protected static <ReferenceType> ReferenceType createSoftReferenceImpl(Class<ReferenceType> typeClass, SoftReference<ReferenceType> ref) {
+    protected static <ReferenceType> ReferenceType createSoftReferenceImpl(Class<ReferenceType> typeClass,
+                                                                           SoftReference<ReferenceType> ref) {
         InvocationHandler handler = ref;
         ClassLoader loader = typeClass.getClassLoader();
         Object proxyObject = Proxy.newProxyInstance(loader, new Class<?>[]{typeClass}, handler);

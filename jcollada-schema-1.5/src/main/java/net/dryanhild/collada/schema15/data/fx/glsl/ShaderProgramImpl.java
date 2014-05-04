@@ -1,8 +1,6 @@
 package net.dryanhild.collada.schema14.data.fx.glsl;
 
-import java.util.Map;
-import java.util.Set;
-
+import com.google.common.collect.Maps;
 import net.dryanhild.collada.data.fx.Sampler;
 import net.dryanhild.collada.data.fx.glsl.ParamType;
 import net.dryanhild.collada.data.fx.glsl.ShaderProgram;
@@ -10,7 +8,8 @@ import net.dryanhild.collada.data.fx.glsl.ShaderStage;
 import net.dryanhild.collada.data.fx.glsl.UniformType;
 import net.dryanhild.collada.schema14.data.fx.AbstractAddressableAndScoped;
 
-import com.google.common.collect.Maps;
+import java.util.Map;
+import java.util.Set;
 
 public class ShaderProgramImpl extends AbstractAddressableAndScoped implements ShaderProgram {
 

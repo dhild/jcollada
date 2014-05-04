@@ -1,19 +1,16 @@
 package net.dryanhild.collada.schema14;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.inject.Inject;
-
+import com.google.common.collect.ImmutableList;
 import net.dryanhild.collada.VersionSupport;
 import net.dryanhild.collada.data.ColladaDocument;
 import net.dryanhild.collada.hk2spi.ColladaLoader;
 import net.dryanhild.collada.hk2spi.ParsingContext;
 import net.dryanhild.collada.schema14.parser.DAEParser;
-
 import org.jvnet.hk2.annotations.Service;
 
-import com.google.common.collect.ImmutableList;
+import javax.inject.Inject;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 @Schema15

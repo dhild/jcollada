@@ -29,6 +29,7 @@ import java.nio.FloatBuffer;
 public class MatrixImpl implements Matrix {
 
     private final float[] values = new float[16];
+    private String sid;
 
     @Override
     public float[] getValues() {
@@ -43,5 +44,14 @@ public class MatrixImpl implements Matrix {
     @Override
     public void putAsColumnMatrix(FloatBuffer buffer) {
         buffer.put(values);
+    }
+
+    @Override
+    public String getSID() {
+        return sid;
+    }
+
+    public void setSID(String sid) {
+        this.sid = sid;
     }
 }

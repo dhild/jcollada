@@ -20,18 +20,32 @@
  * THE SOFTWARE.
  */
 
-package net.dryanhild.collada.spi;
+package net.dryanhild.collada.schema14.data.geometry;
 
-import java.io.InputStream;
-import java.nio.charset.Charset;
+import net.dryanhild.collada.data.geometry.DataType;
+import net.dryanhild.collada.data.geometry.Geometry;
+import net.dryanhild.collada.data.geometry.Vertex;
 
-public interface ParsingContext {
+import java.util.Set;
 
-    boolean isValidating();
+public class MeshImpl implements Geometry {
+    @Override
+    public Set<String> getSemantics() {
+        return null;
+    }
 
-    CharSequence getMainFileHeader();
+    @Override
+    public DataType getDataType(String semantic) {
+        return null;
+    }
 
-    InputStream getMainFileInputStream();
+    @Override
+    public Iterable<Vertex> getVertices() {
+        return null;
+    }
 
-    Charset getCharset();
+    @Override
+    public String getId() {
+        return null;
+    }
 }

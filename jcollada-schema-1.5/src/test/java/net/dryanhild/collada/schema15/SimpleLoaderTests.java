@@ -23,7 +23,15 @@
  */
 package net.dryanhild.collada.schema14;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import net.dryanhild.collada.VersionSupport;
+import net.dryanhild.collada.data.ColladaDocument;
+import net.dryanhild.collada.hk2spi.ColladaLoader;
+import net.dryanhild.collada.hk2spi.ParsingContext;
+import org.apache.xmlbeans.impl.common.ReaderInputStream;
+import org.glassfish.hk2.api.ServiceLocator;
+import org.glassfish.hk2.utilities.ServiceLocatorUtilities;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 import java.io.InputStream;
 import java.io.StringReader;
@@ -31,16 +39,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import net.dryanhild.collada.VersionSupport;
-import net.dryanhild.collada.data.ColladaDocument;
-import net.dryanhild.collada.hk2spi.ColladaLoader;
-import net.dryanhild.collada.hk2spi.ParsingContext;
-
-import org.apache.xmlbeans.impl.common.ReaderInputStream;
-import org.glassfish.hk2.api.ServiceLocator;
-import org.glassfish.hk2.utilities.ServiceLocatorUtilities;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  *
@@ -49,9 +48,12 @@ import org.testng.annotations.Test;
 public class SimpleLoaderTests {
 
     private static final String BARE_COLLADA_FILE = "<?xml version=\"1.0\"?>\n"
-            + "<COLLADA xmlns=\"http://www.collada.org/2008/03/COLLADASchema\" version=\"1.5.0\">\n" + " <asset>\n"
-            + "   <created>2007-12-11T14:24:00Z</created>\n" + "   <modified>2007-12-11T14:24:00Z</modified>\n"
-            + " </asset>\n" + "</COLLADA>";
+                                                    +
+                                                    "<COLLADA xmlns=\"http://www.collada.org/2008/03/COLLADASchema\" version=\"1.5.0\">\n" +
+                                                    " <asset>\n"
+                                                    + "   <created>2007-12-11T14:24:00Z</created>\n" +
+                                                    "   <modified>2007-12-11T14:24:00Z</modified>\n"
+                                                    + " </asset>\n" + "</COLLADA>";
 
     private ColladaLoader loader;
 

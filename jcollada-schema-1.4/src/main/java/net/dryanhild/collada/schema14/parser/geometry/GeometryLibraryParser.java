@@ -20,18 +20,39 @@
  * THE SOFTWARE.
  */
 
-package net.dryanhild.collada.spi;
+package net.dryanhild.collada.schema14.parser.geometry;
 
-import java.io.InputStream;
-import java.nio.charset.Charset;
+import com.google.common.collect.Lists;
+import net.dryanhild.collada.data.geometry.Geometry;
+import net.dryanhild.collada.schema14.parser.AbstractParser;
+import org.jvnet.hk2.annotations.Service;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
 
-public interface ParsingContext {
+import javax.inject.Inject;
+import java.io.IOException;
+import java.util.List;
 
-    boolean isValidating();
+@Service
+public class GeometryLibraryParser extends AbstractParser<List<Geometry>> {
 
-    CharSequence getMainFileHeader();
+    @Inject
+    private GeometryParser geometryParser;
 
-    InputStream getMainFileInputStream();
+    @Override
+    public String getExpectedTag() {
+        return "library_nodes";
+    }
 
-    Charset getCharset();
+    @Override
+    protected List<Geometry> createObject(XmlPullParser parser) throws XmlPullParserException, IOException {
+        skipUntil(parser, geometryParser.getExpectedTag());
+        List<Geometry> geometries = Lists.newArrayList();
+
+        while (parser.getName().equals(geometryParser.getExpectedTag())) {
+            geometries.add(geometryParser.parse(parser));
+        }
+
+        return geometries;
+    }
 }

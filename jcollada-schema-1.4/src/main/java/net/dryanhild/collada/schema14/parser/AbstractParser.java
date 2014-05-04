@@ -27,7 +27,6 @@ import com.google.common.collect.Sets;
 import gnu.trove.list.TFloatList;
 import gnu.trove.list.array.TFloatArrayList;
 import net.dryanhild.collada.IncorrectFormatException;
-import net.dryanhild.collada.schema14.data.SoftReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xmlpull.v1.XmlPullParser;
@@ -78,19 +77,6 @@ public abstract class AbstractParser<OutputType> implements XmlParser<OutputType
 
     protected abstract OutputType createObject(XmlPullParser parser) throws XmlPullParserException, IOException;
 
-    protected OutputType createProxyByUrl(XmlPullParser parser, Class<OutputType> typeClass) throws XmlPullParserException {
-        Preconditions.checkState(parser.getEventType() == XmlPullParser.START_TAG);
-
-        for (int i = 0; i < parser.getAttributeCount(); i++) {
-            String name = parser.getAttributeName(i);
-            if (name.equals("url")) {
-                String url = parser.getAttributeValue(i);
-                return SoftReference.createSoftReference(url, typeClass);
-            }
-        }
-        throw new IncorrectFormatException(String.format("Expected tag %s to have a url attribute", getExpectedTag()));
-    }
-
     protected OutputType setAttributes(XmlPullParser parser, OutputType object) throws XmlPullParserException {
         Preconditions.checkState(parser.getEventType() == XmlPullParser.START_TAG);
 
@@ -130,12 +116,32 @@ public abstract class AbstractParser<OutputType> implements XmlParser<OutputType
 
     protected void skipUntil(XmlPullParser parser, String... tags) throws IOException, XmlPullParserException {
         Set<String> tagSet = Sets.newHashSet(tags);
-        while (!tagSet.contains(parser.getName())) {
-            skipElement(parser);
+        int type = parser.getEventType();
+        if (type == XmlPullParser.END_TAG) {
+            type = parser.next();
+        }
+        while (type != XmlPullParser.END_DOCUMENT) {
+            if (type == XmlPullParser.START_TAG) {
+                if (tagSet.contains(parser.getName())) {
+                    return;
+                }
+                skipElement(parser);
+            } else if (type == XmlPullParser.END_TAG) {
+                if (parser.getName().equals(getExpectedTag())) {
+                    return;
+                }
+                throw new IncorrectFormatException(
+                        String.format("While looking in %s for tags %s, encountered unexpected end tag %s",
+                                getExpectedTag(), tagSet, parser.getName())
+                );
+            } else {
+                type = parser.next();
+            }
         }
     }
 
-    protected void handleChildElement(XmlPullParser parser, OutputType parent, String childTag) throws IOException, XmlPullParserException {
+    protected void handleChildElement(XmlPullParser parser, OutputType parent, String childTag)
+            throws IOException, XmlPullParserException {
         // Skip by default.
         skipElement(parser);
     }
@@ -157,7 +163,9 @@ public abstract class AbstractParser<OutputType> implements XmlParser<OutputType
             while (!Character.isWhitespace(text[i + count]) && (i + count) < maxIndex) {
                 count++;
             }
-            floats.add(Float.valueOf(new String(text, i, count)));
+            if (count > 0) {
+                floats.add(Float.valueOf(new String(text, i, count)));
+            }
             i += count;
         }
 

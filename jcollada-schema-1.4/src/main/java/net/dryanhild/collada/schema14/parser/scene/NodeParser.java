@@ -74,7 +74,8 @@ public class NodeParser extends AbstractParser<NodeImpl> {
     }
 
     @Override
-    protected void handleChildElement(XmlPullParser parser, NodeImpl parent, String childTag) throws IOException, XmlPullParserException {
+    protected void handleChildElement(XmlPullParser parser, NodeImpl parent, String childTag)
+            throws IOException, XmlPullParserException {
         switch (childTag) {
             case "matrix":
                 parent.addTransform(matrixParser.parse(parser));

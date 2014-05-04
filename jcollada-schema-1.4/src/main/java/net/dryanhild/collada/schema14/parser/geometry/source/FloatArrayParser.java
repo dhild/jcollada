@@ -20,11 +20,12 @@
  * THE SOFTWARE.
  */
 
-package net.dryanhild.collada.schema14.parser.transform;
+package net.dryanhild.collada.schema14.parser.geometry.source;
 
 import gnu.trove.list.TFloatList;
-import net.dryanhild.collada.schema14.data.transform.MatrixImpl;
+import net.dryanhild.collada.schema14.data.geometry.source.FloatArray;
 import net.dryanhild.collada.schema14.parser.AbstractParser;
+import org.glassfish.hk2.api.PerThread;
 import org.jvnet.hk2.annotations.Service;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -32,53 +33,48 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
 
 @Service
-public class MatrixParser extends AbstractParser<MatrixImpl> {
+@PerThread
+public class FloatArrayParser extends AbstractParser<FloatArray> {
+
+    private String name;
+    private String id;
 
     @Override
     public String getExpectedTag() {
-        return "matrix";
+        return "float_array";
     }
 
     @Override
-    protected MatrixImpl createObject(XmlPullParser parser) throws XmlPullParserException, IOException {
-        MatrixImpl matrix = setAttributes(parser, new MatrixImpl());
+    protected FloatArray createObject(XmlPullParser parser) throws XmlPullParserException, IOException {
+        name = null;
+        id = null;
+        FloatArray array = setAttributes(parser, new FloatArray(0));
+        array.setId(id);
+        array.setName(name);
 
         while (parser.getEventType() != XmlPullParser.TEXT) {
             parser.next();
         }
         TFloatList floatList = readFloats(parser);
+        float[] values = array.getValues();
+        assert values.length == floatList.size();
+        floatList.toArray(values);
 
-        transposeIntoColumnMajor(floatList, matrix.getValues());
-
-        return matrix;
+        return array;
     }
 
     @Override
-    protected MatrixImpl handleAttribute(MatrixImpl object, String attribute, String value) {
-        if (attribute.equals("sid")) {
-            object.setSID(value);
+    protected FloatArray handleAttribute(FloatArray object, String attribute, String value) {
+        switch (attribute) {
+            case "id":
+                id = value;
+                break;
+            case "name":
+                name = value;
+                break;
+            case "count":
+                return new FloatArray(Integer.valueOf(value));
         }
         return object;
     }
-
-    private void transposeIntoColumnMajor(TFloatList floatList, float[] values) {
-        assert floatList.size() == 16;
-        values[0] = floatList.get(0);
-        values[1] = floatList.get(4);
-        values[2] = floatList.get(8);
-        values[3] = floatList.get(12);
-        values[4] = floatList.get(1);
-        values[5] = floatList.get(5);
-        values[6] = floatList.get(9);
-        values[7] = floatList.get(13);
-        values[8] = floatList.get(2);
-        values[9] = floatList.get(6);
-        values[10] = floatList.get(10);
-        values[11] = floatList.get(14);
-        values[12] = floatList.get(3);
-        values[13] = floatList.get(7);
-        values[14] = floatList.get(11);
-        values[15] = floatList.get(15);
-    }
-
 }

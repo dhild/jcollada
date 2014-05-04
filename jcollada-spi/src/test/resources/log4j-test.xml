@@ -24,12 +24,12 @@
 <Configuration name="Test configuration">
     <Appenders>
         <Console name="STDOUT">
-            <PatternLayout pattern="%m %n" />
+            <PatternLayout pattern="%m %n"/>
         </Console>
     </Appenders>
     <Loggers>
         <Root level="level">
-            <AppenderRef ref="STDOUT" />
+            <AppenderRef ref="STDOUT"/>
         </Root>
     </Loggers>
 </Configuration>

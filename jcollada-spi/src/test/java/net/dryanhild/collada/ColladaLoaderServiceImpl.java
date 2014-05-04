@@ -22,15 +22,13 @@
 
 package net.dryanhild.collada;
 
-import java.util.Collection;
-
+import com.google.common.collect.ImmutableList;
 import net.dryanhild.collada.data.ColladaDocument;
 import net.dryanhild.collada.spi.ColladaLoaderService;
 import net.dryanhild.collada.spi.ParsingContext;
-
 import org.mockito.Mockito;
 
-import com.google.common.collect.ImmutableList;
+import java.util.Collection;
 
 public class ColladaLoaderServiceImpl implements ColladaLoaderService {
 

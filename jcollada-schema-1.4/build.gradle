@@ -1,5 +1,3 @@
-import com.sun.org.apache.xalan.internal.xsltc.compiler.Copy
-
 /*
  * Copyright (c) 2014 D. Ryan Hild <d.ryan.hild@gmail.com>
  *
@@ -42,7 +40,7 @@ dependencies {
     testCompile "org.glassfish.hk2:hk2-testng:${hk2Version}"
 }
 
-task (generateHK2, type: JavaExec) {
+task(generateHK2, type: JavaExec) {
     outputs.dir "${buildDir}/generated/hk2"
     inputs.dir sourceSets.main.output.classesDir
     dependsOn compileJava, processResources
@@ -50,8 +48,8 @@ task (generateHK2, type: JavaExec) {
     classpath configurations.hk2Generator.asPath
 
     args "--locator", "JCollada-Schema-1.4",
-         "--directory", "${buildDir}/generated/hk2/META-INF/hk2-locator",
-         "--file", sourceSets.main.output.classesDir.path
+            "--directory", "${buildDir}/generated/hk2/META-INF/hk2-locator",
+            "--file", sourceSets.main.output.classesDir.path
 
     main "org.jvnet.hk2.generator.HabitatGenerator"
 }

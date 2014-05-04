@@ -84,9 +84,11 @@ public class NodeImpl implements Node {
     public void addChild(Node node) {
         children.add(node);
     }
+
     public void addGeometry(GeometryInstance geometry) {
         geometries.add(geometry);
     }
+
     public void addTransform(Transform transform) {
         transforms.add(transform);
     }

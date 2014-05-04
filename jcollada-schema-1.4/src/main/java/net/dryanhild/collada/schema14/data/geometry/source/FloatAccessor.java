@@ -20,18 +20,52 @@
  * THE SOFTWARE.
  */
 
-package net.dryanhild.collada.spi;
+package net.dryanhild.collada.schema14.data.geometry.source;
 
-import java.io.InputStream;
-import java.nio.charset.Charset;
+public class FloatAccessor {
+    private String source;
+    private int offset;
+    private int count;
+    private int stride = 1;
+    private SourceAccessorParam[] params;
 
-public interface ParsingContext {
+    public String getSource() {
+        return source;
+    }
 
-    boolean isValidating();
+    public void setSource(String source) {
+        this.source = source;
+    }
 
-    CharSequence getMainFileHeader();
+    public int getOffset() {
+        return offset;
+    }
 
-    InputStream getMainFileInputStream();
+    public void setOffset(int offset) {
+        this.offset = offset;
+    }
 
-    Charset getCharset();
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public int getStride() {
+        return stride;
+    }
+
+    public void setStride(int stride) {
+        this.stride = stride;
+    }
+
+    public SourceAccessorParam[] getParams() {
+        return params;
+    }
+
+    public void setParams(SourceAccessorParam[] params) {
+        this.params = params;
+    }
 }

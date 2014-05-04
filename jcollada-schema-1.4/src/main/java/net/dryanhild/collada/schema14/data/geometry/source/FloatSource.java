@@ -20,18 +20,47 @@
  * THE SOFTWARE.
  */
 
-package net.dryanhild.collada.spi;
+package net.dryanhild.collada.schema14.data.geometry.source;
 
-import java.io.InputStream;
-import java.nio.charset.Charset;
+import net.dryanhild.collada.data.AddressableType;
+import net.dryanhild.collada.data.NameableType;
 
-public interface ParsingContext {
+public class FloatSource implements AddressableType, NameableType {
 
-    boolean isValidating();
+    private String id;
+    private String name;
+    private FloatArray source;
+    private FloatAccessor commonAccessor;
 
-    CharSequence getMainFileHeader();
+    public String getId() {
+        return id;
+    }
 
-    InputStream getMainFileInputStream();
+    public void setId(String id) {
+        this.id = id;
+    }
 
-    Charset getCharset();
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public FloatArray getSource() {
+        return source;
+    }
+
+    public void setSource(FloatArray source) {
+        this.source = source;
+    }
+
+    public FloatAccessor getCommonAccessor() {
+        return commonAccessor;
+    }
+
+    public void setCommonAccessor(FloatAccessor commonAccessor) {
+        this.commonAccessor = commonAccessor;
+    }
 }

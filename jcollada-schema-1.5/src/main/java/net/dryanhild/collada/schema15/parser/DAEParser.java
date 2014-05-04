@@ -1,19 +1,17 @@
 package net.dryanhild.collada.schema14.parser;
 
-import java.io.IOException;
-import java.io.InputStream;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-
 import net.dryanhild.collada.ParsingException;
 import net.dryanhild.collada.schema14.ColladaDocument15;
-
 import org.apache.xmlbeans.XmlException;
 import org.collada.x2008.x03.colladaSchema.COLLADADocument;
 import org.collada.x2008.x03.colladaSchema.COLLADADocument.COLLADA;
 import org.collada.x2008.x03.colladaSchema.LibraryEffectsType;
 import org.jvnet.hk2.annotations.Service;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import java.io.IOException;
+import java.io.InputStream;
 
 @Service
 @Named

@@ -1,12 +1,11 @@
 package net.dryanhild.collada.schema14.data.fx;
 
-import java.util.List;
-
+import com.google.common.collect.Lists;
 import net.dryanhild.collada.data.fx.Effect;
 import net.dryanhild.collada.data.fx.glsl.ShaderProgram;
 import net.dryanhild.collada.schema14.data.AbstractAddressableNameable;
 
-import com.google.common.collect.Lists;
+import java.util.List;
 
 public class EffectImpl extends AbstractAddressableNameable implements Effect {
 

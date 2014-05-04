@@ -1,14 +1,23 @@
 #
-# Generated on Sat May 03 15:17:31 MDT 2014 by hk2-inhabitant-generator
+# Generated on Sat May 03 21:03:17 MDT 2014 by hk2-inhabitant-generator
 #
 
 [net.dryanhild.collada.schema14.parser.DocumentParser]S
 
 [net.dryanhild.collada.schema14.parser.geometry.GeometryInstanceParser]S
 
+[net.dryanhild.collada.schema14.parser.geometry.GeometryLibraryParser]S
+
+[net.dryanhild.collada.schema14.parser.geometry.GeometryParser]S
+
+[net.dryanhild.collada.schema14.parser.geometry.source.FloatArrayParser]
+scope=org.glassfish.hk2.api.PerThread
+
+[net.dryanhild.collada.schema14.parser.geometry.source.SourceParser]
+scope=org.glassfish.hk2.api.PerThread
+
 [net.dryanhild.collada.schema14.parser.scene.NodeLibraryParser]S
 
 [net.dryanhild.collada.schema14.parser.scene.NodeParser]S
 
 [net.dryanhild.collada.schema14.parser.transform.MatrixParser]S
-

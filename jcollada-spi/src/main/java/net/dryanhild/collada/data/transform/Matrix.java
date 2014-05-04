@@ -22,7 +22,9 @@
 
 package net.dryanhild.collada.data.transform;
 
-public interface Matrix extends Transform {
+import net.dryanhild.collada.data.ScopeAddressableType;
+
+public interface Matrix extends Transform, ScopeAddressableType {
 
     float[] getValues();
 
