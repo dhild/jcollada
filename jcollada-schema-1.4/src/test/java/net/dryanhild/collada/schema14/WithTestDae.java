@@ -20,40 +20,38 @@
  * THE SOFTWARE.
  */
 
-package net.dryanhild.collada.schema14.parser.scene;
+package net.dryanhild.collada.schema14;
 
-import com.google.common.collect.Lists;
-import net.dryanhild.collada.data.scene.Node;
-import net.dryanhild.collada.schema14.parser.AbstractParser;
-import org.jvnet.hk2.annotations.Service;
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
+import net.dryanhild.collada.ColladaLoader;
+import net.dryanhild.collada.data.ColladaDocument;
+import org.testng.annotations.Test;
 
-import javax.inject.Inject;
 import java.io.IOException;
-import java.util.List;
+import java.net.URL;
 
-@Service
-public class NodeLibraryParser extends AbstractParser<List<Node>> {
+import static org.assertj.core.api.Assertions.assertThat;
 
-    @Inject
-    private NodeParser nodeParser;
+public class WithTestDae {
 
-    @Override
-    public String getExpectedTag() {
-        return "library_nodes";
+    private ColladaLoader colladaLoader = new ColladaLoader();
+    private URL resourceUrl;
+
+    public WithTestDae() {
+        colladaLoader.setValidating(false);
+        ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+        resourceUrl = classLoader.getResource("test.dae");
     }
 
-    @Override
-    protected List<Node> createObject(XmlPullParser parser) throws XmlPullParserException, IOException {
-        return Lists.newArrayList();
+    @Test
+    public void loaderHasVersions14() {
+        assertThat(colladaLoader.getRegisteredVersions())
+                .contains(ColladaLoaderService14.VERSION_1_4_0, ColladaLoaderService14.VERSION_1_4_1);
     }
 
-    @Override
-    protected void handleChildElement(XmlPullParser parser, List<Node> parent, String childTag)
-            throws IOException, XmlPullParserException {
-        if (childTag.equals(nodeParser.getExpectedTag())) {
-            parent.add(nodeParser.parse(parser));
-        }
+    @Test(groups = {"functional"})
+    public void canLoadTestDae() throws IOException {
+        ColladaDocument document = colladaLoader.load(resourceUrl);
+        assertThat(document).isNotNull();
     }
+
 }

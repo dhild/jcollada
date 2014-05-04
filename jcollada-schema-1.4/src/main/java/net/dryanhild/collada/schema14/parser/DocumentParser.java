@@ -22,6 +22,8 @@
 
 package net.dryanhild.collada.schema14.parser;
 
+import net.dryanhild.collada.IncorrectFormatException;
+import net.dryanhild.collada.schema14.ColladaLoaderService14;
 import net.dryanhild.collada.schema14.data.ColladaDocument14;
 import net.dryanhild.collada.schema14.parser.scene.NodeLibraryParser;
 import org.jvnet.hk2.annotations.Service;
@@ -31,9 +33,13 @@ import org.xmlpull.v1.XmlPullParserException;
 import javax.inject.Inject;
 import java.io.IOException;
 
+import static org.xmlpull.v1.XmlPullParser.START_DOCUMENT;
+import static org.xmlpull.v1.XmlPullParser.START_TAG;
+
 @Service
 public class DocumentParser extends AbstractParser<ColladaDocument14> {
 
+    public static final String NAMESPACE = "http://www.collada.org/2005/11/COLLADASchema";
     @Inject
     private NodeLibraryParser nodeLibraryParser;
 
@@ -42,10 +48,45 @@ public class DocumentParser extends AbstractParser<ColladaDocument14> {
         return "COLLADA";
     }
 
-    protected ColladaDocument14 createObject(XmlPullParser parser) throws IOException, XmlPullParserException {
-        skipUntil(parser, nodeLibraryParser.getExpectedTag());
-        ColladaDocument14 document = new ColladaDocument14();
+    @Override
+    protected void validate(XmlPullParser parser) throws XmlPullParserException, IOException {
+        parser.require(START_DOCUMENT, null, null);
+        while (parser.getEventType() != START_TAG) {
+            parser.next();
+        }
+        parser.require(START_TAG, NAMESPACE, getExpectedTag());
+    }
 
-        return document;
+    @Override
+    protected ColladaDocument14 createObject(XmlPullParser parser) throws IOException, XmlPullParserException {
+        return setAttributes(parser, new ColladaDocument14());
+    }
+
+    @Override
+    protected ColladaDocument14 handleAttribute(ColladaDocument14 object, String attribute, String value) {
+        switch (attribute) {
+            case "version":
+                if (value.equals("1.4.0")) {
+                    object.setVersion(ColladaLoaderService14.VERSION_1_4_0);
+                    break;
+                }
+                if (value.equals("1.4.1")) {
+                    object.setVersion(ColladaLoaderService14.VERSION_1_4_1);
+                    break;
+                }
+                throw new IncorrectFormatException("Expected to get a 1.4.0 or 1.4.1 file!");
+            case "base":
+                // TODO: Process the base URI attribute.
+        }
+        return object;
+    }
+
+    @Override
+    protected void handleChildElement(XmlPullParser parser, ColladaDocument14 parent, String childTag)
+            throws IOException, XmlPullParserException {
+        switch (childTag) {
+            case "library_nodes":
+                parent.addNodes(nodeLibraryParser.parse(parser));
+        }
     }
 }

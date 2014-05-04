@@ -29,6 +29,8 @@ import org.jvnet.hk2.annotations.Service;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
+import java.io.IOException;
+
 @Service
 public class GeometryInstanceParser extends AbstractParser<GeometryInstance> {
 
@@ -38,7 +40,7 @@ public class GeometryInstanceParser extends AbstractParser<GeometryInstance> {
     }
 
     @Override
-    protected GeometryInstance createObject(XmlPullParser parser) throws XmlPullParserException {
+    protected GeometryInstance createObject(XmlPullParser parser) throws XmlPullParserException, IOException {
         return setAttributes(parser, null);
     }
 

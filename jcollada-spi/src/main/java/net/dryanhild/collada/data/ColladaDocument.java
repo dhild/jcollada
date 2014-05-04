@@ -21,6 +21,7 @@
  */
 package net.dryanhild.collada.data;
 
+import net.dryanhild.collada.VersionSupport;
 import net.dryanhild.collada.data.fx.Effect;
 import net.dryanhild.collada.data.fx.Material;
 import net.dryanhild.collada.data.geometry.Geometry;
@@ -52,5 +53,7 @@ public interface ColladaDocument {
     Material getMaterial(@NotNull String id);
 
     VisualScene getMainScene();
+
+    VersionSupport getVersion();
 
 }

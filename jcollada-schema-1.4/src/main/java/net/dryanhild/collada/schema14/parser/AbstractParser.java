@@ -22,11 +22,9 @@
 
 package net.dryanhild.collada.schema14.parser;
 
-import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
 import gnu.trove.list.TFloatList;
 import gnu.trove.list.array.TFloatArrayList;
-import net.dryanhild.collada.IncorrectFormatException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xmlpull.v1.XmlPullParser;
@@ -35,6 +33,10 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
 import java.util.Set;
 
+import static org.xmlpull.v1.XmlPullParser.END_TAG;
+import static org.xmlpull.v1.XmlPullParser.START_TAG;
+import static org.xmlpull.v1.XmlPullParser.TEXT;
+
 public abstract class AbstractParser<OutputType> implements XmlParser<OutputType> {
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractParser.class);
@@ -42,43 +44,44 @@ public abstract class AbstractParser<OutputType> implements XmlParser<OutputType
     public abstract String getExpectedTag();
 
     protected void validate(XmlPullParser parser) throws XmlPullParserException, IOException {
-        Preconditions.checkState(parser.getEventType() == XmlPullParser.START_TAG);
-        Preconditions.checkState(parser.getName().equals(getExpectedTag()));
-
-        validateImpl(parser);
-    }
-
-    protected void validateImpl(XmlPullParser parser) throws XmlPullParserException, IOException {
+        parser.require(START_TAG, null, getExpectedTag());
     }
 
     public final OutputType parse(XmlPullParser parser) throws XmlPullParserException, IOException {
         validate(parser);
+        final int depth = parser.getDepth();
         OutputType output = createObject(parser);
 
-        if (parser.getEventType() == XmlPullParser.END_TAG && parser.getName().equals(getExpectedTag())) {
-            return output;
+        if (parser.getEventType() == END_TAG && depth == parser.getDepth()) {
+            return finishObject(output);
         }
 
         int token = parser.next();
-        while (token != XmlPullParser.END_DOCUMENT) {
-            if (token == XmlPullParser.END_TAG && parser.getName().equals(getExpectedTag())) {
-                break;
-            }
-            if (token == XmlPullParser.START_TAG) {
+        while (depth <= parser.getDepth()) {
+            if (token == START_TAG) {
                 handleChildElement(parser, output, parser.getName());
                 token = parser.getEventType();
+                if (token == START_TAG) {
+                    skipElement(parser);
+                    token = parser.getEventType();
+                }
             } else {
                 token = parser.next();
             }
         }
 
-        return output;
+        return finishObject(output);
     }
 
     protected abstract OutputType createObject(XmlPullParser parser) throws XmlPullParserException, IOException;
 
-    protected OutputType setAttributes(XmlPullParser parser, OutputType object) throws XmlPullParserException {
-        Preconditions.checkState(parser.getEventType() == XmlPullParser.START_TAG);
+    protected OutputType finishObject(OutputType object) throws XmlPullParserException, IOException {
+        return object;
+    }
+
+    protected OutputType setAttributes(XmlPullParser parser, OutputType object)
+            throws XmlPullParserException, IOException {
+        parser.require(START_TAG, null, getExpectedTag());
 
         for (int i = 0; i < parser.getAttributeCount(); i++) {
             String name = parser.getAttributeName(i);
@@ -94,21 +97,13 @@ public abstract class AbstractParser<OutputType> implements XmlParser<OutputType
     }
 
     protected void skipElement(XmlPullParser parser) throws XmlPullParserException, IOException {
-        Preconditions.checkState(parser.getEventType() == XmlPullParser.START_TAG);
+        parser.require(START_TAG, null, null);
 
         logger.trace("Skipping element {%s}%s", parser.getNamespace(), parser.getName());
 
-        int tokenCount = 0;
-        int token = parser.next();
-        while (token != XmlPullParser.END_TAG || tokenCount > 0) {
-            if (token == XmlPullParser.START_TAG) {
-                tokenCount++;
-            }
-            if (token == XmlPullParser.END_TAG) {
-                tokenCount--;
-            }
-
-            token = parser.next();
+        final int depth = parser.getDepth();
+        while (parser.getDepth() >= depth) {
+            parser.next();
         }
 
         logger.trace("Finished kipping element {%s}%s", parser.getNamespace(), parser.getName());
@@ -116,24 +111,19 @@ public abstract class AbstractParser<OutputType> implements XmlParser<OutputType
 
     protected void skipUntil(XmlPullParser parser, String... tags) throws IOException, XmlPullParserException {
         Set<String> tagSet = Sets.newHashSet(tags);
+
         int type = parser.getEventType();
-        if (type == XmlPullParser.END_TAG) {
+        if (type == END_TAG) {
             type = parser.next();
         }
-        while (type != XmlPullParser.END_DOCUMENT) {
-            if (type == XmlPullParser.START_TAG) {
+
+        final int depth = parser.getDepth();
+        while (parser.getDepth() >= depth) {
+            if (type == START_TAG) {
                 if (tagSet.contains(parser.getName())) {
                     return;
                 }
                 skipElement(parser);
-            } else if (type == XmlPullParser.END_TAG) {
-                if (parser.getName().equals(getExpectedTag())) {
-                    return;
-                }
-                throw new IncorrectFormatException(
-                        String.format("While looking in %s for tags %s, encountered unexpected end tag %s",
-                                getExpectedTag(), tagSet, parser.getName())
-                );
             } else {
                 type = parser.next();
             }
@@ -146,8 +136,8 @@ public abstract class AbstractParser<OutputType> implements XmlParser<OutputType
         skipElement(parser);
     }
 
-    protected TFloatList readFloats(XmlPullParser parser) throws XmlPullParserException {
-        Preconditions.checkState(parser.getEventType() == XmlPullParser.TEXT);
+    protected TFloatList readFloats(XmlPullParser parser) throws XmlPullParserException, IOException {
+        parser.require(TEXT, null, null);
 
         TFloatList floats = new TFloatArrayList();
 

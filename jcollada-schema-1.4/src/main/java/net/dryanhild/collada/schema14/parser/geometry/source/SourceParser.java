@@ -82,10 +82,6 @@ public class SourceParser extends AbstractParser<FloatSource> {
                 break;
             case "technique_common":
                 techniqueCommonParser.parse(parser);
-                break;
-            default:
-                skipElement(parser);
-                break;
         }
     }
 
@@ -106,15 +102,14 @@ public class SourceParser extends AbstractParser<FloatSource> {
             switch (childTag) {
                 case "accessor":
                     floatSource.setCommonAccessor(accessorParser.parse(parser));
-                    break;
-                default:
-                    skipElement(parser);
-                    break;
             }
         }
     }
 
     private class AccessorParser extends AbstractParser<FloatAccessor> {
+
+        private List<SourceAccessorParam> params = Lists.newArrayList();
+
         @Override
         public String getExpectedTag() {
             return "accessor";
@@ -123,19 +118,14 @@ public class SourceParser extends AbstractParser<FloatSource> {
         @Override
         protected FloatAccessor createObject(XmlPullParser parser) throws XmlPullParserException, IOException {
             FloatAccessor source = setAttributes(parser, new FloatAccessor());
-            parser.next();
-
-            List<SourceAccessorParam> params = Lists.newArrayList();
-
-            skipUntil(parser, paramParser.getExpectedTag());
-            while (parser.getEventType() != XmlPullParser.END_TAG) {
-                params.add(paramParser.parse(parser));
-                skipUntil(parser, paramParser.getExpectedTag());
-            }
-
-            source.setParams(params.toArray(new SourceAccessorParam[params.size()]));
-
+            params.clear();
             return source;
+        }
+
+        @Override
+        protected FloatAccessor finishObject(FloatAccessor object) throws XmlPullParserException, IOException {
+            object.setParams(params.toArray(new SourceAccessorParam[params.size()]));
+            return object;
         }
 
         @Override
@@ -155,6 +145,15 @@ public class SourceParser extends AbstractParser<FloatSource> {
                     break;
             }
             return object;
+        }
+
+        @Override
+        protected void handleChildElement(XmlPullParser parser, FloatAccessor parent, String childTag)
+                throws IOException, XmlPullParserException {
+            switch (childTag) {
+                case "param":
+                    params.add(paramParser.parse(parser));
+            }
         }
     }
 
@@ -183,7 +182,6 @@ public class SourceParser extends AbstractParser<FloatSource> {
                     break;
                 case "semantic":
                     object.setSemantic(value);
-                    break;
             }
             return object;
         }

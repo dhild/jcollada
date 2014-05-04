@@ -25,6 +25,7 @@ package net.dryanhild.collada.schema14.data;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import net.dryanhild.collada.NoSuchElementIdException;
+import net.dryanhild.collada.VersionSupport;
 import net.dryanhild.collada.data.ColladaDocument;
 import net.dryanhild.collada.data.fx.Effect;
 import net.dryanhild.collada.data.fx.Material;
@@ -32,6 +33,7 @@ import net.dryanhild.collada.data.geometry.Geometry;
 import net.dryanhild.collada.data.scene.Node;
 import net.dryanhild.collada.data.scene.VisualScene;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -42,6 +44,8 @@ public class ColladaDocument14 implements ColladaDocument {
     private final List<Node> nodes = Lists.newArrayList();
 
     private VisualScene mainScene;
+
+    private VersionSupport version;
 
     public ColladaDocument14() {
     }
@@ -111,8 +115,15 @@ public class ColladaDocument14 implements ColladaDocument {
     }
 
 
-    public void addNode(Node node) {
-        nodes.add(node);
+    public void addNodes(Collection<Node> nodes){
+        this.nodes.addAll(nodes);
     }
 
+    public VersionSupport getVersion() {
+        return version;
+    }
+
+    public void setVersion(VersionSupport version) {
+        this.version = version;
+    }
 }

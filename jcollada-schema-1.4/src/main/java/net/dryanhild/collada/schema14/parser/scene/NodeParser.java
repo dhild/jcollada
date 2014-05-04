@@ -51,7 +51,7 @@ public class NodeParser extends AbstractParser<NodeImpl> {
     }
 
     @Override
-    protected NodeImpl createObject(XmlPullParser parser) throws XmlPullParserException {
+    protected NodeImpl createObject(XmlPullParser parser) throws XmlPullParserException, IOException {
         return setAttributes(parser, new NodeImpl());
     }
 
@@ -66,9 +66,6 @@ public class NodeParser extends AbstractParser<NodeImpl> {
                 break;
             case "type":
                 node.setType(NodeType.valueOf(value));
-                break;
-            default:
-                break;
         }
         return node;
     }
@@ -89,10 +86,6 @@ public class NodeParser extends AbstractParser<NodeImpl> {
                 break;
             case "node":
                 parent.addChild(parse(parser));
-                break;
-            default:
-                skipElement(parser);
-                break;
         }
     }
 

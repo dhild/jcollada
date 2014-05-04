@@ -46,13 +46,15 @@ public class GeometryLibraryParser extends AbstractParser<List<Geometry>> {
 
     @Override
     protected List<Geometry> createObject(XmlPullParser parser) throws XmlPullParserException, IOException {
-        skipUntil(parser, geometryParser.getExpectedTag());
-        List<Geometry> geometries = Lists.newArrayList();
+        return Lists.newArrayList();
+    }
 
-        while (parser.getName().equals(geometryParser.getExpectedTag())) {
-            geometries.add(geometryParser.parse(parser));
+    @Override
+    protected void handleChildElement(XmlPullParser parser, List<Geometry> parent, String childTag)
+            throws IOException, XmlPullParserException {
+        switch (childTag) {
+            case "geometry":
+                parent.add(geometryParser.parse(parser));
         }
-
-        return geometries;
     }
 }
