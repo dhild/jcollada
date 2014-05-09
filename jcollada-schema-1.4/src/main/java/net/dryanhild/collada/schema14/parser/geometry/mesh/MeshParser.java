@@ -20,49 +20,31 @@
  * THE SOFTWARE.
  */
 
-package net.dryanhild.collada.schema14.parser.geometry.source;
+package net.dryanhild.collada.schema14.parser.geometry.mesh;
 
-import gnu.trove.list.TFloatList;
-import net.dryanhild.collada.schema14.data.geometry.source.FloatArray;
+import net.dryanhild.collada.schema14.data.geometry.MeshImpl;
 import net.dryanhild.collada.schema14.parser.AbstractParser;
 import org.jvnet.hk2.annotations.Service;
-import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 
 @Service
-public class FloatArrayParser extends AbstractParser<FloatArray> {
+public class MeshParser extends AbstractParser<MeshImpl> {
 
     @Override
     public String getExpectedTag() {
-        return "float_array";
+        return "mesh";
     }
 
     @Override
-    protected FloatArray createObject() throws XmlPullParserException, IOException {
-        FloatArray array = setAttributes(new FloatArray(0));
-
-        while (data.parser.getEventType() != XmlPullParser.TEXT) {
-            data.parser.next();
-        }
-        TFloatList floatList = readFloats();
-        float[] values = array.getValues();
-        assert values.length == floatList.size();
-        floatList.toArray(values);
-
-        return array;
+    protected MeshImpl createObject() throws XmlPullParserException {
+        return new MeshImpl();
     }
 
     @Override
-    protected FloatArray handleAttribute(FloatArray object, String attribute, String value) {
-        switch (attribute) {
-            case "count":
-                FloatArray newObject = new FloatArray(Integer.valueOf(value));
-                newObject.setName(object.getName());
-                newObject.setId(object.getId());
-                object = newObject;
-        }
-        return object;
+    protected MeshImpl setAttributes(MeshImpl object) throws XmlPullParserException, IOException {
+
+        return super.setAttributes(object);
     }
 }

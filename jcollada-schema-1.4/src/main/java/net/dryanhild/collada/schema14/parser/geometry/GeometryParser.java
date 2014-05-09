@@ -26,6 +26,7 @@ import net.dryanhild.collada.data.geometry.Geometry;
 import net.dryanhild.collada.schema14.ParsingData;
 import net.dryanhild.collada.schema14.data.geometry.MeshImpl;
 import net.dryanhild.collada.schema14.parser.XmlParser;
+import net.dryanhild.collada.schema14.parser.geometry.mesh.MeshParser;
 import org.jvnet.hk2.annotations.Service;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;

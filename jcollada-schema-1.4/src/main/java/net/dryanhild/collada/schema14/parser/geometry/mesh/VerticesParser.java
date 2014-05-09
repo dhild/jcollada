@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  */
 
-package net.dryanhild.collada.schema14.parser.geometry;
+package net.dryanhild.collada.schema14.parser.geometry.mesh;
 
 import net.dryanhild.collada.schema14.data.geometry.MeshImpl;
 import net.dryanhild.collada.schema14.parser.AbstractParser;
@@ -30,7 +30,7 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
 
 @Service
-public class MeshParser extends AbstractParser<MeshImpl> {
+public class VerticesParser extends AbstractParser<MeshImpl> {
 
     @Override
     public String getExpectedTag() {
