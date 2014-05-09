@@ -25,10 +25,12 @@ package net.dryanhild.collada.schema14.data.geometry;
 import net.dryanhild.collada.data.geometry.DataType;
 import net.dryanhild.collada.data.geometry.Geometry;
 import net.dryanhild.collada.data.geometry.Vertex;
+import net.dryanhild.collada.schema14.data.AbstractNameableAddressableType;
 
 import java.util.Set;
 
-public class MeshImpl implements Geometry {
+public class MeshImpl extends AbstractNameableAddressableType implements Geometry {
+
     @Override
     public Set<String> getSemantics() {
         return null;
@@ -41,11 +43,6 @@ public class MeshImpl implements Geometry {
 
     @Override
     public Iterable<Vertex> getVertices() {
-        return null;
-    }
-
-    @Override
-    public String getId() {
         return null;
     }
 }

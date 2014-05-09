@@ -24,6 +24,8 @@ package net.dryanhild.collada.schema14;
 
 import net.dryanhild.collada.ColladaLoader;
 import net.dryanhild.collada.data.ColladaDocument;
+import net.dryanhild.collada.data.geometry.Geometry;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -31,10 +33,12 @@ import java.net.URL;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Test(groups = {"functional"})
 public class WithTestDae {
 
     private ColladaLoader colladaLoader = new ColladaLoader();
     private URL resourceUrl;
+    private ColladaDocument document;
 
     public WithTestDae() {
         colladaLoader.setValidating(false);
@@ -42,15 +46,13 @@ public class WithTestDae {
         resourceUrl = classLoader.getResource("test.dae");
     }
 
-    @Test
-    public void loaderHasVersions14() {
-        assertThat(colladaLoader.getRegisteredVersions())
-                .contains(ColladaLoaderService14.VERSION_1_4_0, ColladaLoaderService14.VERSION_1_4_1);
+    @BeforeMethod
+    public void loadDocument() throws IOException {
+        document = colladaLoader.load(resourceUrl);
     }
 
-    @Test(groups = {"functional"})
-    public void canLoadTestDae() throws IOException {
-        ColladaDocument document = colladaLoader.load(resourceUrl);
+    @Test
+    public void canLoadTestDae() {
         assertThat(document).isNotNull();
     }
 

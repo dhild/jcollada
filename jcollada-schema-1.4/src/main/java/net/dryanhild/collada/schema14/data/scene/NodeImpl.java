@@ -27,27 +27,17 @@ import net.dryanhild.collada.data.geometry.GeometryInstance;
 import net.dryanhild.collada.data.scene.Node;
 import net.dryanhild.collada.data.scene.NodeType;
 import net.dryanhild.collada.data.transform.Transform;
+import net.dryanhild.collada.schema14.data.AbstractNameableAddressableType;
 
 import java.util.List;
 
-public class NodeImpl implements Node {
+public class NodeImpl extends AbstractNameableAddressableType implements Node {
 
-    private String name;
-    private String id;
     private NodeType type;
     private final List<Node> children = Lists.newArrayList();
     private final List<GeometryInstance> geometries = Lists.newArrayList();
     private final List<Transform> transforms = Lists.newArrayList();
 
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public String getId() {
-        return id;
-    }
 
     @Override
     public NodeType getType() {
@@ -67,14 +57,6 @@ public class NodeImpl implements Node {
     @Override
     public List<Transform> getTransforms() {
         return transforms;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public void setType(NodeType type) {

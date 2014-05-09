@@ -58,12 +58,6 @@ public class NodeParser extends AbstractParser<NodeImpl> {
     @Override
     protected NodeImpl handleAttribute(NodeImpl node, String attribute, String value) {
         switch (attribute) {
-            case "id":
-                node.setId(value);
-                break;
-            case "name":
-                node.setName(value);
-                break;
             case "type":
                 node.setType(NodeType.valueOf(value));
         }

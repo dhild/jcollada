@@ -19,19 +19,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package net.dryanhild.collada.data.geometry;
+
+package net.dryanhild.collada.schema14.data;
 
 import net.dryanhild.collada.data.AddressableType;
 import net.dryanhild.collada.data.NameableType;
 
-import java.util.Set;
+public abstract class AbstractNameableAddressableType implements NameableType, AddressableType {
 
-public interface Geometry extends AddressableType, NameableType {
+    private String id;
+    private String name;
 
-    Set<String> getSemantics();
+    @Override
+    public String getId() {
+        return id;
+    }
 
-    DataType getDataType(String semantic);
+    @Override
+    public String getName() {
+        return name;
+    }
 
-    Iterable<Vertex> getVertices();
+    public void setId(String id) {
+        this.id = id;
+    }
 
+    public void setName(String name) {
+        this.name = name;
+    }
 }

@@ -25,6 +25,7 @@ package net.dryanhild.collada.schema14.parser;
 import com.google.common.collect.Sets;
 import gnu.trove.list.TFloatList;
 import gnu.trove.list.array.TFloatArrayList;
+import net.dryanhild.collada.schema14.data.AbstractNameableAddressableType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xmlpull.v1.XmlPullParser;
@@ -86,13 +87,30 @@ public abstract class AbstractParser<OutputType> implements XmlParser<OutputType
         for (int i = 0; i < parser.getAttributeCount(); i++) {
             String name = parser.getAttributeName(i);
             String value = parser.getAttributeValue(i);
+            setBasicAttributes(object, name, value);
             object = handleAttribute(object, name, value);
         }
         return object;
     }
 
+    protected void setBasicAttributes(OutputType object, String attribute, String value) {
+        if (object != null) {
+            switch (attribute) {
+                case "id":
+                    if (AbstractNameableAddressableType.class.isAssignableFrom(object.getClass())) {
+                        ((AbstractNameableAddressableType) object).setId(value);
+                    }
+                    break;
+                case "name":
+                    if (AbstractNameableAddressableType.class.isAssignableFrom(object.getClass())) {
+                        ((AbstractNameableAddressableType) object).setName(value);
+                    }
+            }
+        }
+    }
+
     protected OutputType handleAttribute(OutputType object, String attribute, String value) {
-        // By default, ignores attributes.
+        // By default, ignores most attributes.
         return object;
     }
 
