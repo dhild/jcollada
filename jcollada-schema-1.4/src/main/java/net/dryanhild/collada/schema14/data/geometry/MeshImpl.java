@@ -23,45 +23,63 @@
 package net.dryanhild.collada.schema14.data.geometry;
 
 import net.dryanhild.collada.data.geometry.Geometry;
-import net.dryanhild.collada.data.geometry.Vertex;
+import net.dryanhild.collada.data.geometry.Triangles;
 import net.dryanhild.collada.schema14.data.AbstractNameableAddressableType;
 
-import java.util.Iterator;
+import java.nio.ByteBuffer;
 import java.util.Map;
 import java.util.Set;
 
 public class MeshImpl extends AbstractNameableAddressableType implements Geometry {
 
-    private Map<String, Integer> semantics;
-    private int vertexCount;
-    private Iterable<Vertex> vertices;
+    private Map<String, Integer> dataCount;
+    private Map<String, Integer> dataBytes;
+    private Map<String, Integer> interleaveOffset;
+    private Triangles triangles;
 
     @Override
     public Set<String> getSemantics() {
-        return semantics.keySet();
+        return dataCount.keySet();
     }
 
     @Override
-    public int getDataSize(String semantic) {
-        return semantics.get(semantic);
+    public int getDataCount(String semantic) {
+        return dataCount.get(semantic);
+    }
+
+    public void setDataCount(Map<String, Integer> semantics) {
+        this.dataCount = semantics;
     }
 
     @Override
-    public int getVertexCount() {
-        return vertexCount;
+    public int getDataBytes(String semantic) {
+        return dataBytes.get(semantic);
     }
 
     @Override
-    public Iterator<Vertex> iterator() {
-        return vertices.iterator();
+    public int getInterleaveOffset(String semantic) {
+        return interleaveOffset.get(semantic);
     }
 
-    public void setSemantics(Map<String, Integer> semantics) {
-        this.semantics = semantics;
+    @Override
+    public ByteBuffer putInterleavedVertexData(ByteBuffer buffer) {
+        return buffer;
     }
 
-    public void setVertices(int count, Iterable<Vertex> vertices) {
-        vertexCount = count;
-        this.vertices = vertices;
+    @Override
+    public Triangles getTriangles() {
+        return triangles;
+    }
+
+    public void setTriangles(Triangles triangles) {
+        this.triangles = triangles;
+    }
+
+    public void setDataBytes(Map<String, Integer> dataBytes) {
+        this.dataBytes = dataBytes;
+    }
+
+    public void setInterleaveOffset(Map<String, Integer> interleaveOffset) {
+        this.interleaveOffset = interleaveOffset;
     }
 }

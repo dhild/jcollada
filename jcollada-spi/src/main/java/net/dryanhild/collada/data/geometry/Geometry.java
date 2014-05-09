@@ -19,11 +19,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package net.dryanhild.collada.data.geometry;
 
 import net.dryanhild.collada.data.AddressableType;
 import net.dryanhild.collada.data.NameableType;
 
+import java.nio.ByteBuffer;
 import java.util.Set;
 
 /**
@@ -32,7 +34,7 @@ import java.util.Set;
  * Implements the {@link Iterable} interface so that the contained {@link net.dryanhild.collada.data
  * .geometry.Vertex} objects can easily be iterated.
  */
-public interface Geometry extends AddressableType, NameableType, Iterable<Vertex> {
+public interface Geometry extends AddressableType, NameableType {
 
     /**
      * Semantic types typically include: POSITION, COLOR, NORMAL, TEXCOORD, etc.
@@ -49,13 +51,36 @@ public interface Geometry extends AddressableType, NameableType, Iterable<Vertex
      * @param semantic The semantic to look up.
      * @return The number of values that the given semantic has in each vertex.
      */
-    int getDataSize(String semantic);
+    int getDataCount(String semantic);
+
+    /** Gets the number of bytes used to represent this semantic for a single vertex.
+     *
+     * @param semantic The semantic to look up.
+     * @return The number of bytes that the given semantic has in each vertex.
+     */
+    int getDataBytes(String semantic);
 
     /**
-     * This count includes all vertices after processing. May be different than the vertex count in the COLLADA file.
+     * Gets the offset for the semantic in an interleaved data set.
      *
-     * @return The number of vertices.
+     * @param semantic The semantic to look up.
+     * @return The byte offset that the given semantic has in an interleaved data set.
      */
-    int getVertexCount();
+    int getInterleaveOffset(String semantic);
+
+    /**
+     * Stores the interleaved vertex data in the given buffer.
+     *
+     * @param buffer The buffer to store the data in.
+     * @return The given buffer (for ease in making chained calls).
+     */
+    ByteBuffer putInterleavedVertexData(ByteBuffer buffer);
+
+    /**
+     * Gets the triangle data elements that are in this Geometry.
+     *
+     * @return The contained elements that are represented as triangles.
+     */
+    Triangles getTriangles();
 
 }

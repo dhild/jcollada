@@ -67,7 +67,7 @@ public class ColladaLoaderService14 implements ColladaLoaderService {
         parseFile(context, data);
 
         for (Postprocessor proc : data.postprocessors) {
-            proc.process();
+            proc.process(data);
         }
 
         return data.document;

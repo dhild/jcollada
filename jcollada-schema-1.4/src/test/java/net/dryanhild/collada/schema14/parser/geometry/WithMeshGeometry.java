@@ -105,7 +105,7 @@ public class WithMeshGeometry extends BaseParserTest {
         geometry = geometryParser.parse();
 
         for (Postprocessor p : data.postprocessors) {
-            p.process();
+            p.process(data);
         }
     }
 
@@ -126,11 +126,12 @@ public class WithMeshGeometry extends BaseParserTest {
 
     @Test
     public void positionSizeIs3() {
-        assertThat(geometry.getDataSize("POSITION")).isEqualTo(3);
+        assertThat(geometry.getDataCount("POSITION")).isEqualTo(3);
     }
 
     @Test
     public void normalSizeIs3() {
-        assertThat(geometry.getDataSize("NORMAL")).isEqualTo(3);
+        assertThat(geometry.getDataCount("NORMAL")).isEqualTo(3);
     }
+
 }

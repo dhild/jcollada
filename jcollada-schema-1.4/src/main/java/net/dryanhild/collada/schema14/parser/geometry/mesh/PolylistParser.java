@@ -48,6 +48,11 @@ public class PolylistParser extends AbstractParser<Polylist> {
             case "input":
                 addInput(parent);
                 break;
+            case "vcount":
+                parent.setVcount(readInts());
+                break;
+            case "p":
+                parent.setP(readInts());
         }
     }
 

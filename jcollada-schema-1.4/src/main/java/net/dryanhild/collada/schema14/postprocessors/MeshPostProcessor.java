@@ -25,6 +25,7 @@ package net.dryanhild.collada.schema14.postprocessors;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import net.dryanhild.collada.NoSuchElementIdException;
+import net.dryanhild.collada.schema14.ParsingData;
 import net.dryanhild.collada.schema14.data.geometry.MeshImpl;
 import net.dryanhild.collada.schema14.data.geometry.Polylist;
 import net.dryanhild.collada.schema14.data.geometry.Vertices;
@@ -36,6 +37,8 @@ import java.util.Map;
 public class MeshPostProcessor implements Postprocessor {
 
     private MeshImpl mesh;
+
+    private PolylistVertexReader polylistVertexReader;
 
     private final List<FloatSource> sources = Lists.newArrayList();
     private Vertices vertices;
@@ -60,7 +63,8 @@ public class MeshPostProcessor implements Postprocessor {
     }
 
     @Override
-    public void process() {
+    public void process(ParsingData data) {
+        polylistVertexReader = new PolylistVertexReader(data);
         for (Polylist polys : polylists) {
             processPolylist(polys);
         }
@@ -99,6 +103,6 @@ public class MeshPostProcessor implements Postprocessor {
     }
 
     private void writeMesh() {
-        mesh.setSemantics(semantics);
+        mesh.setDataCount(semantics);
     }
 }

@@ -22,10 +22,30 @@
 
 package net.dryanhild.collada.schema14.postprocessors;
 
+import gnu.trove.iterator.TIntIterator;
+import net.dryanhild.collada.data.geometry.Triangles;
 import net.dryanhild.collada.schema14.ParsingData;
+import net.dryanhild.collada.schema14.data.geometry.Polylist;
 
-public interface Postprocessor {
+public class PolylistVertexReader {
 
-    void process(ParsingData data);
+    private final ParsingData data;
+    private Triangles triangles;
 
+    public PolylistVertexReader(ParsingData data) {
+        this.data = data;
+    }
+
+    public Triangles getTriangles() {
+        return triangles;
+    }
+
+    public void process(Polylist polylist) {
+        TIntIterator it = polylist.getVcount().iterator();
+        while (it.hasNext()) {
+            assert it.next() == 3 : "Unable to handle polycounts other than 3";
+
+
+        }
+    }
 }

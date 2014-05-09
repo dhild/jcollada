@@ -19,14 +19,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package net.dryanhild.collada.data.geometry;
 
-import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 
-public interface Vertex {
+public interface Triangles {
 
-    float[] getDataAsFloats(String semantic);
+    /**
+     * @return The number of triangles.
+     */
+    int getCount();
 
-    FloatBuffer put(FloatBuffer buffer, String semantic);
-
+    IntBuffer putElementIndices(IntBuffer buffer);
 }

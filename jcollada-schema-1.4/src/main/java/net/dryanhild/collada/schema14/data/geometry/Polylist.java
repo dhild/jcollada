@@ -23,6 +23,7 @@
 package net.dryanhild.collada.schema14.data.geometry;
 
 import com.google.common.collect.Maps;
+import gnu.trove.list.TIntList;
 
 import java.util.Map;
 import java.util.Set;
@@ -33,6 +34,8 @@ public class Polylist {
     private int count;
     private final Map<String, String> sources = Maps.newHashMap();
     private final Map<String, Integer> offsets = Maps.newHashMap();
+    private TIntList vcount;
+    private TIntList p;
 
     public int getCount() {
         return count;
@@ -65,5 +68,21 @@ public class Polylist {
 
     public int getOffset(String semantic) {
         return offsets.get(semantic);
+    }
+
+    public TIntList getVcount() {
+        return vcount;
+    }
+
+    public void setVcount(TIntList vcount) {
+        this.vcount = vcount;
+    }
+
+    public TIntList getP() {
+        return p;
+    }
+
+    public void setP(TIntList p) {
+        this.p = p;
     }
 }

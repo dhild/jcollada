@@ -24,7 +24,9 @@ package net.dryanhild.collada.schema14.parser;
 
 import com.google.common.collect.Sets;
 import gnu.trove.list.TFloatList;
+import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TFloatArrayList;
+import gnu.trove.list.array.TIntArrayList;
 import net.dryanhild.collada.schema14.ParsingData;
 import net.dryanhild.collada.schema14.data.AbstractNameableAddressableType;
 import org.slf4j.Logger;
@@ -160,6 +162,9 @@ public abstract class AbstractParser<OutputType> implements XmlParser<OutputType
     }
 
     protected TFloatList readFloats() throws XmlPullParserException, IOException {
+        if (data.parser.getEventType() == START_TAG) {
+            data.parser.next();
+        }
         data.parser.require(TEXT, null, null);
 
         TFloatList floats = new TFloatArrayList();
@@ -183,5 +188,34 @@ public abstract class AbstractParser<OutputType> implements XmlParser<OutputType
         }
 
         return floats;
+    }
+
+    protected TIntList readInts() throws XmlPullParserException, IOException {
+        if (data.parser.getEventType() == START_TAG) {
+            data.parser.next();
+        }
+        data.parser.require(TEXT, null, null);
+
+        TIntList ints = new TIntArrayList();
+
+        int[] startAndLength = new int[2];
+        char[] text = data.parser.getTextCharacters(startAndLength);
+        final int maxIndex = startAndLength[0] + startAndLength[1];
+        int i = startAndLength[0];
+        while (i < (startAndLength[0] + startAndLength[1])) {
+            while (Character.isWhitespace(text[i])) {
+                i++;
+            }
+            int count = 0;
+            while (!Character.isWhitespace(text[i + count]) && (i + count) < maxIndex) {
+                count++;
+            }
+            if (count > 0) {
+                ints.add(Integer.valueOf(new String(text, i, count)));
+            }
+            i += count;
+        }
+
+        return ints;
     }
 }
