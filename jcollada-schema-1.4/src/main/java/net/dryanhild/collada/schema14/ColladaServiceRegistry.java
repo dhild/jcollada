@@ -28,6 +28,7 @@ import net.dryanhild.collada.schema14.parser.XmlParser;
 import org.glassfish.hk2.api.ServiceLocator;
 import org.glassfish.hk2.api.ServiceLocatorFactory;
 import org.glassfish.hk2.utilities.ServiceLocatorUtilities;
+import org.xmlpull.v1.XmlPullParser;
 
 public class ColladaServiceRegistry {
 
@@ -52,7 +53,9 @@ public class ColladaServiceRegistry {
         return locator;
     }
 
-    public XmlParser<ColladaDocument14> getParser() {
+    public XmlParser<ColladaDocument14> getDocumentParser(XmlPullParser parser) {
+        ParsingData data = locator.getService(ParsingData.class);
+        data.parser = parser;
         return locator.getService(DocumentParser.class);
     }
 

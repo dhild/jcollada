@@ -20,13 +20,31 @@
  * THE SOFTWARE.
  */
 
-package net.dryanhild.collada.schema14.parser;
+package net.dryanhild.collada.schema14.parser.geometry;
 
+import net.dryanhild.collada.schema14.data.geometry.MeshImpl;
+import net.dryanhild.collada.schema14.parser.AbstractParser;
+import org.jvnet.hk2.annotations.Service;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 
-public interface XmlParser<OutputType> {
+@Service
+public class MeshParser extends AbstractParser<MeshImpl> {
 
-    OutputType parse() throws XmlPullParserException, IOException;
+    @Override
+    public String getExpectedTag() {
+        return "mesh";
+    }
+
+    @Override
+    protected MeshImpl createObject() throws XmlPullParserException {
+        return new MeshImpl();
+    }
+
+    @Override
+    protected MeshImpl setAttributes(MeshImpl object) throws XmlPullParserException, IOException {
+
+        return super.setAttributes(object);
+    }
 }

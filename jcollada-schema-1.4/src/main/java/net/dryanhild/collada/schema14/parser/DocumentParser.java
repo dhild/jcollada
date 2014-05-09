@@ -25,9 +25,9 @@ package net.dryanhild.collada.schema14.parser;
 import net.dryanhild.collada.IncorrectFormatException;
 import net.dryanhild.collada.schema14.ColladaLoaderService14;
 import net.dryanhild.collada.schema14.data.ColladaDocument14;
+import net.dryanhild.collada.schema14.parser.geometry.GeometryLibraryParser;
 import net.dryanhild.collada.schema14.parser.scene.NodeLibraryParser;
 import org.jvnet.hk2.annotations.Service;
-import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import javax.inject.Inject;
@@ -40,8 +40,12 @@ import static org.xmlpull.v1.XmlPullParser.START_TAG;
 public class DocumentParser extends AbstractParser<ColladaDocument14> {
 
     public static final String NAMESPACE = "http://www.collada.org/2005/11/COLLADASchema";
+
     @Inject
     private NodeLibraryParser nodeLibraryParser;
+
+    @Inject
+    private GeometryLibraryParser geometryLibraryParser;
 
     @Override
     public String getExpectedTag() {
@@ -49,17 +53,18 @@ public class DocumentParser extends AbstractParser<ColladaDocument14> {
     }
 
     @Override
-    protected void validate(XmlPullParser parser) throws XmlPullParserException, IOException {
-        parser.require(START_DOCUMENT, null, null);
-        while (parser.getEventType() != START_TAG) {
-            parser.next();
+    protected void validate() throws XmlPullParserException, IOException {
+        data.parser.require(START_DOCUMENT, null, null);
+        while (data.parser.getEventType() != START_TAG) {
+            data.parser.next();
         }
-        parser.require(START_TAG, NAMESPACE, getExpectedTag());
+        data.parser.require(START_TAG, NAMESPACE, getExpectedTag());
+        data.document = new ColladaDocument14();
     }
 
     @Override
-    protected ColladaDocument14 createObject(XmlPullParser parser) throws IOException, XmlPullParserException {
-        return setAttributes(parser, new ColladaDocument14());
+    protected ColladaDocument14 createObject() throws IOException, XmlPullParserException {
+        return setAttributes(data.document);
     }
 
     @Override
@@ -82,11 +87,14 @@ public class DocumentParser extends AbstractParser<ColladaDocument14> {
     }
 
     @Override
-    protected void handleChildElement(XmlPullParser parser, ColladaDocument14 parent, String childTag)
+    protected void handleChildElement(ColladaDocument14 parent, String childTag)
             throws IOException, XmlPullParserException {
         switch (childTag) {
             case "library_nodes":
-                parent.addNodes(nodeLibraryParser.parse(parser));
+                nodeLibraryParser.parse();
+                break;
+            case "library_geometries":
+                geometryLibraryParser.parse();
         }
     }
 }

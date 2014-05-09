@@ -40,13 +40,13 @@ public class MatrixParser extends AbstractParser<MatrixImpl> {
     }
 
     @Override
-    protected MatrixImpl createObject(XmlPullParser parser) throws XmlPullParserException, IOException {
-        MatrixImpl matrix = setAttributes(parser, new MatrixImpl());
+    protected MatrixImpl createObject() throws XmlPullParserException, IOException {
+        MatrixImpl matrix = setAttributes(new MatrixImpl());
 
-        while (parser.getEventType() != XmlPullParser.TEXT) {
-            parser.next();
+        while (data.parser.getEventType() != XmlPullParser.TEXT) {
+            data.parser.next();
         }
-        TFloatList floatList = readFloats(parser);
+        TFloatList floatList = readFloats();
 
         transposeIntoColumnMajor(floatList, matrix.getValues());
 

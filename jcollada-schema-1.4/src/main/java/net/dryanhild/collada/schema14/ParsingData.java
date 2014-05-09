@@ -20,13 +20,19 @@
  * THE SOFTWARE.
  */
 
-package net.dryanhild.collada.schema14.parser;
+package net.dryanhild.collada.schema14;
 
-import org.xmlpull.v1.XmlPullParserException;
+import net.dryanhild.collada.schema14.data.ColladaDocument14;
+import org.glassfish.hk2.api.PerThread;
+import org.jvnet.hk2.annotations.Service;
+import org.xmlpull.v1.XmlPullParser;
 
-import java.io.IOException;
+@Service
+@PerThread
+public class ParsingData {
 
-public interface XmlParser<OutputType> {
+    public ColladaDocument14 document;
 
-    OutputType parse() throws XmlPullParserException, IOException;
+    public XmlPullParser parser;
+
 }

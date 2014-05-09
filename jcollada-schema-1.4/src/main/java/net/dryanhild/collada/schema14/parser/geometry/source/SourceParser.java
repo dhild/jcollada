@@ -23,13 +23,13 @@
 package net.dryanhild.collada.schema14.parser.geometry.source;
 
 import com.google.common.collect.Lists;
+import net.dryanhild.collada.schema14.ParsingData;
 import net.dryanhild.collada.schema14.data.geometry.source.FloatAccessor;
 import net.dryanhild.collada.schema14.data.geometry.source.FloatSource;
 import net.dryanhild.collada.schema14.data.geometry.source.SourceAccessorParam;
 import net.dryanhild.collada.schema14.parser.AbstractParser;
 import org.glassfish.hk2.api.PerThread;
 import org.jvnet.hk2.annotations.Service;
-import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import javax.inject.Inject;
@@ -49,14 +49,21 @@ public class SourceParser extends AbstractParser<FloatSource> {
     protected AccessorParser accessorParser = new AccessorParser();
     protected ParamParser paramParser = new ParamParser();
 
+    private void setChildData() {
+        techniqueCommonParser.setData(data);
+        accessorParser.setData(data);
+        paramParser.setData(data);
+    }
+
     @Override
     public String getExpectedTag() {
         return "source";
     }
 
     @Override
-    protected FloatSource createObject(XmlPullParser parser) throws XmlPullParserException, IOException {
-        floatSource = setAttributes(parser, new FloatSource());
+    protected FloatSource createObject() throws XmlPullParserException, IOException {
+        setChildData();
+        floatSource = setAttributes(new FloatSource());
         return floatSource;
     }
 
@@ -74,34 +81,39 @@ public class SourceParser extends AbstractParser<FloatSource> {
     }
 
     @Override
-    protected void handleChildElement(XmlPullParser parser, FloatSource parent, String childTag)
+    protected void handleChildElement(FloatSource parent, String childTag)
             throws IOException, XmlPullParserException {
         switch (childTag) {
             case "float_array":
-                floatSource.setSource(floatArrayParser.parse(parser));
+                floatSource.setSource(floatArrayParser.parse());
                 break;
             case "technique_common":
-                techniqueCommonParser.parse(parser);
+                techniqueCommonParser.parse();
         }
     }
 
     private class TechniqueCommonParser extends AbstractParser<FloatSource> {
+
+        public void setData(ParsingData data) {
+            this.data = data;
+        }
+
         @Override
         public String getExpectedTag() {
             return "technique_common";
         }
 
         @Override
-        protected FloatSource createObject(XmlPullParser parser) throws XmlPullParserException, IOException {
+        protected FloatSource createObject() throws XmlPullParserException, IOException {
             return floatSource;
         }
 
         @Override
-        protected void handleChildElement(XmlPullParser parser, FloatSource parent, String childTag)
+        protected void handleChildElement(FloatSource parent, String childTag)
                 throws IOException, XmlPullParserException {
             switch (childTag) {
                 case "accessor":
-                    floatSource.setCommonAccessor(accessorParser.parse(parser));
+                    floatSource.setCommonAccessor(accessorParser.parse());
             }
         }
     }
@@ -110,14 +122,18 @@ public class SourceParser extends AbstractParser<FloatSource> {
 
         private List<SourceAccessorParam> params = Lists.newArrayList();
 
+        public void setData(ParsingData data) {
+            this.data = data;
+        }
+
         @Override
         public String getExpectedTag() {
             return "accessor";
         }
 
         @Override
-        protected FloatAccessor createObject(XmlPullParser parser) throws XmlPullParserException, IOException {
-            FloatAccessor source = setAttributes(parser, new FloatAccessor());
+        protected FloatAccessor createObject() throws XmlPullParserException, IOException {
+            FloatAccessor source = setAttributes(new FloatAccessor());
             params.clear();
             return source;
         }
@@ -148,24 +164,29 @@ public class SourceParser extends AbstractParser<FloatSource> {
         }
 
         @Override
-        protected void handleChildElement(XmlPullParser parser, FloatAccessor parent, String childTag)
+        protected void handleChildElement(FloatAccessor parent, String childTag)
                 throws IOException, XmlPullParserException {
             switch (childTag) {
                 case "param":
-                    params.add(paramParser.parse(parser));
+                    params.add(paramParser.parse());
             }
         }
     }
 
     private class ParamParser extends AbstractParser<SourceAccessorParam> {
+
+        public void setData(ParsingData data) {
+            this.data = data;
+        }
+
         @Override
         public String getExpectedTag() {
             return "param";
         }
 
         @Override
-        protected SourceAccessorParam createObject(XmlPullParser parser) throws XmlPullParserException, IOException {
-            return setAttributes(parser, new SourceAccessorParam());
+        protected SourceAccessorParam createObject() throws XmlPullParserException, IOException {
+            return setAttributes(new SourceAccessorParam());
         }
 
         @Override

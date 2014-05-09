@@ -25,12 +25,13 @@ package net.dryanhild.collada.schema14.parser;
 import com.google.common.collect.Sets;
 import gnu.trove.list.TFloatList;
 import gnu.trove.list.array.TFloatArrayList;
+import net.dryanhild.collada.schema14.ParsingData;
 import net.dryanhild.collada.schema14.data.AbstractNameableAddressableType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
+import javax.inject.Inject;
 import java.io.IOException;
 import java.util.Set;
 
@@ -42,51 +43,54 @@ public abstract class AbstractParser<OutputType> implements XmlParser<OutputType
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractParser.class);
 
+    @Inject
+    protected ParsingData data;
+
     public abstract String getExpectedTag();
 
-    protected void validate(XmlPullParser parser) throws XmlPullParserException, IOException {
-        parser.require(START_TAG, null, getExpectedTag());
+    protected void validate() throws XmlPullParserException, IOException {
+        data.parser.require(START_TAG, null, getExpectedTag());
     }
 
-    public final OutputType parse(XmlPullParser parser) throws XmlPullParserException, IOException {
-        validate(parser);
-        final int depth = parser.getDepth();
-        OutputType output = createObject(parser);
+    public final OutputType parse() throws XmlPullParserException, IOException {
+        validate();
+        final int depth = data.parser.getDepth();
+        OutputType output = createObject();
 
-        if (parser.getEventType() == END_TAG && depth == parser.getDepth()) {
+        if (data.parser.getEventType() == END_TAG && depth == data.parser.getDepth()) {
             return finishObject(output);
         }
 
-        int token = parser.next();
-        while (depth <= parser.getDepth()) {
+        int token = data.parser.next();
+        while (depth <= data.parser.getDepth()) {
             if (token == START_TAG) {
-                handleChildElement(parser, output, parser.getName());
-                token = parser.getEventType();
+                handleChildElement(output, data.parser.getName());
+                token = data.parser.getEventType();
                 if (token == START_TAG) {
-                    skipElement(parser);
-                    token = parser.getEventType();
+                    skipElement();
+                    token = data.parser.getEventType();
                 }
             } else {
-                token = parser.next();
+                token = data.parser.next();
             }
         }
 
         return finishObject(output);
     }
 
-    protected abstract OutputType createObject(XmlPullParser parser) throws XmlPullParserException, IOException;
+    protected abstract OutputType createObject() throws XmlPullParserException, IOException;
 
     protected OutputType finishObject(OutputType object) throws XmlPullParserException, IOException {
         return object;
     }
 
-    protected OutputType setAttributes(XmlPullParser parser, OutputType object)
+    protected OutputType setAttributes(OutputType object)
             throws XmlPullParserException, IOException {
-        parser.require(START_TAG, null, getExpectedTag());
+        data.parser.require(START_TAG, null, getExpectedTag());
 
-        for (int i = 0; i < parser.getAttributeCount(); i++) {
-            String name = parser.getAttributeName(i);
-            String value = parser.getAttributeValue(i);
+        for (int i = 0; i < data.parser.getAttributeCount(); i++) {
+            String name = data.parser.getAttributeName(i);
+            String value = data.parser.getAttributeValue(i);
             setBasicAttributes(object, name, value);
             object = handleAttribute(object, name, value);
         }
@@ -114,53 +118,53 @@ public abstract class AbstractParser<OutputType> implements XmlParser<OutputType
         return object;
     }
 
-    protected void skipElement(XmlPullParser parser) throws XmlPullParserException, IOException {
-        parser.require(START_TAG, null, null);
+    protected void skipElement() throws XmlPullParserException, IOException {
+        data.parser.require(START_TAG, null, null);
 
-        logger.trace("Skipping element {%s}%s", parser.getNamespace(), parser.getName());
+        logger.trace("Skipping element {%s}%s", data.parser.getNamespace(), data.parser.getName());
 
-        final int depth = parser.getDepth();
-        while (parser.getDepth() >= depth) {
-            parser.next();
+        final int depth = data.parser.getDepth();
+        while (data.parser.getDepth() >= depth) {
+            data.parser.next();
         }
 
-        logger.trace("Finished kipping element {%s}%s", parser.getNamespace(), parser.getName());
+        logger.trace("Finished kipping element {%s}%s", data.parser.getNamespace(), data.parser.getName());
     }
 
-    protected void skipUntil(XmlPullParser parser, String... tags) throws IOException, XmlPullParserException {
+    protected void skipUntil(String... tags) throws IOException, XmlPullParserException {
         Set<String> tagSet = Sets.newHashSet(tags);
 
-        int type = parser.getEventType();
+        int type = data.parser.getEventType();
         if (type == END_TAG) {
-            type = parser.next();
+            type = data.parser.next();
         }
 
-        final int depth = parser.getDepth();
-        while (parser.getDepth() >= depth) {
+        final int depth = data.parser.getDepth();
+        while (data.parser.getDepth() >= depth) {
             if (type == START_TAG) {
-                if (tagSet.contains(parser.getName())) {
+                if (tagSet.contains(data.parser.getName())) {
                     return;
                 }
-                skipElement(parser);
+                skipElement();
             } else {
-                type = parser.next();
+                type = data.parser.next();
             }
         }
     }
 
-    protected void handleChildElement(XmlPullParser parser, OutputType parent, String childTag)
+    protected void handleChildElement(OutputType parent, String childTag)
             throws IOException, XmlPullParserException {
         // Skip by default.
-        skipElement(parser);
+        skipElement();
     }
 
-    protected TFloatList readFloats(XmlPullParser parser) throws XmlPullParserException, IOException {
-        parser.require(TEXT, null, null);
+    protected TFloatList readFloats() throws XmlPullParserException, IOException {
+        data.parser.require(TEXT, null, null);
 
         TFloatList floats = new TFloatArrayList();
 
         int[] startAndLength = new int[2];
-        char[] text = parser.getTextCharacters(startAndLength);
+        char[] text = data.parser.getTextCharacters(startAndLength);
         final int maxIndex = startAndLength[0] + startAndLength[1];
         int i = startAndLength[0];
         while (i < (startAndLength[0] + startAndLength[1])) {

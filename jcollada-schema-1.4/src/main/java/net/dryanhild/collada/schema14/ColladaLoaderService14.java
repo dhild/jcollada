@@ -70,8 +70,8 @@ public class ColladaLoaderService14 implements ColladaLoaderService {
             Reader reader = new InputStreamReader(context.getMainFileInputStream(), context.getCharset());
             parser.setInput(reader);
 
-            XmlParser<ColladaDocument14> xmlParser = serviceRegistry.getParser();
-            return xmlParser.parse(parser);
+            XmlParser<ColladaDocument14> xmlParser = serviceRegistry.getDocumentParser(parser);
+            return xmlParser.parse();
         } catch (XmlPullParserException e) {
             throw new ParsingException("Unable to parse document!", e);
         }

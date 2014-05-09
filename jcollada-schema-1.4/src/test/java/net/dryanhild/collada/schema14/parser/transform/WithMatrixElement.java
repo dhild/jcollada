@@ -47,7 +47,7 @@ public class WithMatrixElement extends BaseParserTest {
 
     @BeforeMethod
     public void setNode() throws IOException, XmlPullParserException {
-        matrix = matrixParser.parse(xmlPullParser);
+        matrix = matrixParser.parse();
     }
 
     @Test

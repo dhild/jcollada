@@ -22,19 +22,15 @@
 
 package net.dryanhild.collada.schema14.parser.scene;
 
-import com.google.common.collect.Lists;
-import net.dryanhild.collada.data.scene.Node;
 import net.dryanhild.collada.schema14.parser.AbstractParser;
 import org.jvnet.hk2.annotations.Service;
-import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import javax.inject.Inject;
 import java.io.IOException;
-import java.util.List;
 
 @Service
-public class NodeLibraryParser extends AbstractParser<List<Node>> {
+public class NodeLibraryParser extends AbstractParser<Object> {
 
     @Inject
     private NodeParser nodeParser;
@@ -45,15 +41,15 @@ public class NodeLibraryParser extends AbstractParser<List<Node>> {
     }
 
     @Override
-    protected List<Node> createObject(XmlPullParser parser) throws XmlPullParserException, IOException {
-        return Lists.newArrayList();
+    protected Object createObject() throws XmlPullParserException, IOException {
+        return this;
     }
 
     @Override
-    protected void handleChildElement(XmlPullParser parser, List<Node> parent, String childTag)
+    protected void handleChildElement(Object parent, String childTag)
             throws IOException, XmlPullParserException {
         if (childTag.equals(nodeParser.getExpectedTag())) {
-            parent.add(nodeParser.parse(parser));
+            data.document.addNode(nodeParser.parse());
         }
     }
 }

@@ -47,7 +47,7 @@ public class WithFloatArray extends BaseParserTest {
 
     @BeforeMethod
     public void setNode() throws IOException, XmlPullParserException {
-        floatArray = floatArrayParser.parse(xmlPullParser);
+        floatArray = floatArrayParser.parse();
     }
 
     @Test

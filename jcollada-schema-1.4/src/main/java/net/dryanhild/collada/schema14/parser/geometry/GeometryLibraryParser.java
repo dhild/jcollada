@@ -22,39 +22,35 @@
 
 package net.dryanhild.collada.schema14.parser.geometry;
 
-import com.google.common.collect.Lists;
-import net.dryanhild.collada.data.geometry.Geometry;
 import net.dryanhild.collada.schema14.parser.AbstractParser;
 import org.jvnet.hk2.annotations.Service;
-import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import javax.inject.Inject;
 import java.io.IOException;
-import java.util.List;
 
 @Service
-public class GeometryLibraryParser extends AbstractParser<List<Geometry>> {
+public class GeometryLibraryParser extends AbstractParser<Object> {
 
     @Inject
     private GeometryParser geometryParser;
 
     @Override
     public String getExpectedTag() {
-        return "library_nodes";
+        return "library_geometries";
     }
 
     @Override
-    protected List<Geometry> createObject(XmlPullParser parser) throws XmlPullParserException, IOException {
-        return Lists.newArrayList();
+    protected Object createObject() throws XmlPullParserException, IOException {
+        return this;
     }
 
     @Override
-    protected void handleChildElement(XmlPullParser parser, List<Geometry> parent, String childTag)
+    protected void handleChildElement(Object parent, String childTag)
             throws IOException, XmlPullParserException {
         switch (childTag) {
             case "geometry":
-                parent.add(geometryParser.parse(parser));
+                data.document.addGeometry(geometryParser.parse());
         }
     }
 }

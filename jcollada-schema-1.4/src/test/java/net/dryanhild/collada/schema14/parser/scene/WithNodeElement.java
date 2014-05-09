@@ -51,7 +51,7 @@ public class WithNodeElement extends BaseParserTest {
 
     @BeforeMethod
     public void setNode() throws IOException, XmlPullParserException {
-        node = nodeParser.parse(xmlPullParser);
+        node = nodeParser.parse();
     }
 
     @Test

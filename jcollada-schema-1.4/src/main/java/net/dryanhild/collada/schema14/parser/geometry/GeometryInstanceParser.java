@@ -26,7 +26,6 @@ import net.dryanhild.collada.data.geometry.GeometryInstance;
 import net.dryanhild.collada.schema14.data.geometry.GeometryInstanceImpl;
 import net.dryanhild.collada.schema14.parser.AbstractParser;
 import org.jvnet.hk2.annotations.Service;
-import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
@@ -40,8 +39,8 @@ public class GeometryInstanceParser extends AbstractParser<GeometryInstance> {
     }
 
     @Override
-    protected GeometryInstance createObject(XmlPullParser parser) throws XmlPullParserException, IOException {
-        return setAttributes(parser, null);
+    protected GeometryInstance createObject() throws XmlPullParserException, IOException {
+        return setAttributes(null);
     }
 
     @Override

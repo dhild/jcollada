@@ -26,6 +26,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import net.dryanhild.collada.NoSuchElementIdException;
 import net.dryanhild.collada.VersionSupport;
+import net.dryanhild.collada.data.AddressableType;
 import net.dryanhild.collada.data.ColladaDocument;
 import net.dryanhild.collada.data.fx.Effect;
 import net.dryanhild.collada.data.fx.Material;
@@ -33,7 +34,6 @@ import net.dryanhild.collada.data.geometry.Geometry;
 import net.dryanhild.collada.data.scene.Node;
 import net.dryanhild.collada.data.scene.VisualScene;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -42,6 +42,10 @@ public class ColladaDocument14 implements ColladaDocument {
     private final Set<String> documentLocations = Sets.newHashSet();
 
     private final List<Node> nodes = Lists.newArrayList();
+    private final List<Geometry> geometries = Lists.newArrayList();
+    private final List<Material> materials = Lists.newArrayList();
+    private final List<VisualScene> visualScenes = Lists.newArrayList();
+    private final List<Effect> effects = Lists.newArrayList();
 
     private VisualScene mainScene;
 
@@ -52,47 +56,51 @@ public class ColladaDocument14 implements ColladaDocument {
 
     @Override
     public Geometry getGeometry(String id) {
-        return null;
+        return getElement(geometries, id);
     }
 
     @Override
     public Node getNode(String id) {
-        for (Node node : nodes) {
-            if (node.getId().equals(id)) {
-                return node;
-            }
-        }
-        throw new NoSuchElementIdException("Could not find node " + id);
-    }
-
-    @Override
-    public VisualScene getVisualScene(String id) {
-        return null;
-    }
-
-    @Override
-    public Iterable<? extends Effect> getEffects() {
-        return null;
-    }
-
-    @Override
-    public Effect getEffect(String id) {
-        return null;
-    }
-
-    @Override
-    public Iterable<? extends Material> getMaterials() {
-        return null;
+        return getElement(nodes, id);
     }
 
     @Override
     public Material getMaterial(String id) {
-        return null;
+        return getElement(materials, id);
+    }
+
+    @Override
+    public VisualScene getVisualScene(String id) {
+        return getElement(visualScenes, id);
+    }
+
+    @Override
+    public Effect getEffect(String id) {
+        return getElement(effects, id);
+    }
+
+    private <T extends AddressableType> T getElement(Iterable<T> values, String id) {
+        for (T element : values) {
+            if (element.getId().equals(id)) {
+                return element;
+            }
+        }
+        throw new NoSuchElementIdException("Could not find element " + id);
+    }
+
+    @Override
+    public Iterable<? extends Effect> getEffects() {
+        return effects;
+    }
+
+    @Override
+    public Iterable<? extends Material> getMaterials() {
+        return materials;
     }
 
     @Override
     public Iterable<Geometry> getGeometries() {
-        return null;
+        return geometries;
     }
 
     @Override
@@ -102,11 +110,7 @@ public class ColladaDocument14 implements ColladaDocument {
 
     @Override
     public Iterable<VisualScene> getVisualScenes() {
-        return null;
-    }
-
-    public void setMainScene(VisualScene scene) {
-        mainScene = scene;
+        return visualScenes;
     }
 
     @Override
@@ -114,9 +118,16 @@ public class ColladaDocument14 implements ColladaDocument {
         return mainScene;
     }
 
+    public void setMainScene(VisualScene scene) {
+        mainScene = scene;
+    }
 
-    public void addNodes(Collection<Node> nodes){
-        this.nodes.addAll(nodes);
+    public void addGeometry(Geometry geometry) {
+        geometries.add(geometry);
+    }
+
+    public void addNode(Node node) {
+        nodes.add(node);
     }
 
     public VersionSupport getVersion() {

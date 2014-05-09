@@ -58,7 +58,7 @@ public class WithBasicAccessor extends BaseParserTest {
 
     @BeforeMethod
     public void setFloatSource() throws IOException, XmlPullParserException {
-        floatSource = sourceParser.parse(xmlPullParser);
+        floatSource = sourceParser.parse();
     }
 
     @Test

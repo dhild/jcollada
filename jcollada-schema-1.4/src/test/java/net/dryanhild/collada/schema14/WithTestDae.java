@@ -56,4 +56,19 @@ public class WithTestDae {
         assertThat(document).isNotNull();
     }
 
+    @Test
+    public void hasGeometryWithCorrectName() {
+        Geometry geometry = document.getGeometry("Cylinder_001-mesh");
+        assertThat(geometry.getName()).isEqualTo("Cylinder.001");
+    }
+
+    @Test
+    public void hasCorrectNumberOfGeometries() {
+        int count = 0;
+        for (Geometry g : document.getGeometries()) {
+            count++;
+        }
+        assertThat(count).isEqualTo(1);
+    }
+
 }

@@ -22,12 +22,15 @@
 
 package net.dryanhild.collada.schema14.parser;
 
+import net.dryanhild.collada.schema14.ParsingData;
+import net.dryanhild.collada.schema14.data.ColladaDocument14;
 import org.jvnet.testing.hk2testng.HK2;
 import org.testng.annotations.BeforeMethod;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import javax.inject.Inject;
 import java.io.IOException;
 import java.io.StringReader;
 
@@ -36,19 +39,21 @@ public abstract class BaseParserTest {
 
     protected abstract String getDataString();
 
-    protected XmlPullParser xmlPullParser;
+    @Inject
+    private ParsingData data;
 
     @BeforeMethod
     public void resetParser() throws XmlPullParserException, IOException {
+        data.document = new ColladaDocument14();
         XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
         factory.setNamespaceAware(true);
         factory.setValidating(false);
-        xmlPullParser = factory.newPullParser();
+        data.parser = factory.newPullParser();
         StringReader reader = new StringReader(getDataString());
-        xmlPullParser.setInput(reader);
+        data.parser.setInput(reader);
 
-        while (xmlPullParser.getEventType() != XmlPullParser.START_TAG) {
-            xmlPullParser.next();
+        while (data.parser.getEventType() != XmlPullParser.START_TAG) {
+            data.parser.next();
         }
     }
 

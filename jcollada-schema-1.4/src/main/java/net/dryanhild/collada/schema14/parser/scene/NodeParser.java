@@ -30,7 +30,6 @@ import net.dryanhild.collada.schema14.parser.AbstractParser;
 import net.dryanhild.collada.schema14.parser.geometry.GeometryInstanceParser;
 import net.dryanhild.collada.schema14.parser.transform.MatrixParser;
 import org.jvnet.hk2.annotations.Service;
-import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import javax.inject.Inject;
@@ -51,8 +50,8 @@ public class NodeParser extends AbstractParser<NodeImpl> {
     }
 
     @Override
-    protected NodeImpl createObject(XmlPullParser parser) throws XmlPullParserException, IOException {
-        return setAttributes(parser, new NodeImpl());
+    protected NodeImpl createObject() throws XmlPullParserException, IOException {
+        return setAttributes(new NodeImpl());
     }
 
     @Override
@@ -65,29 +64,29 @@ public class NodeParser extends AbstractParser<NodeImpl> {
     }
 
     @Override
-    protected void handleChildElement(XmlPullParser parser, NodeImpl parent, String childTag)
+    protected void handleChildElement(NodeImpl parent, String childTag)
             throws IOException, XmlPullParserException {
         switch (childTag) {
             case "matrix":
-                parent.addTransform(matrixParser.parse(parser));
+                parent.addTransform(matrixParser.parse());
                 break;
             case "instance_geometry":
-                parent.addGeometry(geometryInstanceParser.parse(parser));
+                parent.addGeometry(geometryInstanceParser.parse());
                 break;
             case "instance_node":
-                parent.addChild(getInstanceNode(parser));
-                skipElement(parser);
+                parent.addChild(getInstanceNode());
+                skipElement();
                 break;
             case "node":
-                parent.addChild(parse(parser));
+                parent.addChild(parse());
         }
     }
 
-    private NodeImpl getInstanceNode(XmlPullParser parser) {
-        for (int i = 0; i < parser.getAttributeCount(); i++) {
-            String key = parser.getAttributeName(i);
+    private NodeImpl getInstanceNode() {
+        for (int i = 0; i < data.parser.getAttributeCount(); i++) {
+            String key = data.parser.getAttributeName(i);
             if (key.equals("url")) {
-                String url = parser.getAttributeValue(i);
+                String url = data.parser.getAttributeValue(i);
                 return SoftReference.createSoftReference(url, NodeImpl.class);
             }
         }
