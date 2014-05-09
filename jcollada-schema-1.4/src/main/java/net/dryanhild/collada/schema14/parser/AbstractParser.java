@@ -134,27 +134,6 @@ public abstract class AbstractParser<OutputType> implements XmlParser<OutputType
         logger.trace("Finished kipping element {%s}%s", data.parser.getNamespace(), data.parser.getName());
     }
 
-    protected void skipUntil(String... tags) throws IOException, XmlPullParserException {
-        Set<String> tagSet = Sets.newHashSet(tags);
-
-        int type = data.parser.getEventType();
-        if (type == END_TAG) {
-            type = data.parser.next();
-        }
-
-        final int depth = data.parser.getDepth();
-        while (data.parser.getDepth() >= depth) {
-            if (type == START_TAG) {
-                if (tagSet.contains(data.parser.getName())) {
-                    return;
-                }
-                skipElement();
-            } else {
-                type = data.parser.next();
-            }
-        }
-    }
-
     protected void handleChildElement(OutputType parent, String childTag)
             throws IOException, XmlPullParserException {
         // Skip by default.
