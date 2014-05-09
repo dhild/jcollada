@@ -68,19 +68,6 @@ public class SourceParser extends AbstractParser<FloatSource> {
     }
 
     @Override
-    protected FloatSource handleAttribute(FloatSource object, String attribute, String value) {
-        switch (attribute) {
-            case "id":
-                object.setId(value);
-                break;
-            case "name":
-                object.setName(value);
-                break;
-        }
-        return object;
-    }
-
-    @Override
     protected void handleChildElement(FloatSource parent, String childTag)
             throws IOException, XmlPullParserException {
         switch (childTag) {

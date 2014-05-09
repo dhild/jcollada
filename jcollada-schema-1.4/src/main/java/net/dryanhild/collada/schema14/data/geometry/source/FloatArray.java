@@ -22,36 +22,14 @@
 
 package net.dryanhild.collada.schema14.data.geometry.source;
 
-import net.dryanhild.collada.data.AddressableType;
-import net.dryanhild.collada.data.NameableType;
+import net.dryanhild.collada.schema14.data.AbstractNameableAddressableType;
 
-public class FloatArray implements AddressableType, NameableType {
-
-    private String id;
-    private String name;
+public class FloatArray extends AbstractNameableAddressableType {
 
     private final float[] values;
 
     public FloatArray(int size) {
         this.values = new float[size];
-    }
-
-    @Override
-    public String getId() {
-        return id;
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public float[] getValues() {

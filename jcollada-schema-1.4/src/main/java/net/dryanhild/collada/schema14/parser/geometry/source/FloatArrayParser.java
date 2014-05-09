@@ -66,12 +66,6 @@ public class FloatArrayParser extends AbstractParser<FloatArray> {
     @Override
     protected FloatArray handleAttribute(FloatArray object, String attribute, String value) {
         switch (attribute) {
-            case "id":
-                id = value;
-                break;
-            case "name":
-                name = value;
-                break;
             case "count":
                 return new FloatArray(Integer.valueOf(value));
         }
