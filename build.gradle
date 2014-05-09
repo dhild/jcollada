@@ -43,9 +43,21 @@ subprojects {
     }
 
     test {
-        useTestNG {
-            useDefaultListeners = true
+        useTestNG() {
+            suiteXmlBuilder().suite(name: 'jcollada', parallel: 'tests') {
+                test (name : 'all-tests') {
+                    packages {
+                        'package' (name: 'net.dryanhild.collada.*')
+                    }
+                }
+            }
         }
+        options {
+            listeners << 'org.uncommons.reportng.HTMLReporter'
+            listeners << 'org.uncommons.reportng.JUnitXMLReporter'
+        }
+        ext.useDefaultListeners = true
+        ext.workingDirectory = 'build/'
     }
 
     dependencies {
@@ -56,7 +68,10 @@ subprojects {
         testRuntime "org.slf4j:slf4j-jdk14:${slf4jVersion}"
 
         testCompile "org.testng:testng:${testngVersion}"
+        testCompile "org.uncommons:reportng:$reportngVersion"
         testCompile "org.assertj:assertj-core:${assertjVersion}"
         testCompile "org.mockito:mockito-all:${mockitoVersion}"
+        // known issue with TestNG and ReportNG: explicitly add Guice
+        testCompile "com.google.inject:guice:3.0"
     }
 }
