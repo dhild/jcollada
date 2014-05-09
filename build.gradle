@@ -43,7 +43,9 @@ subprojects {
     }
 
     test {
-        useTestNG()
+        useTestNG {
+            useDefaultListeners = true
+        }
     }
 
     dependencies {
