@@ -19,15 +19,51 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package net.dryanhild.collada.data.geometry;
 
-import java.util.List;
+package net.dryanhild.collada.schema14.data.geometry;
+
+import com.google.common.collect.Maps;
+
 import java.util.Map;
+import java.util.Set;
 
-public interface Mesh {
+public class Polylist {
 
-    Map<DataType, float[]> getVertexData();
+    private String name;
+    private int count;
+    private final Map<String, String> sources = Maps.newHashMap();
+    private final Map<String, Integer> offsets = Maps.newHashMap();
 
-    List<Triangles> getTriangles();
+    public int getCount() {
+        return count;
+    }
 
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void addInput(String semantic, String source, int offset) {
+        sources.put(semantic, source);
+        offsets.put(semantic, offset);
+    }
+
+    public Set<String> getSemantics() {
+        return sources.keySet();
+    }
+
+    public String getSource(String semantic) {
+        return sources.get(semantic);
+    }
+
+    public int getOffset(String semantic) {
+        return offsets.get(semantic);
+    }
 }

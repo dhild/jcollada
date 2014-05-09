@@ -28,6 +28,7 @@ import net.dryanhild.collada.VersionSupport;
 import net.dryanhild.collada.data.ColladaDocument;
 import net.dryanhild.collada.schema14.data.ColladaDocument14;
 import net.dryanhild.collada.schema14.parser.XmlParser;
+import net.dryanhild.collada.schema14.postprocessors.Postprocessor;
 import net.dryanhild.collada.spi.ColladaLoaderService;
 import net.dryanhild.collada.spi.ParsingContext;
 import org.xmlpull.v1.XmlPullParser;
@@ -62,6 +63,17 @@ public class ColladaLoaderService14 implements ColladaLoaderService {
 
     @Override
     public ColladaDocument load(ParsingContext context) throws IOException {
+        ParsingData data = serviceRegistry.getParsingData();
+        parseFile(context, data);
+
+        for (Postprocessor proc : data.postprocessors) {
+            proc.process();
+        }
+
+        return data.document;
+    }
+
+    private void parseFile(ParsingContext context, ParsingData data) throws IOException {
         try {
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
             factory.setNamespaceAware(true);
@@ -70,8 +82,9 @@ public class ColladaLoaderService14 implements ColladaLoaderService {
             Reader reader = new InputStreamReader(context.getMainFileInputStream(), context.getCharset());
             parser.setInput(reader);
 
-            XmlParser<ColladaDocument14> xmlParser = serviceRegistry.getDocumentParser(parser);
-            return xmlParser.parse();
+            data.reset(parser);
+            XmlParser<ColladaDocument14> xmlParser = serviceRegistry.getDocumentParser();
+            xmlParser.parse();
         } catch (XmlPullParserException e) {
             throw new ParsingException("Unable to parse document!", e);
         }

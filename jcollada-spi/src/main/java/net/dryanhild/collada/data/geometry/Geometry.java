@@ -26,12 +26,36 @@ import net.dryanhild.collada.data.NameableType;
 
 import java.util.Set;
 
-public interface Geometry extends AddressableType, NameableType {
+/**
+ * Generic interface for accessing geometric types.
+ * <p/>
+ * Implements the {@link Iterable} interface so that the contained {@link net.dryanhild.collada.data
+ * .geometry.Vertex} objects can easily be iterated.
+ */
+public interface Geometry extends AddressableType, NameableType, Iterable<Vertex> {
 
+    /**
+     * Semantic types typically include: POSITION, COLOR, NORMAL, TEXCOORD, etc.
+     *
+     * @return The semantics for this geometry.
+     */
     Set<String> getSemantics();
 
-    DataType getDataType(String semantic);
+    /**
+     * Gets the number of values for the given semantic.
+     * <p/>
+     * For example, a 3D position semantic would have 3 values, or an RGBA color would have 4 values.
+     *
+     * @param semantic The semantic to look up.
+     * @return The number of values that the given semantic has in each vertex.
+     */
+    int getDataSize(String semantic);
 
-    Iterable<Vertex> getVertices();
+    /**
+     * This count includes all vertices after processing. May be different than the vertex count in the COLLADA file.
+     *
+     * @return The number of vertices.
+     */
+    int getVertexCount();
 
 }

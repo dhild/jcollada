@@ -1,5 +1,5 @@
 #
-# Generated on Thu May 08 21:15:15 MDT 2014 by hk2-inhabitant-generator
+# Generated on Thu May 08 23:27:47 MDT 2014 by hk2-inhabitant-generator
 #
 
 [net.dryanhild.collada.schema14.ParsingData]
@@ -13,7 +13,10 @@ scope=org.glassfish.hk2.api.PerThread
 
 [net.dryanhild.collada.schema14.parser.geometry.GeometryParser]S
 
-[net.dryanhild.collada.schema14.parser.geometry.mesh.MeshParser]S
+[net.dryanhild.collada.schema14.parser.geometry.mesh.MeshParser]
+scope=org.glassfish.hk2.api.PerThread
+
+[net.dryanhild.collada.schema14.parser.geometry.mesh.PolylistParser]S
 
 [net.dryanhild.collada.schema14.parser.geometry.mesh.VerticesParser]S
 

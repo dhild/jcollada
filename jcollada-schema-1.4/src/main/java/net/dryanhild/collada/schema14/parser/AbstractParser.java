@@ -64,12 +64,13 @@ public abstract class AbstractParser<OutputType> implements XmlParser<OutputType
         int token = data.parser.next();
         while (depth <= data.parser.getDepth()) {
             if (token == START_TAG) {
+                int line = data.parser.getLineNumber();
+                int col = data.parser.getColumnNumber();
                 handleChildElement(output, data.parser.getName());
-                token = data.parser.getEventType();
-                if (token == START_TAG) {
+                if (line == data.parser.getLineNumber() && col == data.parser.getColumnNumber()) {
                     skipElement();
-                    token = data.parser.getEventType();
                 }
+                token = data.parser.getEventType();
             } else {
                 token = data.parser.next();
             }

@@ -19,9 +19,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package net.dryanhild.collada.data.geometry;
 
-public enum DataType {
+package net.dryanhild.collada.schema14.data.geometry;
 
-    POSITION, COLOR, NORMAL, TEXCOORD;
+import com.google.common.collect.Maps;
+import net.dryanhild.collada.schema14.data.AbstractNameableAddressableType;
+
+import java.util.Map;
+
+public class Vertices extends AbstractNameableAddressableType {
+
+    private Map<String, String> semantics = Maps.newHashMap();
+
+    public void addInput(String semantic, String source) {
+        semantics.put(semantic, source);
+    }
+
+    public Iterable<String> getSemantics() {
+        return semantics.keySet();
+    }
+
+    public String getSource(String semantic) {
+        return semantics.get(semantic);
+    }
 }

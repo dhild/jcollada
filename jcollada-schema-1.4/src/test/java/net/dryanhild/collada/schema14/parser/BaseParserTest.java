@@ -40,7 +40,7 @@ public abstract class BaseParserTest {
     protected abstract String getDataString();
 
     @Inject
-    private ParsingData data;
+    protected ParsingData data;
 
     @BeforeMethod
     public void resetParser() throws XmlPullParserException, IOException {

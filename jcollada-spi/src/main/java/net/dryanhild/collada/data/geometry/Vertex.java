@@ -21,8 +21,12 @@
  */
 package net.dryanhild.collada.data.geometry;
 
+import java.nio.FloatBuffer;
+
 public interface Vertex {
 
-    byte[] getData(String semantic);
+    float[] getDataAsFloats(String semantic);
+
+    FloatBuffer put(FloatBuffer buffer, String semantic);
 
 }

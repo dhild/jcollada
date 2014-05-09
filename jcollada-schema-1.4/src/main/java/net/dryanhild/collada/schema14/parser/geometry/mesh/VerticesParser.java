@@ -22,7 +22,7 @@
 
 package net.dryanhild.collada.schema14.parser.geometry.mesh;
 
-import net.dryanhild.collada.schema14.data.geometry.MeshImpl;
+import net.dryanhild.collada.schema14.data.geometry.Vertices;
 import net.dryanhild.collada.schema14.parser.AbstractParser;
 import org.jvnet.hk2.annotations.Service;
 import org.xmlpull.v1.XmlPullParserException;
@@ -30,21 +30,41 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
 
 @Service
-public class VerticesParser extends AbstractParser<MeshImpl> {
+public class VerticesParser extends AbstractParser<Vertices> {
 
     @Override
     public String getExpectedTag() {
-        return "mesh";
+        return "vertices";
     }
 
     @Override
-    protected MeshImpl createObject() throws XmlPullParserException {
-        return new MeshImpl();
+    protected Vertices createObject() throws XmlPullParserException {
+        return new Vertices();
     }
 
     @Override
-    protected MeshImpl setAttributes(MeshImpl object) throws XmlPullParserException, IOException {
+    protected void handleChildElement(Vertices parent, String childTag) throws IOException, XmlPullParserException {
+        switch (childTag) {
+            case "input":
+                addInput(parent);
+                break;
+        }
+    }
 
-        return super.setAttributes(object);
+    private void addInput(Vertices parent) throws IOException, XmlPullParserException {
+        String semantic = null;
+        String source = null;
+        for (int i = 0; i < data.parser.getAttributeCount(); i++) {
+            String value = data.parser.getAttributeValue(i);
+            switch (data.parser.getAttributeName(i)) {
+                case "semantic":
+                    semantic = value;
+                    break;
+                case "source":
+                    source = value;
+                    break;
+            }
+        }
+        parent.addInput(semantic, source);
     }
 }

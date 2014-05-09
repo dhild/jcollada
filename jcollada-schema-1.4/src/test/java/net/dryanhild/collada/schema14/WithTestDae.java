@@ -71,4 +71,11 @@ public class WithTestDae {
         assertThat(count).isEqualTo(1);
     }
 
+    @Test(dependsOnMethods = "hasGeometryWithCorrectName")
+    public void geometryHasAllSemantics() {
+        Geometry geometry = document.getGeometry("Cylinder_001-mesh");
+
+        assertThat(geometry.getSemantics()).containsOnly("NORMAL", "POSITION");
+    }
+
 }

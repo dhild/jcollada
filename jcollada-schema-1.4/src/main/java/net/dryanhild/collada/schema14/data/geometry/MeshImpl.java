@@ -22,27 +22,46 @@
 
 package net.dryanhild.collada.schema14.data.geometry;
 
-import net.dryanhild.collada.data.geometry.DataType;
 import net.dryanhild.collada.data.geometry.Geometry;
 import net.dryanhild.collada.data.geometry.Vertex;
 import net.dryanhild.collada.schema14.data.AbstractNameableAddressableType;
 
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 public class MeshImpl extends AbstractNameableAddressableType implements Geometry {
 
+    private Map<String, Integer> semantics;
+    private int vertexCount;
+    private Iterable<Vertex> vertices;
+
     @Override
     public Set<String> getSemantics() {
-        return null;
+        return semantics.keySet();
     }
 
     @Override
-    public DataType getDataType(String semantic) {
-        return null;
+    public int getDataSize(String semantic) {
+        return semantics.get(semantic);
     }
 
     @Override
-    public Iterable<Vertex> getVertices() {
-        return null;
+    public int getVertexCount() {
+        return vertexCount;
+    }
+
+    @Override
+    public Iterator<Vertex> iterator() {
+        return vertices.iterator();
+    }
+
+    public void setSemantics(Map<String, Integer> semantics) {
+        this.semantics = semantics;
+    }
+
+    public void setVertices(int count, Iterable<Vertex> vertices) {
+        vertexCount = count;
+        this.vertices = vertices;
     }
 }

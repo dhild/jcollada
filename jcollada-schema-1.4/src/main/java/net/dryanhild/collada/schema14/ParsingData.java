@@ -22,10 +22,17 @@
 
 package net.dryanhild.collada.schema14;
 
+import com.google.common.collect.Lists;
 import net.dryanhild.collada.schema14.data.ColladaDocument14;
+import net.dryanhild.collada.schema14.data.geometry.MeshImpl;
+import net.dryanhild.collada.schema14.data.geometry.Vertices;
+import net.dryanhild.collada.schema14.data.geometry.source.FloatSource;
+import net.dryanhild.collada.schema14.postprocessors.Postprocessor;
 import org.glassfish.hk2.api.PerThread;
 import org.jvnet.hk2.annotations.Service;
 import org.xmlpull.v1.XmlPullParser;
+
+import java.util.List;
 
 @Service
 @PerThread
@@ -34,5 +41,21 @@ public class ParsingData {
     public ColladaDocument14 document;
 
     public XmlPullParser parser;
+
+    public List<FloatSource> sources = Lists.newArrayList();
+
+    public List<Vertices> vertices = Lists.newArrayList();
+
+    public List<MeshImpl> meshes = Lists.newArrayList();
+
+    public List<Postprocessor> postprocessors = Lists.newArrayList();
+
+    public void reset(XmlPullParser parser) {
+        this.parser = parser;
+        sources.clear();
+        vertices.clear();
+        meshes.clear();
+        postprocessors.clear();
+    }
 
 }

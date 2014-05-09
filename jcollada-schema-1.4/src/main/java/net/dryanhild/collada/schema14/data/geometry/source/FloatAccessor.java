@@ -28,6 +28,7 @@ public class FloatAccessor {
     private int count;
     private int stride = 1;
     private SourceAccessorParam[] params;
+    private int paramCount;
 
     public String getSource() {
         return source;
@@ -67,5 +68,15 @@ public class FloatAccessor {
 
     public void setParams(SourceAccessorParam[] params) {
         this.params = params;
+        paramCount = 0;
+        for (SourceAccessorParam param : params) {
+            if (param.getName() != null && !param.getName().isEmpty()) {
+                paramCount++;
+            }
+        }
+    }
+
+    public int getParamCount() {
+        return paramCount;
     }
 }

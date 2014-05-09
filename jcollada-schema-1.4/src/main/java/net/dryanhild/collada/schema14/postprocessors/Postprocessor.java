@@ -19,18 +19,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package net.dryanhild.collada.data.geometry;
 
-import java.util.Set;
+package net.dryanhild.collada.schema14.postprocessors;
 
-public interface Triangles {
+public interface Postprocessor {
 
-    String getName();
-
-    int getCount();
-
-    int[] getPrimitiveIndexArray();
-
-    Set<DataType> getDataTypes();
+    void process();
 
 }
