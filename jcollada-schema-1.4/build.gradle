@@ -35,8 +35,7 @@ dependencies {
 
     hk2Generator "org.glassfish.hk2:hk2-inhabitant-generator:${hk2Version}"
 
-    runtime "net.sf.kxml:kxml2:2.2.2"
-
+    testRuntime "net.sf.kxml:kxml2:2.2.2"
     testCompile "org.glassfish.hk2:hk2-testng:${hk2Version}"
 }
 

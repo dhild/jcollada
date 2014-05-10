@@ -24,19 +24,33 @@ task wrapper(type: Wrapper) {
     gradleVersion = '1.11'
 }
 
-subprojects {
+allprojects {
+    group = 'net.dryanhild.jcollada'
+    version = '1.1-SNAPSHOT'
+
+    if ("$mavenRepo".length() > 0) {
+        repositories {
+            maven {
+                url "$mavenRepo"
+            }
+        }
+    } else {
+        repositories {
+            mavenCentral()
+        }
+    }
+
     apply plugin: 'project-report'
+}
+
+subprojects {
     apply plugin: 'java'
     apply plugin: 'checkstyle'
 //    apply plugin: 'findbugs'
     apply plugin: 'jacoco'
+    apply plugin: 'maven-publish'
 
     sourceCompatibility = '1.7'
-    version = '1.1-SNAPSHOT'
-
-    repositories {
-        mavenCentral()
-    }
 
     tasks.withType(JavaCompile) {
         options.compilerArgs << "-Xlint" << "-Werror"
@@ -45,9 +59,9 @@ subprojects {
     test {
         useTestNG() {
             suiteXmlBuilder().suite(name: 'jcollada', parallel: 'tests') {
-                test (name : 'all-tests') {
+                test(name: 'all-tests') {
                     packages {
-                        'package' (name: 'net.dryanhild.collada.*')
+                        'package'(name: 'net.dryanhild.collada.*')
                     }
                 }
             }
@@ -66,7 +80,8 @@ subprojects {
         compile "org.slf4j:slf4j-api:${slf4jVersion}"
         compile "javax.validation:validation-api:1.1.0.Final"
 
-        testRuntime "org.slf4j:slf4j-jdk14:${slf4jVersion}"
+        testRuntime "org.apache.logging.log4j:log4j-core:$log4j2Version"
+        testRuntime "org.apache.logging.log4j:log4j-slf4j-impl:$log4j2Version"
 
         testCompile "org.testng:testng:${testngVersion}"
         testCompile "org.uncommons:reportng:$reportngVersion"
@@ -74,5 +89,34 @@ subprojects {
         testCompile "org.mockito:mockito-all:${mockitoVersion}"
         // known issue with TestNG and ReportNG: explicitly add Guice
         testCompile "com.google.inject:guice:3.0"
+    }
+
+    task sourceJar(type: Jar) {
+        from sourceSets.main.allJava
+    }
+
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                from components.java
+
+                artifact sourceJar {
+                    classifier "sources"
+                }
+            }
+        }
+        repositories {
+            maven {
+                if (version.endsWith("-SNAPSHOT")) {
+                    url "http://mcsrv.dryanhild.net:8080/nexus/content/repositories/snapshots/"
+                } else {
+                    url "http://mcsrv.dryanhild.net:8080/nexus/content/repositories/releases/"
+                }
+                credentials {
+                    username "$mavenUser"
+                    password "$mavenPassword"
+                }
+            }
+        }
     }
 }
