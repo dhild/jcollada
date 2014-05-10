@@ -108,9 +108,9 @@ subprojects {
         repositories {
             maven {
                 if (version.endsWith("-SNAPSHOT")) {
-                    url "http://mcsrv.dryanhild.net:8080/nexus/content/repositories/snapshots/"
+                    url "http://dev.dryanhild.net:8080/nexus/content/repositories/snapshots/"
                 } else {
-                    url "http://mcsrv.dryanhild.net:8080/nexus/content/repositories/releases/"
+                    url "http://dev.dryanhild.net:8080/nexus/content/repositories/releases/"
                 }
                 credentials {
                     username "$mavenUser"

@@ -1,6 +1,6 @@
 # JCollada - Java COLLADA loading
 
-[![Build Status](http://mcsrv.dryanhild.net:8080/jenkins/job/JCollada/badge/icon)](http://mcsrv.dryanhild.net:8080/jenkins/job/JCollada/)
+[![Build Status](http://dev.dryanhild.net:8080/jenkins/job/JCollada/badge/icon)](http://dev.dryanhild.net:8080/jenkins/job/JCollada/)
 
 
 The aim of this project is to provide functionality to load COLLADA files into Java for rendering, specifically using OpenGL.
@@ -17,14 +17,14 @@ You are, of course, able to download the source, build it yourself, and use it h
 
 However, you would probably like to use a snapshot or released version that you know works. In that case, you have two urls which are available:
 
-- Snapshots at [http://mcsrv.dryanhild.net:8080/nexus/content/repositories/snapshots/](http://mcsrv.dryanhild.net:8080/nexus/content/repositories/snapshots/)
-- Releases at [http://mcsrv.dryanhild.net:8080/nexus/content/repositories/releases/](http://mcsrv.dryanhild.net:8080/nexus/content/repositories/releases/)
+- Snapshots at [http://dev.dryanhild.net:8080/nexus/content/repositories/snapshots/](http://dev.dryanhild.net:8080/nexus/content/repositories/snapshots/)
+- Releases at [http://dev.dryanhild.net:8080/nexus/content/repositories/releases/](http://dev.dryanhild.net:8080/nexus/content/repositories/releases/)
 
 ### Gradle example usage
 
     repositories {
         maven {
-            url "http://mcsrv.dryanhild.net:8080/nexus/content/repositories/releases/"
+            url "http://dev.dryanhild.net:8080/nexus/content/repositories/releases/"
         }
     }
 
@@ -34,7 +34,7 @@ However, you would probably like to use a snapshot or released version that you 
       <repository>
         <id>sonatype-dryanhild</id>
         <name>sonatype-dryanhild</name>
-        <url>http://mcsrv.dryanhild.net:8080/nexus/content/repositories/releases/</url>
+        <url>http://dev.dryanhild.net:8080/nexus/content/repositories/releases/</url>
       </repository>
     </repositories>
 
