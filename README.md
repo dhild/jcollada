@@ -11,6 +11,33 @@ JCollada provides this translation.
 
 JCollada aims to be lightweight, rather than a fully featured COLLADA parser.
 
+## How to use
+
+You are, of course, able to download the source, build it yourself, and use it however you see fit. The packaged gradle wrapper should be enough to get you started if this is your interest.
+
+However, you would probably like to use a snapshot or released version that you know works. In that case, you have two urls which are available:
+
+- Snapshots at [http://mcsrv.dryanhild.net:8080/nexus/content/repositories/snapshots/](http://mcsrv.dryanhild.net:8080/nexus/content/repositories/snapshots/)
+- Releases at [http://mcsrv.dryanhild.net:8080/nexus/content/repositories/releases/](http://mcsrv.dryanhild.net:8080/nexus/content/repositories/releases/)
+
+### Gradle example usage
+
+    repositories {
+        maven {
+            url "http://mcsrv.dryanhild.net:8080/nexus/content/repositories/releases/"
+        }
+    }
+
+### Maven example usage
+
+    <repositories>
+      <repository>
+        <id>sonatype-dryanhild</id>
+        <name>sonatype-dryanhild</name>
+        <url>http://mcsrv.dryanhild.net:8080/nexus/content/repositories/releases/</url>
+      </repository>
+    </repositories>
+
 ## Releases
 
 ### V1.1
