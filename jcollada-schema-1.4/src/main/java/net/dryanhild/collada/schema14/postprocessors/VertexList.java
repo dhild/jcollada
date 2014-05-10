@@ -119,8 +119,9 @@ public class VertexList {
             for (int i = 0; i < element.length; i++) {
                 FloatArray source = sourceArrays.get(i);
 
+                int sourceIndex = element[i] * counts[i];
                 for (int j = 0; j < counts[i]; j++) {
-                    buffer.putFloat(source.get(element[i] * counts[i] + j));
+                    buffer.putFloat(source.get(sourceIndex++));
                 }
             }
         }

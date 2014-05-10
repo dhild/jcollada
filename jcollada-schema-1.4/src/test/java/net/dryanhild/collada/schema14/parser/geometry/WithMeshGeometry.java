@@ -195,7 +195,22 @@ public class WithMeshGeometry extends BaseParserTest {
         assertThat(buffer.remaining()).isEqualTo(buffer.capacity());
 
         FloatBuffer floatBuffer = buffer.asFloatBuffer();
+        // Position 0
         assertThat(floatBuffer.get(0)).isEqualTo(3.561967f);
+        assertThat(floatBuffer.get(1)).isEqualTo(2f);
+        assertThat(floatBuffer.get(2)).isEqualTo(-1f);
+        // Normal 0
+        assertThat(floatBuffer.get(3)).isEqualTo(0.2588191f);
+        assertThat(floatBuffer.get(4)).isEqualTo(0.9659258f);
+        assertThat(floatBuffer.get(5)).isEqualTo(0f);
+        // Position 1
+        assertThat(floatBuffer.get(6)).isEqualTo(3.561967f);
+        assertThat(floatBuffer.get(7)).isEqualTo(2f);
+        assertThat(floatBuffer.get(8)).isEqualTo(1f);
+        // Normal 0
+        assertThat(floatBuffer.get(9)).isEqualTo(0.2588191f);
+        assertThat(floatBuffer.get(10)).isEqualTo(0.9659258f);
+        assertThat(floatBuffer.get(11)).isEqualTo(0f);
     }
 
 }
