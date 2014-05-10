@@ -27,6 +27,8 @@ import net.dryanhild.collada.schema14.ColladaLoaderService14;
 import net.dryanhild.collada.schema14.data.ColladaDocument14;
 import net.dryanhild.collada.schema14.parser.geometry.GeometryLibraryParser;
 import net.dryanhild.collada.schema14.parser.scene.NodeLibraryParser;
+import net.dryanhild.collada.schema14.parser.scene.SceneParser;
+import net.dryanhild.collada.schema14.parser.scene.VisualScenesLibraryParser;
 import org.jvnet.hk2.annotations.Service;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -46,6 +48,12 @@ public class DocumentParser extends AbstractParser<ColladaDocument14> {
 
     @Inject
     private GeometryLibraryParser geometryLibraryParser;
+
+    @Inject
+    private VisualScenesLibraryParser visualScenesLibraryParser;
+
+    @Inject
+    private SceneParser sceneParser;
 
     @Override
     public String getExpectedTag() {
@@ -95,6 +103,12 @@ public class DocumentParser extends AbstractParser<ColladaDocument14> {
                 break;
             case "library_geometries":
                 geometryLibraryParser.parse();
+                break;
+            case "library_visual_scenes":
+                visualScenesLibraryParser.parse();
+                break;
+            case "scene":
+                sceneParser.parse();
         }
     }
 }

@@ -130,6 +130,10 @@ public class ColladaDocument14 implements ColladaDocument {
         nodes.add(node);
     }
 
+    public void addVisualScene(VisualScene scene) {
+        visualScenes.add(scene);
+    }
+
     public VersionSupport getVersion() {
         return version;
     }

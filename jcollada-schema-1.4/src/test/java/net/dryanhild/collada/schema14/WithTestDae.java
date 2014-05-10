@@ -78,4 +78,14 @@ public class WithTestDae {
         assertThat(geometry.getSemantics()).containsOnly("NORMAL", "POSITION");
     }
 
+    @Test
+    public void hasVisualSceneWithCorrectId() {
+        assertThat(document.getVisualScenes()).extracting("id").containsOnly("Scene");
+    }
+
+    @Test
+    public void mainVisualSceneHasCorrectId() {
+        assertThat(document.getMainScene().getId()).isEqualTo("Scene");
+    }
+
 }
