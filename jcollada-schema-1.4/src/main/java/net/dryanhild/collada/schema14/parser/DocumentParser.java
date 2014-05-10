@@ -25,6 +25,7 @@ package net.dryanhild.collada.schema14.parser;
 import net.dryanhild.collada.IncorrectFormatException;
 import net.dryanhild.collada.schema14.ColladaLoaderService14;
 import net.dryanhild.collada.schema14.data.ColladaDocument14;
+import net.dryanhild.collada.schema14.parser.fx.EffectsLibraryParser;
 import net.dryanhild.collada.schema14.parser.geometry.GeometryLibraryParser;
 import net.dryanhild.collada.schema14.parser.scene.NodeLibraryParser;
 import net.dryanhild.collada.schema14.parser.scene.SceneParser;
@@ -48,6 +49,9 @@ public class DocumentParser extends AbstractParser<ColladaDocument14> {
 
     @Inject
     private GeometryLibraryParser geometryLibraryParser;
+
+    @Inject
+    private EffectsLibraryParser effectsLibraryParser;
 
     @Inject
     private VisualScenesLibraryParser visualScenesLibraryParser;
@@ -103,6 +107,9 @@ public class DocumentParser extends AbstractParser<ColladaDocument14> {
                 break;
             case "library_geometries":
                 geometryLibraryParser.parse();
+                break;
+            case "library_effects":
+                effectsLibraryParser.parse();
                 break;
             case "library_visual_scenes":
                 visualScenesLibraryParser.parse();
