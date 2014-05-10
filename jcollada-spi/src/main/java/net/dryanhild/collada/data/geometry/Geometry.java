@@ -29,10 +29,10 @@ import java.nio.ByteBuffer;
 import java.util.Set;
 
 /**
- * Generic interface for accessing geometric types.
- * <p/>
- * Implements the {@link Iterable} interface so that the contained {@link net.dryanhild.collada.data
- * .geometry.Vertex} objects can easily be iterated.
+ * Generic interface for accessing geometric types. Although a single &gt;geometry&lt; element may contain a
+ * combination of constructions (such as triangles, polylists, tristrips, etc.),
+ * this interface condenses them together. There is one set of vertex data per geometry,
+ * and the indices of the child structures reference these vertices.
  */
 public interface Geometry extends AddressableType, NameableType {
 
@@ -53,7 +53,8 @@ public interface Geometry extends AddressableType, NameableType {
      */
     int getDataCount(String semantic);
 
-    /** Gets the number of bytes used to represent this semantic for a single vertex.
+    /**
+     * Gets the number of bytes used to represent this semantic for a single vertex.
      *
      * @param semantic The semantic to look up.
      * @return The number of bytes that the given semantic has in each vertex.
@@ -69,6 +70,13 @@ public interface Geometry extends AddressableType, NameableType {
     int getInterleaveOffset(String semantic);
 
     /**
+     * Gets the number of vertices that this geometry contains.
+     *
+     * @return The number of vertices.
+     */
+    int getVertexCount();
+
+    /**
      * Stores the interleaved vertex data in the given buffer.
      *
      * @param buffer The buffer to store the data in.
@@ -77,9 +85,11 @@ public interface Geometry extends AddressableType, NameableType {
     ByteBuffer putInterleavedVertexData(ByteBuffer buffer);
 
     /**
-     * Gets the triangle data elements that are in this Geometry.
+     * Gets the triangle data elements that are in this Geometry. These Triangles will contain index data that
+     * references the vertex data from this Geometry.
      *
      * @return The contained elements that are represented as triangles.
+     * @see {@link #putInterleavedVertexData(java.nio.ByteBuffer)}
      */
     Triangles getTriangles();
 

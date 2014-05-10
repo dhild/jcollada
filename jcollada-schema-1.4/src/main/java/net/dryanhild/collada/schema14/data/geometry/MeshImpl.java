@@ -36,6 +36,8 @@ public class MeshImpl extends AbstractNameableAddressableType implements Geometr
     private Map<String, Integer> dataBytes;
     private Map<String, Integer> interleaveOffset;
     private Triangles triangles;
+    private int vertexCount;
+    private byte[] vertexData;
 
     @Override
     public Set<String> getSemantics() {
@@ -63,12 +65,17 @@ public class MeshImpl extends AbstractNameableAddressableType implements Geometr
 
     @Override
     public ByteBuffer putInterleavedVertexData(ByteBuffer buffer) {
-        return buffer;
+        return buffer.put(vertexData);
     }
 
     @Override
     public Triangles getTriangles() {
         return triangles;
+    }
+
+    @Override
+    public int getVertexCount() {
+        return vertexCount;
     }
 
     public void setTriangles(Triangles triangles) {
@@ -81,5 +88,13 @@ public class MeshImpl extends AbstractNameableAddressableType implements Geometr
 
     public void setInterleaveOffset(Map<String, Integer> interleaveOffset) {
         this.interleaveOffset = interleaveOffset;
+    }
+
+    public void setVertexCount(int vertexCount) {
+        this.vertexCount = vertexCount;
+    }
+
+    public void setVertexData(byte[] bytes) {
+        this.vertexData = bytes;
     }
 }

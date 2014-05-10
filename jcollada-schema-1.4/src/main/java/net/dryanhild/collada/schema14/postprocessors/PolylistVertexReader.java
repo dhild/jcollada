@@ -23,29 +23,70 @@
 package net.dryanhild.collada.schema14.postprocessors;
 
 import gnu.trove.iterator.TIntIterator;
-import net.dryanhild.collada.data.geometry.Triangles;
+import gnu.trove.list.TIntList;
+import gnu.trove.list.array.TIntArrayList;
+import net.dryanhild.collada.ParsingException;
 import net.dryanhild.collada.schema14.ParsingData;
 import net.dryanhild.collada.schema14.data.geometry.Polylist;
+import net.dryanhild.collada.schema14.data.geometry.Vertices;
 
 public class PolylistVertexReader {
 
     private final ParsingData data;
-    private Triangles triangles;
+    private final VertexList vertexList;
+    private final Vertices vertices;
 
-    public PolylistVertexReader(ParsingData data) {
+    private Polylist polylist;
+    private int vertexSize;
+    private TIntList triangleElements;
+    private TIntIterator pValues;
+
+    public PolylistVertexReader(ParsingData data, VertexList vertexList, Vertices vertices) {
         this.data = data;
+        this.vertexList = vertexList;
+        this.vertices = vertices;
     }
 
-    public Triangles getTriangles() {
-        return triangles;
+    public TIntList getTriangleElements() {
+        return triangleElements;
     }
 
     public void process(Polylist polylist) {
+        reset(polylist);
         TIntIterator it = polylist.getVcount().iterator();
         while (it.hasNext()) {
-            assert it.next() == 3 : "Unable to handle polycounts other than 3";
-
-
+            switch (it.next()) {
+                case 3:
+                    handleTriangle();
+                    break;
+                default:
+                    throw new ParsingException("Unable to handle polycounts other than 3");
+            }
         }
+    }
+
+    private void reset(Polylist polylist) {
+        this.polylist = polylist;
+        triangleElements = new TIntArrayList(polylist.getCount() * 3);
+        pValues = polylist.getP().iterator();
+
+        vertexSize = polylist.getSemantics().size();
+    }
+
+    private void handleTriangle() {
+        for (int i = 0; i < 3; i++) {
+            int element = vertexList.insert(nextVertex());
+            triangleElements.add(element);
+        }
+    }
+
+    private int[] nextVertex() {
+        int[] vertex = new int[vertexSize];
+
+        for (int i = 0; i < vertexSize; i++) {
+            vertex[i] = pValues.next();
+        }
+
+        return vertex;
     }
 }

@@ -24,13 +24,18 @@ package net.dryanhild.collada.schema14.postprocessors;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import gnu.trove.list.TIntList;
+import gnu.trove.list.array.TIntArrayList;
 import net.dryanhild.collada.NoSuchElementIdException;
 import net.dryanhild.collada.schema14.ParsingData;
 import net.dryanhild.collada.schema14.data.geometry.MeshImpl;
 import net.dryanhild.collada.schema14.data.geometry.Polylist;
+import net.dryanhild.collada.schema14.data.geometry.TrianglesImpl;
 import net.dryanhild.collada.schema14.data.geometry.Vertices;
+import net.dryanhild.collada.schema14.data.geometry.source.FloatArray;
 import net.dryanhild.collada.schema14.data.geometry.source.FloatSource;
 
+import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Map;
 
@@ -38,13 +43,17 @@ public class MeshPostProcessor implements Postprocessor {
 
     private MeshImpl mesh;
 
+    private VertexList vertexList;
     private PolylistVertexReader polylistVertexReader;
 
     private final List<FloatSource> sources = Lists.newArrayList();
     private Vertices vertices;
     private final List<Polylist> polylists = Lists.newArrayList();
 
-    private final Map<String, Integer> semantics = Maps.newHashMap();
+    private TIntList triangleElements = new TIntArrayList();
+
+    private final Map<String, Integer> semanticDataCounts = Maps.newHashMap();
+    private final Map<String, Integer> semanticDataSizes = Maps.newHashMap();
 
     public MeshPostProcessor(MeshImpl mesh) {
         this.mesh = mesh;
@@ -64,7 +73,7 @@ public class MeshPostProcessor implements Postprocessor {
 
     @Override
     public void process(ParsingData data) {
-        polylistVertexReader = new PolylistVertexReader(data);
+        createReaders(data);
         for (Polylist polys : polylists) {
             processPolylist(polys);
         }
@@ -72,14 +81,47 @@ public class MeshPostProcessor implements Postprocessor {
         writeMesh();
     }
 
+    private void createReaders(ParsingData data) {
+        vertexList = createVertexList();
+        polylistVertexReader = new PolylistVertexReader(data, vertexList, vertices);
+    }
+
+    private VertexList createVertexList() {
+        List<FloatArray> arrays = Lists.newArrayList();
+        for (FloatSource source : sources) {
+            arrays.add(source.getSource());
+        }
+
+        return new VertexList(arrays);
+    }
+
     private void processPolylist(Polylist polys) {
+        Map<String, Integer> offsets = Maps.newHashMap();
+        Map<String, FloatArray> arrays = Maps.newHashMap();
         for (String semantic : polys.getSemantics()) {
             addSemantic(semantic, polys.getSource(semantic));
+
+            if ("VERTEX".equals(semantic)) {
+                for (String semantic2 : vertices.getSemantics()) {
+                    offsets.put(semantic2, polys.getOffset(semantic));
+                    String sourceString = vertices.getSource(semantic2).substring(1);
+                    FloatSource source = getSource(sourceString);
+                    arrays.put(semantic2, source.getSource());
+                }
+            } else {
+                offsets.put(semantic, polys.getOffset(semantic));
+                String sourceString = polys.getSource(semantic).substring(1);
+                FloatSource source = getSource(sourceString);
+                arrays.put(semantic, source.getSource());
+            }
         }
+        vertexList.reset(offsets, arrays);
+        polylistVertexReader.process(polys);
+        triangleElements.addAll(polylistVertexReader.getTriangleElements());
     }
 
     private void addSemantic(String semantic, String sourceId) {
-        if (semantics.containsKey(semantic)) {
+        if (semanticDataCounts.containsKey(semantic)) {
             return;
         }
         if (semantic.equals("VERTEX")) {
@@ -89,7 +131,8 @@ public class MeshPostProcessor implements Postprocessor {
         } else {
             FloatSource floatSource = getSource(sourceId.substring(1));
             int count = floatSource.getCommonAccessor().getParamCount();
-            semantics.put(semantic, count);
+            semanticDataCounts.put(semantic, count);
+            semanticDataSizes.put(semantic, count * 4);
         }
     }
 
@@ -103,6 +146,39 @@ public class MeshPostProcessor implements Postprocessor {
     }
 
     private void writeMesh() {
-        mesh.setDataCount(semantics);
+        mesh.setDataCount(semanticDataCounts);
+        mesh.setDataBytes(semanticDataSizes);
+
+        Map<String, Integer> offsets = Maps.newHashMap();
+        for (String semantic : semanticDataCounts.keySet()) {
+            offsets.put(semantic, vertexList.getOffset(semantic));
+        }
+        mesh.setInterleaveOffset(offsets);
+
+        mesh.setTriangles(new TrianglesImpl(triangleElements.toArray()));
+
+        mesh.setVertexCount(vertexList.getVertexCount());
+        mesh.setVertexData(getVertexData());
+    }
+
+    private byte[] getVertexData() {
+        ByteBuffer buffer = ByteBuffer.allocate(rawVertexSize());
+        buffer.clear();
+
+        vertexList.putElements(buffer, semanticDataCounts);
+
+        byte[] data = new byte[buffer.capacity()];
+        buffer.flip();
+        buffer.get(data);
+        return data;
+    }
+
+    private int rawVertexSize() {
+        int size = 0;
+        for (int ds : semanticDataSizes.values()) {
+            size += ds;
+        }
+        size *= vertexList.getVertexCount();
+        return size;
     }
 }

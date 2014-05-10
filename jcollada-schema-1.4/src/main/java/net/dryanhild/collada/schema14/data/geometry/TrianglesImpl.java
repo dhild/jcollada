@@ -20,23 +20,27 @@
  * THE SOFTWARE.
  */
 
-package net.dryanhild.collada.schema14.data.geometry.source;
+package net.dryanhild.collada.schema14.data.geometry;
 
-import net.dryanhild.collada.schema14.data.AbstractNameableAddressableType;
+import net.dryanhild.collada.data.geometry.Triangles;
 
-public class FloatArray extends AbstractNameableAddressableType {
+import java.nio.IntBuffer;
 
-    private final float[] values;
+public class TrianglesImpl implements Triangles {
 
-    public FloatArray(int size) {
-        this.values = new float[size];
+    private final int[] indices;
+
+    public TrianglesImpl(int[] indices) {
+        this.indices = indices;
     }
 
-    public float[] getValues() {
-        return values;
+    @Override
+    public int getCount() {
+        return indices.length / 3;
     }
 
-    public float get(int index) {
-        return values[index];
+    @Override
+    public IntBuffer putElementIndices(IntBuffer buffer) {
+        return buffer.put(indices);
     }
 }

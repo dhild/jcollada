@@ -31,11 +31,16 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import javax.inject.Inject;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class WithMeshGeometry extends BaseParserTest {
 
+    public static final String NORMAL = "NORMAL";
+    public static final String POSITION = "POSITION";
     @Inject
     private GeometryParser geometryParser;
 
@@ -121,17 +126,76 @@ public class WithMeshGeometry extends BaseParserTest {
 
     @Test
     public void dataTypesAreCorrect() {
-        assertThat(geometry.getSemantics()).containsOnly("POSITION", "NORMAL");
+        assertThat(geometry.getSemantics()).containsOnly(POSITION, NORMAL);
     }
 
     @Test
     public void positionSizeIs3() {
-        assertThat(geometry.getDataCount("POSITION")).isEqualTo(3);
+        assertThat(geometry.getDataCount(POSITION)).isEqualTo(3);
     }
 
     @Test
     public void normalSizeIs3() {
-        assertThat(geometry.getDataCount("NORMAL")).isEqualTo(3);
+        assertThat(geometry.getDataCount(NORMAL)).isEqualTo(3);
+    }
+
+    @Test
+    public void normalsHave3Elements() {
+        assertThat(geometry.getDataCount(NORMAL)).isEqualTo(3);
+    }
+
+    @Test
+    public void positionsHave3Elements() {
+        assertThat(geometry.getDataCount(POSITION)).isEqualTo(3);
+    }
+
+    @Test
+    public void normalsHaveDataSize12() {
+        assertThat(geometry.getDataBytes(NORMAL)).isEqualTo(12);
+    }
+
+    @Test
+    public void positionsHaveDataSize12() {
+        assertThat(geometry.getDataBytes(POSITION)).isEqualTo(12);
+    }
+
+    @Test
+    public void positionAndNormalsHaveDifferentOffsets() {
+        assertThat(geometry.getInterleaveOffset(POSITION)).isGreaterThanOrEqualTo(0);
+        assertThat(geometry.getInterleaveOffset(NORMAL)).isGreaterThanOrEqualTo(0);
+        assertThat(geometry.getInterleaveOffset(POSITION)).isNotEqualTo(geometry.getInterleaveOffset(NORMAL));
+    }
+
+    @Test
+    public void correctNumberOfTriangles() {
+        assertThat(geometry.getTriangles().getCount()).isEqualTo(44);
+    }
+
+    @Test
+    public void correctTriangleIndices() {
+        IntBuffer buffer = IntBuffer.allocate(geometry.getTriangles().getCount() * 3);
+        buffer.clear();
+        geometry.getTriangles().putElementIndices(buffer);
+        buffer.flip();
+        assertThat(buffer.remaining()).isEqualTo(buffer.capacity());
+        assertThat(buffer.array()).startsWith(0, 1, 2, 3, 4);
+    }
+
+    @Test
+    public void correctVertexCount() {
+        assertThat(geometry.getVertexCount()).isEqualTo(44 * 3);
+    }
+
+    @Test
+    public void vertexDataIsRetrieved() {
+        ByteBuffer buffer = ByteBuffer.allocate(4 * geometry.getVertexCount() * 3 * 2);
+        buffer.clear();
+        geometry.putInterleavedVertexData(buffer);
+        buffer.flip();
+        assertThat(buffer.remaining()).isEqualTo(buffer.capacity());
+
+        FloatBuffer floatBuffer = buffer.asFloatBuffer();
+        assertThat(floatBuffer.get(0)).isEqualTo(3.561967f);
     }
 
 }
