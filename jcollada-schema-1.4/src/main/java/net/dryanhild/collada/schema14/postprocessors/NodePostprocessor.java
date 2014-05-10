@@ -20,34 +20,25 @@
  * THE SOFTWARE.
  */
 
-package net.dryanhild.collada.schema14.parser.geometry;
+package net.dryanhild.collada.schema14.postprocessors;
 
-import net.dryanhild.collada.schema14.data.geometry.GeometryInstanceImpl;
-import net.dryanhild.collada.schema14.parser.AbstractParser;
-import net.dryanhild.collada.schema14.postprocessors.GeometryInstancePostprocessor;
-import org.jvnet.hk2.annotations.Service;
-import org.xmlpull.v1.XmlPullParserException;
+import net.dryanhild.collada.data.scene.Node;
+import net.dryanhild.collada.schema14.ParsingData;
+import net.dryanhild.collada.schema14.data.scene.NodeImpl;
 
-import java.io.IOException;
+public class NodePostprocessor implements Postprocessor {
 
-@Service
-public class GeometryInstanceParser extends AbstractParser<GeometryInstanceImpl> {
+    private String url;
+    private NodeImpl nodeImpl;
 
-    @Override
-    public String getExpectedTag() {
-        return "instance_geometry";
+    public NodePostprocessor(String url, NodeImpl nodeImpl) {
+        this.url = url;
+        this.nodeImpl = nodeImpl;
     }
 
     @Override
-    protected GeometryInstanceImpl createObject() throws XmlPullParserException, IOException {
-        return setAttributes(new GeometryInstanceImpl());
-    }
-
-    @Override
-    protected GeometryInstanceImpl handleAttribute(GeometryInstanceImpl object, String attribute, String value) {
-        if (attribute.equals("url")) {
-            data.postprocessors.add(new GeometryInstancePostprocessor(value, object));
-        }
-        return object;
+    public void process(ParsingData data) {
+        Node node = data.document.getNode(url.substring(1));
+        nodeImpl.addChild(node);
     }
 }

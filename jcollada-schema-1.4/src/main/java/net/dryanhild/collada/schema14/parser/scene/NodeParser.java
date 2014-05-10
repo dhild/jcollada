@@ -24,11 +24,11 @@ package net.dryanhild.collada.schema14.parser.scene;
 
 import net.dryanhild.collada.IncorrectFormatException;
 import net.dryanhild.collada.data.scene.NodeType;
-import net.dryanhild.collada.schema14.data.SoftReference;
 import net.dryanhild.collada.schema14.data.scene.NodeImpl;
 import net.dryanhild.collada.schema14.parser.AbstractParser;
 import net.dryanhild.collada.schema14.parser.geometry.GeometryInstanceParser;
 import net.dryanhild.collada.schema14.parser.transform.MatrixParser;
+import net.dryanhild.collada.schema14.postprocessors.NodePostprocessor;
 import org.jvnet.hk2.annotations.Service;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -74,20 +74,20 @@ public class NodeParser extends AbstractParser<NodeImpl> {
                 parent.addGeometry(geometryInstanceParser.parse());
                 break;
             case "instance_node":
-                parent.addChild(getInstanceNode());
-                skipElement();
+                addInstanceNodeProcessor(parent);
                 break;
             case "node":
                 parent.addChild(parse());
         }
     }
 
-    private NodeImpl getInstanceNode() {
+    private void addInstanceNodeProcessor(NodeImpl parent) {
         for (int i = 0; i < data.parser.getAttributeCount(); i++) {
             String key = data.parser.getAttributeName(i);
             if (key.equals("url")) {
                 String url = data.parser.getAttributeValue(i);
-                return SoftReference.createSoftReference(url, NodeImpl.class);
+                data.postprocessors.add(new NodePostprocessor(url, parent));
+                return;
             }
         }
         throw new IncorrectFormatException("Expected attribute \"url\" on element \"instance_node\"");

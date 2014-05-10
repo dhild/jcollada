@@ -23,26 +23,79 @@
 package net.dryanhild.collada.schema14.data.geometry;
 
 import net.dryanhild.collada.data.fx.Material;
+import net.dryanhild.collada.data.geometry.Geometry;
 import net.dryanhild.collada.data.geometry.GeometryInstance;
-import net.dryanhild.collada.schema14.data.SoftReference;
+import net.dryanhild.collada.data.geometry.Triangles;
 
-public class GeometryInstanceImpl extends SoftReference<GeometryInstance> {
+import java.nio.ByteBuffer;
+import java.util.Set;
 
-    public static GeometryInstance createSoftReference(String url) {
-        return createSoftReferenceImpl(GeometryInstance.class, new GeometryInstanceImpl(url));
-    }
+public class GeometryInstanceImpl implements GeometryInstance {
+
+    private Geometry geometry;
 
     private Material material;
 
-    protected GeometryInstanceImpl(String url) {
-        super(url);
-    }
-
+    @Override
     public boolean hasMaterial() {
-        return material == null;
+        return material != null;
     }
 
+    @Override
     public Material getMaterial() {
         return material;
+    }
+
+    @Override
+    public Set<String> getSemantics() {
+        return geometry.getSemantics();
+    }
+
+    @Override
+    public int getDataCount(String semantic) {
+        return geometry.getDataCount(semantic);
+    }
+
+    @Override
+    public int getDataBytes(String semantic) {
+        return geometry.getDataBytes(semantic);
+    }
+
+    @Override
+    public int getInterleaveOffset(String semantic) {
+        return geometry.getInterleaveOffset(semantic);
+    }
+
+    @Override
+    public int getVertexCount() {
+        return geometry.getVertexCount();
+    }
+
+    @Override
+    public ByteBuffer putInterleavedVertexData(ByteBuffer buffer) {
+        return geometry.putInterleavedVertexData(buffer);
+    }
+
+    @Override
+    public Triangles getTriangles() {
+        return geometry.getTriangles();
+    }
+
+    @Override
+    public String getId() {
+        return geometry.getId();
+    }
+
+    @Override
+    public String getName() {
+        return geometry.getName();
+    }
+
+    public void setGeometry(Geometry geometry) {
+        this.geometry = geometry;
+    }
+
+    public void setMaterial(Material material) {
+        this.material = material;
     }
 }
