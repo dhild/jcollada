@@ -25,6 +25,7 @@ package net.dryanhild.collada.schema14.parser.scene;
 import net.dryanhild.collada.data.scene.Node;
 import net.dryanhild.collada.data.scene.NodeType;
 import net.dryanhild.collada.schema14.parser.BaseParserTest;
+import net.dryanhild.collada.schema14.postprocessors.geometry.GeometryInstancePostprocessor;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.xmlpull.v1.XmlPullParserException;
@@ -82,5 +83,11 @@ public class WithNodeElement extends BaseParserTest {
     @Test
     public void noChildrenExist() {
         assertThat(node.getChildren()).isEmpty();
+    }
+
+    @Test
+    public void geometryInstancePostprocessorExists() {
+        assertThat(data.postprocessors).hasSize(1);
+        assertThat(data.postprocessors.get(0)).isInstanceOf(GeometryInstancePostprocessor.class);
     }
 }

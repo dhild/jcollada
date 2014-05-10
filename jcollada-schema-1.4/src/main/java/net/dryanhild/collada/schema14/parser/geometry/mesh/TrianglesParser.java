@@ -22,62 +22,54 @@
 
 package net.dryanhild.collada.schema14.parser.geometry.mesh;
 
-import net.dryanhild.collada.schema14.data.geometry.MeshImpl;
+import net.dryanhild.collada.schema14.data.geometry.TrianglesHolder;
 import net.dryanhild.collada.schema14.parser.AbstractParser;
-import net.dryanhild.collada.schema14.parser.geometry.source.SourceParser;
-import net.dryanhild.collada.schema14.postprocessors.geometry.MeshPostProcessor;
-import org.glassfish.hk2.api.PerThread;
 import org.jvnet.hk2.annotations.Service;
 import org.xmlpull.v1.XmlPullParserException;
 
-import javax.inject.Inject;
 import java.io.IOException;
 
 @Service
-@PerThread
-public class MeshParser extends AbstractParser<MeshImpl> {
-
-    @Inject
-    private VerticesParser verticesParser;
-
-    @Inject
-    private SourceParser sourceParser;
-
-    @Inject
-    private PolylistParser polylistParser;
-
-    @Inject
-    private TrianglesParser trianglesParser;
-
-    private MeshPostProcessor postProcessor;
+public class TrianglesParser extends AbstractParser<TrianglesHolder> {
 
     @Override
     public String getExpectedTag() {
-        return "mesh";
+        return "triangles";
     }
 
     @Override
-    protected MeshImpl createObject() throws XmlPullParserException {
-        MeshImpl mesh = new MeshImpl();
-        postProcessor = new MeshPostProcessor(mesh);
-        data.postprocessors.add(postProcessor);
-        return mesh;
+    protected TrianglesHolder createObject() throws XmlPullParserException {
+        return new TrianglesHolder();
     }
 
     @Override
-    protected void handleChildElement(MeshImpl parent, String childTag) throws IOException, XmlPullParserException {
+    protected void handleChildElement(TrianglesHolder parent, String childTag) throws IOException, XmlPullParserException {
         switch (childTag) {
-            case "vertices":
-                postProcessor.setVertices(verticesParser.parse());
+            case "input":
+                addInput(parent);
                 break;
-            case "source":
-                postProcessor.addSource(sourceParser.parse());
-                break;
-            case "polylist":
-                postProcessor.addPolylist(polylistParser.parse());
-                break;
-            case "triangles":
-                postProcessor.addTriangles(trianglesParser.parse());
+            case "p":
+                parent.setP(readInts());
         }
+    }
+
+    private void addInput(TrianglesHolder parent) throws IOException, XmlPullParserException {
+        String semantic = null;
+        String source = null;
+        int offset = 0;
+        for (int i = 0; i < data.parser.getAttributeCount(); i++) {
+            String value = data.parser.getAttributeValue(i);
+            switch (data.parser.getAttributeName(i)) {
+                case "semantic":
+                    semantic = value;
+                    break;
+                case "source":
+                    source = value;
+                    break;
+                case "offset":
+                    offset = Integer.valueOf(value);
+            }
+        }
+        parent.addInput(semantic, source, offset);
     }
 }

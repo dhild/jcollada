@@ -24,7 +24,7 @@ package net.dryanhild.collada.schema14.parser.geometry;
 
 import net.dryanhild.collada.schema14.data.geometry.GeometryInstanceImpl;
 import net.dryanhild.collada.schema14.parser.AbstractParser;
-import net.dryanhild.collada.schema14.postprocessors.GeometryInstancePostprocessor;
+import net.dryanhild.collada.schema14.postprocessors.geometry.GeometryInstancePostprocessor;
 import org.jvnet.hk2.annotations.Service;
 import org.xmlpull.v1.XmlPullParserException;
 

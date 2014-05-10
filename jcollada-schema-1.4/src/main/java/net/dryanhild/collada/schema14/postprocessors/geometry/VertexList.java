@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  */
 
-package net.dryanhild.collada.schema14.postprocessors;
+package net.dryanhild.collada.schema14.postprocessors.geometry;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;

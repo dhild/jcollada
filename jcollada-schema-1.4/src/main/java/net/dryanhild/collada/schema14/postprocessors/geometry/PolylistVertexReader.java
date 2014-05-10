@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  */
 
-package net.dryanhild.collada.schema14.postprocessors;
+package net.dryanhild.collada.schema14.postprocessors.geometry;
 
 import gnu.trove.iterator.TIntIterator;
 import gnu.trove.list.TIntList;

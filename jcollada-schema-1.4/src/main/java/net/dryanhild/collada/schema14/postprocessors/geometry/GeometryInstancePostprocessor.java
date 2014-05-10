@@ -20,11 +20,12 @@
  * THE SOFTWARE.
  */
 
-package net.dryanhild.collada.schema14.postprocessors;
+package net.dryanhild.collada.schema14.postprocessors.geometry;
 
 import net.dryanhild.collada.data.geometry.Geometry;
 import net.dryanhild.collada.schema14.ParsingData;
 import net.dryanhild.collada.schema14.data.geometry.GeometryInstanceImpl;
+import net.dryanhild.collada.schema14.postprocessors.Postprocessor;
 
 public class GeometryInstancePostprocessor implements Postprocessor {
 

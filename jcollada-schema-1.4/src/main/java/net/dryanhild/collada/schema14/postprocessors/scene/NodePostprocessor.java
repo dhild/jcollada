@@ -20,22 +20,26 @@
  * THE SOFTWARE.
  */
 
-package net.dryanhild.collada.schema14.postprocessors;
+package net.dryanhild.collada.schema14.postprocessors.scene;
 
-import net.dryanhild.collada.data.scene.VisualScene;
+import net.dryanhild.collada.data.scene.Node;
 import net.dryanhild.collada.schema14.ParsingData;
+import net.dryanhild.collada.schema14.data.scene.NodeImpl;
+import net.dryanhild.collada.schema14.postprocessors.Postprocessor;
 
-public class ScenePostprocessor implements Postprocessor {
+public class NodePostprocessor implements Postprocessor {
 
-    private final String url;
+    private String url;
+    private NodeImpl nodeImpl;
 
-    public ScenePostprocessor(String url) {
+    public NodePostprocessor(String url, NodeImpl nodeImpl) {
         this.url = url;
+        this.nodeImpl = nodeImpl;
     }
 
     @Override
     public void process(ParsingData data) {
-        VisualScene scene = data.document.getVisualScene(url.substring(1));
-        data.document.setMainScene(scene);
+        Node node = data.document.getNode(url.substring(1));
+        nodeImpl.addChild(node);
     }
 }

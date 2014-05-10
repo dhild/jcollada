@@ -44,13 +44,13 @@ public abstract class BaseParserTest {
 
     @BeforeMethod
     public void resetParser() throws XmlPullParserException, IOException {
-        data.document = new ColladaDocument14();
         XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
         factory.setNamespaceAware(true);
         factory.setValidating(false);
-        data.parser = factory.newPullParser();
+        data.reset(factory.newPullParser());
         StringReader reader = new StringReader(getDataString());
         data.parser.setInput(reader);
+        data.document = new ColladaDocument14();
 
         while (data.parser.getEventType() != XmlPullParser.START_TAG) {
             data.parser.next();

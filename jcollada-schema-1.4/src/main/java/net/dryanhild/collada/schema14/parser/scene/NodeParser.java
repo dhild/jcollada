@@ -28,7 +28,7 @@ import net.dryanhild.collada.schema14.data.scene.NodeImpl;
 import net.dryanhild.collada.schema14.parser.AbstractParser;
 import net.dryanhild.collada.schema14.parser.geometry.GeometryInstanceParser;
 import net.dryanhild.collada.schema14.parser.transform.MatrixParser;
-import net.dryanhild.collada.schema14.postprocessors.NodePostprocessor;
+import net.dryanhild.collada.schema14.postprocessors.scene.NodePostprocessor;
 import org.jvnet.hk2.annotations.Service;
 import org.xmlpull.v1.XmlPullParserException;
 

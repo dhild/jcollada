@@ -1,5 +1,5 @@
 #
-# Generated on Sat May 10 02:07:26 MDT 2014 by hk2-inhabitant-generator
+# Generated on Sat May 10 02:43:37 MDT 2014 by hk2-inhabitant-generator
 #
 
 [net.dryanhild.collada.schema14.ParsingData]
@@ -17,6 +17,8 @@ scope=org.glassfish.hk2.api.PerThread
 scope=org.glassfish.hk2.api.PerThread
 
 [net.dryanhild.collada.schema14.parser.geometry.mesh.PolylistParser]S
+
+[net.dryanhild.collada.schema14.parser.geometry.mesh.TrianglesParser]S
 
 [net.dryanhild.collada.schema14.parser.geometry.mesh.VerticesParser]S
 

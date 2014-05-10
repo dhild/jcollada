@@ -25,7 +25,7 @@ package net.dryanhild.collada.schema14.parser.scene;
 import net.dryanhild.collada.IncorrectFormatException;
 import net.dryanhild.collada.schema14.parser.AbstractParser;
 import net.dryanhild.collada.schema14.postprocessors.Postprocessor;
-import net.dryanhild.collada.schema14.postprocessors.ScenePostprocessor;
+import net.dryanhild.collada.schema14.postprocessors.scene.ScenePostprocessor;
 import org.jvnet.hk2.annotations.Service;
 import org.xmlpull.v1.XmlPullParserException;
 
