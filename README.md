@@ -11,6 +11,10 @@ JCollada provides this translation.
 
 JCollada aims to be lightweight, rather than a fully featured COLLADA parser.
 
+## Organization
+
+JCollada consists of an API module and (currently only one) schema-specific implementation modules. Your code should be written against the API module; you only need to have the implementations on the classpath at runtime. You will also need to make sure you have an XmlPullParser implementation, as well as an SLF4j logger implementation. By default, these are included in the JCollada dependencies as runtime dependencies. However, you should be able to swap out those dependencies for your own preferences.
+
 ## How to use
 
 You are, of course, able to download the source, build it yourself, and use it however you see fit. The packaged gradle wrapper should be enough to get you started if this is your interest.
@@ -28,7 +32,8 @@ However, you would probably like to use a snapshot or released version that you 
         }
     }
     dependencies {
-        compile "net.dryanhild.jcollada:jcollada-schema-1.4:1.1"
+        compile "net.dryanhild.jcollada:jcollada-api:1.1"
+        runtime "net.dryanhild.jcollada:jcollada-schema-1.4:1.1"
     }
 
 ### Maven example usage
@@ -43,8 +48,14 @@ However, you would probably like to use a snapshot or released version that you 
     <dependencies>
         <dependency>
             <groupId>net.dryanhild.jcollada</groupId>
+            <artifactId>jcollada-api</artifactId>
+            <version>1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>net.dryanhild.jcollada</groupId>
             <artifactId>jcollada-schema-1.4</artifactId>
             <version>1.1</version>
+            <scope>runtime</scope>
         </dependency>
     </dependencies>
 
