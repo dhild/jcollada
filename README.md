@@ -27,6 +27,9 @@ However, you would probably like to use a snapshot or released version that you 
             url "http://dev.dryanhild.net:8080/nexus/content/repositories/releases/"
         }
     }
+    dependencies {
+        compile "net.dryanhild.jcollada:jcollada-schema-1.4:1.1"
+    }
 
 ### Maven example usage
 
@@ -37,6 +40,13 @@ However, you would probably like to use a snapshot or released version that you 
         <url>http://dev.dryanhild.net:8080/nexus/content/repositories/releases/</url>
       </repository>
     </repositories>
+    <dependencies>
+        <dependency>
+            <groupId>net.dryanhild.jcollada</groupId>
+            <artifactId>jcollada-schema-1.4</artifactId>
+            <version>1.1</version>
+        </dependency>
+    </dependencies>
 
 ## Releases
 
