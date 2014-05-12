@@ -24,6 +24,16 @@ task wrapper(type: Wrapper) {
     gradleVersion = '1.11'
 }
 
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        // Replace $version with the current version
+        classpath "com.smokejumperit.gradle.license:Gradle-License-Report:0.0.2"
+    }
+}
+
 allprojects {
     group = 'net.dryanhild.jcollada'
     version = '1.2-SNAPSHOT'
@@ -41,6 +51,8 @@ allprojects {
     }
 
     apply plugin: 'project-report'
+
+    apply plugin:'license-report'
 }
 
 subprojects {
