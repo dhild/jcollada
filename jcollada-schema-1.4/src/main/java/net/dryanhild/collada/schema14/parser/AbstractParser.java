@@ -122,14 +122,14 @@ public abstract class AbstractParser<OutputType> implements XmlParser<OutputType
     protected void skipElement() throws XmlPullParserException, IOException {
         data.parser.require(START_TAG, null, null);
 
-        logger.trace("Skipping element {%s}%s", data.parser.getNamespace(), data.parser.getName());
+        logger.trace("Skipping element [{}]{}", data.parser.getNamespace(), data.parser.getName());
 
         final int depth = data.parser.getDepth();
         while (data.parser.getDepth() >= depth) {
             data.parser.next();
         }
 
-        logger.trace("Finished kipping element {%s}%s", data.parser.getNamespace(), data.parser.getName());
+        logger.trace("Finished kipping element [{}]{}", data.parser.getNamespace(), data.parser.getName());
     }
 
     protected void handleChildElement(OutputType parent, String childTag)
