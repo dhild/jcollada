@@ -22,7 +22,6 @@
 
 package net.dryanhild.collada.schema14.parser;
 
-import com.google.common.collect.Sets;
 import gnu.trove.list.TFloatList;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TFloatArrayList;
@@ -35,7 +34,6 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import javax.inject.Inject;
 import java.io.IOException;
-import java.util.Set;
 
 import static org.xmlpull.v1.XmlPullParser.END_TAG;
 import static org.xmlpull.v1.XmlPullParser.START_TAG;

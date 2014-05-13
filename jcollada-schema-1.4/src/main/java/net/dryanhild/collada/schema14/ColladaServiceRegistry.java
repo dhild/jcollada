@@ -25,9 +25,15 @@ package net.dryanhild.collada.schema14;
 import net.dryanhild.collada.schema14.data.ColladaDocument14;
 import net.dryanhild.collada.schema14.parser.DocumentParser;
 import net.dryanhild.collada.schema14.parser.XmlParser;
+import org.glassfish.hk2.api.DescriptorFileFinder;
+import org.glassfish.hk2.api.DynamicConfigurationService;
+import org.glassfish.hk2.api.Populator;
 import org.glassfish.hk2.api.ServiceLocator;
 import org.glassfish.hk2.api.ServiceLocatorFactory;
+import org.glassfish.hk2.utilities.ClasspathDescriptorFileFinder;
 import org.glassfish.hk2.utilities.ServiceLocatorUtilities;
+
+import java.io.IOException;
 
 public class ColladaServiceRegistry {
 
@@ -46,8 +52,20 @@ public class ColladaServiceRegistry {
             return factory.find(SERVICE_NAME);
         }
 
-        ServiceLocator locator = ServiceLocatorUtilities.createAndPopulateServiceLocator(SERVICE_NAME);
+        ServiceLocator locator = factory.create(SERVICE_NAME);
         ServiceLocatorUtilities.enablePerThreadScope(locator);
+
+        DynamicConfigurationService dcs = locator.getService(DynamicConfigurationService.class);
+        Populator populator = dcs.getPopulator();
+
+        try {
+            ClassLoader classLoader = ColladaServiceRegistry.class.getClassLoader();
+            DescriptorFileFinder finder = new ClasspathDescriptorFileFinder(classLoader, SERVICE_NAME);
+            populator.populate(finder);
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         return locator;
     }
