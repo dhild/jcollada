@@ -129,7 +129,7 @@ public abstract class AbstractParser<OutputType> implements XmlParser<OutputType
             data.parser.next();
         }
 
-        logger.trace("Finished kipping element [{}]{}", data.parser.getNamespace(), data.parser.getName());
+        logger.trace("Finished skipping element");
     }
 
     protected void handleChildElement(OutputType parent, String childTag)
