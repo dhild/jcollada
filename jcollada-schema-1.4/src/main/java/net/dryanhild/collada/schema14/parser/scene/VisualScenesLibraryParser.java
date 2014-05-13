@@ -22,7 +22,6 @@
 
 package net.dryanhild.collada.schema14.parser.scene;
 
-import net.dryanhild.collada.data.scene.VisualScene;
 import net.dryanhild.collada.schema14.parser.AbstractParser;
 import org.jvnet.hk2.annotations.Service;
 import org.xmlpull.v1.XmlPullParserException;

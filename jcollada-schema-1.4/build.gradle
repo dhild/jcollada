@@ -57,10 +57,16 @@ task copyHK2Test(type: org.gradle.api.tasks.Copy) {
     dependsOn processTestResources
     from "${buildDir}/generated/hk2"
     into sourceSets.test.output.resourcesDir
+}
+
+task copyHK2TestDefaults(type: org.gradle.api.tasks.Copy) {
+    dependsOn processTestResources
+    from "${buildDir}/generated/hk2"
+    into sourceSets.test.output.resourcesDir
     rename "JCollada-Schema-1.4", "default"
 }
 
-test.dependsOn copyHK2Test
+test.dependsOn copyHK2Test, copyHK2TestDefaults
 
 jar {
     dependsOn generateHK2
