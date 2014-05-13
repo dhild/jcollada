@@ -29,7 +29,6 @@ buildscript {
         jcenter()
     }
     dependencies {
-        // Replace $version with the current version
         classpath "com.smokejumperit.gradle.license:Gradle-License-Report:0.0.2"
     }
 }
@@ -38,10 +37,14 @@ allprojects {
     group = 'net.dryanhild.jcollada'
     version = '1.2-SNAPSHOT'
 
-    if ("$mavenRepo".length() > 0) {
+    if (project.hasProperty('mavenRepo')) {
         repositories {
             maven {
                 url "$mavenRepo"
+		credentials {
+	 	    username "$mavenUser"
+		    password "$mavenPassword"
+		}
             }
         }
     } else {
