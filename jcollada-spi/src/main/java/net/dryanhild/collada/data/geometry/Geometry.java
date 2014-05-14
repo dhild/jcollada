@@ -26,6 +26,7 @@ import net.dryanhild.collada.data.AddressableType;
 import net.dryanhild.collada.data.NameableType;
 
 import java.nio.ByteBuffer;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -54,22 +55,6 @@ public interface Geometry extends AddressableType, NameableType {
     int getDataCount(String semantic);
 
     /**
-     * Gets the number of bytes used to represent this semantic for a single vertex.
-     *
-     * @param semantic The semantic to look up.
-     * @return The number of bytes that the given semantic has in each vertex.
-     */
-    int getDataBytes(String semantic);
-
-    /**
-     * Gets the offset for the semantic in an interleaved data set.
-     *
-     * @param semantic The semantic to look up.
-     * @return The byte offset that the given semantic has in an interleaved data set.
-     */
-    int getInterleaveOffset(String semantic);
-
-    /**
      * Gets the number of vertices that this geometry contains.
      *
      * @return The number of vertices.
@@ -82,6 +67,12 @@ public interface Geometry extends AddressableType, NameableType {
      * @return The size of a buffer needed to house the vertex data.
      */
     int getInterleavedDataSize();
+
+    /** Assembles the attrib pointer data suitable for using in OpenGL.
+     *
+     * @return A list of the pointer data elements.
+     */
+    List<AttribPointerData> getAttribPointerData();
 
     /**
      * Stores the interleaved vertex data in the given buffer.

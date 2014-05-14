@@ -22,6 +22,7 @@
 
 package net.dryanhild.collada.schema14.parser.geometry;
 
+import net.dryanhild.collada.data.geometry.AttribPointerData;
 import net.dryanhild.collada.data.geometry.Geometry;
 import net.dryanhild.collada.schema14.parser.BaseParserTest;
 import net.dryanhild.collada.schema14.postprocessors.Postprocessor;
@@ -34,6 +35,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -150,20 +152,14 @@ public class WithMeshGeometry extends BaseParserTest {
     }
 
     @Test
-    public void normalsHaveDataSize12() {
-        assertThat(geometry.getDataBytes(NORMAL)).isEqualTo(12);
-    }
-
-    @Test
-    public void positionsHaveDataSize12() {
-        assertThat(geometry.getDataBytes(POSITION)).isEqualTo(12);
-    }
-
-    @Test
-    public void positionAndNormalsHaveDifferentOffsets() {
-        assertThat(geometry.getInterleaveOffset(POSITION)).isGreaterThanOrEqualTo(0);
-        assertThat(geometry.getInterleaveOffset(NORMAL)).isGreaterThanOrEqualTo(0);
-        assertThat(geometry.getInterleaveOffset(POSITION)).isNotEqualTo(geometry.getInterleaveOffset(NORMAL));
+    public void attribDataIsCorrect() {
+        List<AttribPointerData> datas = geometry.getAttribPointerData();
+        assertThat(datas).extracting("semantic").containsExactly(POSITION, NORMAL);
+        assertThat(datas).extracting("size").containsExactly(3 * 4, 3 * 4);
+        assertThat(datas).extracting("type").containsExactly(AttribPointerData.GL_FLOAT, AttribPointerData.GL_FLOAT);
+        assertThat(datas).extracting("normalized").containsExactly(false, false);
+        assertThat(datas).extracting("stride").containsExactly(3 * 4, 3 * 4);
+        assertThat(datas).extracting("offset").containsExactly(0, 3 * 4);
     }
 
     @Test
@@ -187,7 +183,7 @@ public class WithMeshGeometry extends BaseParserTest {
     }
 
     @Test
-    public void correcInterleavedDataSize() {
+    public void correctInterleavedDataSize() {
         assertThat(geometry.getInterleavedDataSize()).isEqualTo(44 * 3 * 3 * 2 * 4);
     }
 

@@ -22,11 +22,14 @@
 
 package net.dryanhild.collada.schema14.data.geometry;
 
+import com.google.common.collect.ImmutableList;
+import net.dryanhild.collada.data.geometry.AttribPointerData;
 import net.dryanhild.collada.data.geometry.Geometry;
 import net.dryanhild.collada.data.geometry.Triangles;
 import net.dryanhild.collada.schema14.data.AbstractNameableAddressableType;
 
 import java.nio.ByteBuffer;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -54,16 +57,6 @@ public class MeshImpl extends AbstractNameableAddressableType implements Geometr
     }
 
     @Override
-    public int getDataBytes(String semantic) {
-        return dataBytes.get(semantic);
-    }
-
-    @Override
-    public int getInterleaveOffset(String semantic) {
-        return interleaveOffset.get(semantic);
-    }
-
-    @Override
     public ByteBuffer putInterleavedVertexData(ByteBuffer buffer) {
         return buffer.put(vertexData);
     }
@@ -85,6 +78,37 @@ public class MeshImpl extends AbstractNameableAddressableType implements Geometr
             size += bytes;
         }
         return size * vertexCount;
+    }
+
+    @Override
+    public List<AttribPointerData> getAttribPointerData() {
+        int[] sizes = new int[dataCount.size()];
+        for (String semantic : getSemantics()) {
+            sizes[interleaveOffset.get(semantic)] = dataBytes.get(semantic);
+        }
+        int totalSize = 0;
+        for (int s : sizes) {
+            totalSize += s;
+        }
+
+        int[] offsets = new int[sizes.length];
+        for (int i = 0; i < offsets.length - 1; i++) {
+            offsets[i + 1] = offsets[i] + sizes[i];
+        }
+
+        AttribPointerData[] datas = new AttribPointerData[sizes.length];
+
+        for (String semantic : getSemantics()) {
+            int type = AttribPointerData.GL_FLOAT;
+            boolean normalized = false;
+            int i = interleaveOffset.get(semantic);
+            int stride = totalSize - sizes[i];
+            AttribPointerData data =
+                    new AttribPointerDataImpl(semantic, sizes[i], type, normalized, stride, offsets[i]);
+            datas[interleaveOffset.get(semantic)] = data;
+        }
+
+        return ImmutableList.copyOf(datas);
     }
 
     public void setTriangles(Triangles triangles) {

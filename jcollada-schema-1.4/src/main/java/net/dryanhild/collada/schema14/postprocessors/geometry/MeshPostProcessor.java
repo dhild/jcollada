@@ -36,12 +36,16 @@ import net.dryanhild.collada.schema14.data.geometry.Vertices;
 import net.dryanhild.collada.schema14.data.geometry.source.FloatArray;
 import net.dryanhild.collada.schema14.data.geometry.source.FloatSource;
 import net.dryanhild.collada.schema14.postprocessors.Postprocessor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Map;
 
 public class MeshPostProcessor implements Postprocessor {
+
+    private static final Logger logger = LoggerFactory.getLogger(MeshPostProcessor.class);
 
     private MeshImpl mesh;
 
@@ -81,6 +85,7 @@ public class MeshPostProcessor implements Postprocessor {
 
     @Override
     public void process(ParsingData data) {
+        logger.info("Postprocessing mesh '{}', id: {}", mesh.getName(), mesh.getId());
         createReaders(data);
 
         for (Polylist polys : polylists) {
@@ -91,6 +96,7 @@ public class MeshPostProcessor implements Postprocessor {
         }
 
         writeMesh();
+        logger.info("Done postprocessing mesh '{}', id: {}", mesh.getName(), mesh.getId());
     }
 
     private void createReaders(ParsingData data) {
