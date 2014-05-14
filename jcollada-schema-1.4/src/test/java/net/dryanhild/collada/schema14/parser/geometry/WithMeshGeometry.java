@@ -155,10 +155,10 @@ public class WithMeshGeometry extends BaseParserTest {
     public void attribDataIsCorrect() {
         List<AttribPointerData> datas = geometry.getAttribPointerData();
         assertThat(datas).extracting("semantic").containsExactly(POSITION, NORMAL);
-        assertThat(datas).extracting("size").containsExactly(3 * 4, 3 * 4);
+        assertThat(datas).extracting("size").containsExactly(3, 3);
         assertThat(datas).extracting("type").containsExactly(AttribPointerData.GL_FLOAT, AttribPointerData.GL_FLOAT);
         assertThat(datas).extracting("normalized").containsExactly(false, false);
-        assertThat(datas).extracting("stride").containsExactly(3 * 4, 3 * 4);
+        assertThat(datas).extracting("stride").containsExactly(2 * 3 * 4, 2 * 3 * 4);
         assertThat(datas).extracting("offset").containsExactly(0, 3 * 4);
     }
 

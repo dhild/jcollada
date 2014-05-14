@@ -82,18 +82,22 @@ public class MeshImpl extends AbstractNameableAddressableType implements Geometr
 
     @Override
     public List<AttribPointerData> getAttribPointerData() {
-        int[] sizes = new int[dataCount.size()];
+        String[] semantics = new String[dataCount.size()];
         for (String semantic : getSemantics()) {
-            sizes[interleaveOffset.get(semantic)] = dataBytes.get(semantic);
-        }
-        int totalSize = 0;
-        for (int s : sizes) {
-            totalSize += s;
+            semantics[interleaveOffset.get(semantic)] = semantic;
         }
 
-        int[] offsets = new int[sizes.length];
+        int[] sizes = new int[semantics.length];
+        int[] offsets = new int[semantics.length];
+        int totalSize = 0;
+
+        for (int i = 0; i < semantics.length; i++) {
+            sizes[i] = dataCount.get(semantics[i]);
+            totalSize += dataBytes.get(semantics[i]);
+        }
+
         for (int i = 0; i < offsets.length - 1; i++) {
-            offsets[i + 1] = offsets[i] + sizes[i];
+            offsets[i + 1] = offsets[i] + dataBytes.get(semantics[i]);
         }
 
         AttribPointerData[] datas = new AttribPointerData[sizes.length];
@@ -102,9 +106,8 @@ public class MeshImpl extends AbstractNameableAddressableType implements Geometr
             int type = AttribPointerData.GL_FLOAT;
             boolean normalized = false;
             int i = interleaveOffset.get(semantic);
-            int stride = totalSize - sizes[i];
             AttribPointerData data =
-                    new AttribPointerDataImpl(semantic, sizes[i], type, normalized, stride, offsets[i]);
+                    new AttribPointerDataImpl(semantic, sizes[i], type, normalized, totalSize, offsets[i]);
             datas[interleaveOffset.get(semantic)] = data;
         }
 
