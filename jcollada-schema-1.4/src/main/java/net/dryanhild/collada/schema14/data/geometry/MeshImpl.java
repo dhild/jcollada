@@ -78,6 +78,15 @@ public class MeshImpl extends AbstractNameableAddressableType implements Geometr
         return vertexCount;
     }
 
+    @Override
+    public int getInterleavedDataSize() {
+        int size = 0;
+        for (int bytes : dataBytes.values()) {
+            size += bytes;
+        }
+        return size * vertexCount;
+    }
+
     public void setTriangles(Triangles triangles) {
         this.triangles = triangles;
     }

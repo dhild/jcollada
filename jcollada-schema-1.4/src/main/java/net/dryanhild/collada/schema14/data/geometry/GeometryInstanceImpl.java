@@ -91,6 +91,11 @@ public class GeometryInstanceImpl implements GeometryInstance {
         return geometry.getName();
     }
 
+    @Override
+    public int getInterleavedDataSize() {
+        return geometry.getInterleavedDataSize();
+    }
+
     public void setGeometry(Geometry geometry) {
         this.geometry = geometry;
     }

@@ -187,6 +187,11 @@ public class WithMeshGeometry extends BaseParserTest {
     }
 
     @Test
+    public void correcInterleavedDataSize() {
+        assertThat(geometry.getInterleavedDataSize()).isEqualTo(44 * 3 * 3 * 2 * 4);
+    }
+
+    @Test
     public void vertexDataIsRetrieved() {
         ByteBuffer buffer = ByteBuffer.allocate(4 * geometry.getVertexCount() * 3 * 2);
         buffer.clear();

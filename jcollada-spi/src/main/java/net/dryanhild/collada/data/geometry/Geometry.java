@@ -77,6 +77,13 @@ public interface Geometry extends AddressableType, NameableType {
     int getVertexCount();
 
     /**
+     * Gets the total size in bytes needed to house the interleaved vertex data.
+     *
+     * @return The size of a buffer needed to house the vertex data.
+     */
+    int getInterleavedDataSize();
+
+    /**
      * Stores the interleaved vertex data in the given buffer.
      *
      * @param buffer The buffer to store the data in.
