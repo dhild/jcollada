@@ -33,6 +33,7 @@ import org.xmlpull.v1.XmlPullParserException;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.List;
@@ -189,7 +190,7 @@ public class WithMeshGeometry extends BaseParserTest {
 
     @Test
     public void vertexDataIsRetrieved() {
-        ByteBuffer buffer = ByteBuffer.allocate(4 * geometry.getVertexCount() * 3 * 2);
+        ByteBuffer buffer = ByteBuffer.allocate(4 * geometry.getVertexCount() * 3 * 2).order(ByteOrder.nativeOrder());
         buffer.clear();
         geometry.putInterleavedVertexData(buffer);
         buffer.flip();

@@ -40,6 +40,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.util.List;
 import java.util.Map;
 
@@ -205,15 +206,11 @@ public class MeshPostProcessor implements Postprocessor {
     }
 
     private byte[] getVertexData() {
-        ByteBuffer buffer = ByteBuffer.allocate(rawVertexSize());
-        buffer.clear();
+        ByteBuffer buffer = ByteBuffer.allocate(rawVertexSize()).order(ByteOrder.nativeOrder());
 
         vertexList.putElements(buffer, semanticDataCounts);
 
-        byte[] data = new byte[buffer.capacity()];
-        buffer.flip();
-        buffer.get(data);
-        return data;
+        return buffer.array();
     }
 
     private int rawVertexSize() {
