@@ -51,8 +51,8 @@ public class MatrixParser extends AbstractParser<MatrixImpl> {
 
     @Override
     protected void handleAttribute(MatrixImpl object, String attribute, String value) {
-        if (attribute.equals("sid")) {
-            object.setSID(value);
+        if ("sid".equals(attribute)) {
+            object.setSid(value);
         }
     }
 

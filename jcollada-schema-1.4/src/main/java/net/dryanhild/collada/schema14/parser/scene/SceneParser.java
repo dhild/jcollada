@@ -60,7 +60,7 @@ public class SceneParser extends AbstractParser<Object> {
     private Postprocessor getSceneProcessor() {
         for (int i = 0; i < data.parser.getAttributeCount(); i++) {
             String key = data.parser.getAttributeName(i);
-            if (key.equals("url")) {
+            if ("url".equals(key)) {
                 String url = data.parser.getAttributeValue(i);
                 return new ScenePostprocessor(url);
             }

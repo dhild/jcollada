@@ -40,14 +40,14 @@ import java.util.List;
 @PerThread
 public class SourceParser extends AbstractParser<FloatSource> {
 
-    @Inject
-    private FloatArrayParser floatArrayParser;
-
     protected FloatSource floatSource;
 
     protected TechniqueCommonParser techniqueCommonParser = new TechniqueCommonParser();
     protected AccessorParser accessorParser = new AccessorParser();
     protected ParamParser paramParser = new ParamParser();
+
+    @Inject
+    private FloatArrayParser floatArrayParser;
 
     private void setChildData() {
         techniqueCommonParser.setData(data);

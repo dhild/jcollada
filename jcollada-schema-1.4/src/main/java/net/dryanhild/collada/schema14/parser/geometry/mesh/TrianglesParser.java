@@ -45,13 +45,14 @@ public class TrianglesParser extends AbstractParser<TrianglesHolder> {
 
     @Override
     protected void handleAttribute(@NotNull TrianglesHolder object, String attribute, String value) {
-        if (attribute.equals("count")) {
+        if ("count".equals(attribute)) {
             object.setCount(Integer.valueOf(value));
         }
     }
 
     @Override
-    protected void handleChildElement(TrianglesHolder parent, String childTag) throws IOException, XmlPullParserException {
+    protected void handleChildElement(TrianglesHolder parent, String childTag)
+            throws IOException, XmlPullParserException {
         switch (childTag) {
             case "input":
                 addInput(parent);

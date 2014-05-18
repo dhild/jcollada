@@ -26,7 +26,6 @@ import gnu.trove.list.TFloatList;
 import net.dryanhild.collada.schema14.data.geometry.source.FloatArray;
 import net.dryanhild.collada.schema14.parser.AbstractParser;
 import org.jvnet.hk2.annotations.Service;
-import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;

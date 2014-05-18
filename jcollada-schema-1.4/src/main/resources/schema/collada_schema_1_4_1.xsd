@@ -582,10 +582,10 @@
                 </xs:documentation>
             </xs:annotation>
         </xs:attribute>
-        <xs:attribute name="sid" type="xs:NCName">
+        <xs:attribute name="sID" type="xs:NCName">
             <xs:annotation>
                 <xs:documentation>
-                    The sid attribute is a text string value containing the sub-identifier of this element. This
+                    The sID attribute is a text string value containing the sub-identifier of this element. This
                     value must be unique within the scope of the parent element. Optional attribute.
                 </xs:documentation>
             </xs:annotation>
@@ -607,10 +607,10 @@
         </xs:annotation>
         <xs:simpleContent>
             <xs:extension base="float">
-                <xs:attribute name="sid" type="xs:NCName">
+                <xs:attribute name="sID" type="xs:NCName">
                     <xs:annotation>
                         <xs:documentation>
-                            The sid attribute is a text string value containing the sub-identifier of this element. This
+                            The sID attribute is a text string value containing the sub-identifier of this element. This
                             value must be unique within the scope of the parent element. Optional attribute.
                         </xs:documentation>
                     </xs:annotation>
@@ -627,10 +627,10 @@
         </xs:annotation>
         <xs:simpleContent>
             <xs:extension base="float3">
-                <xs:attribute name="sid" type="xs:NCName">
+                <xs:attribute name="sID" type="xs:NCName">
                     <xs:annotation>
                         <xs:documentation>
-                            The sid attribute is a text string value containing the sub-identifier of this element.
+                            The sID attribute is a text string value containing the sub-identifier of this element.
                             This value must be unique within the scope of the parent element. Optional attribute.
                         </xs:documentation>
                     </xs:annotation>
@@ -920,10 +920,10 @@
                             </xs:documentation>
                         </xs:annotation>
                     </xs:attribute>
-                    <xs:attribute name="sid" type="xs:NCName">
+                    <xs:attribute name="sID" type="xs:NCName">
                         <xs:annotation>
                             <xs:documentation>
-                                The sid attribute is a text string value containing the sub-identifier of this element.
+                                The sID attribute is a text string value containing the sub-identifier of this element.
                                 This value must be unique within the scope of the parent element. Optional attribute.
                             </xs:documentation>
                         </xs:annotation>
@@ -1755,10 +1755,10 @@
         <xs:complexType>
             <xs:simpleContent>
                 <xs:extension base="float3x3">
-                    <xs:attribute name="sid" type="xs:NCName">
+                    <xs:attribute name="sID" type="xs:NCName">
                         <xs:annotation>
                             <xs:documentation>
-                                The sid attribute is a text string value containing the sub-identifier of this element.
+                                The sID attribute is a text string value containing the sub-identifier of this element.
                                 This value must be unique within the scope of the parent element. Optional attribute.
                             </xs:documentation>
                         </xs:annotation>
@@ -1777,10 +1777,10 @@
         <xs:complexType>
             <xs:simpleContent>
                 <xs:extension base="float4x4">
-                    <xs:attribute name="sid" type="xs:NCName">
+                    <xs:attribute name="sID" type="xs:NCName">
                         <xs:annotation>
                             <xs:documentation>
-                                The sid attribute is a text string value containing the sub-identifier of this element.
+                                The sID attribute is a text string value containing the sub-identifier of this element.
                                 This value must be unique within the scope of the parent element. Optional attribute.
                             </xs:documentation>
                         </xs:annotation>
@@ -1798,10 +1798,10 @@
         <xs:complexType>
             <xs:simpleContent>
                 <xs:extension base="float4">
-                    <xs:attribute name="sid" type="xs:NCName">
+                    <xs:attribute name="sID" type="xs:NCName">
                         <xs:annotation>
                             <xs:documentation>
-                                The sid attribute is a text string value containing the sub-identifier of this element.
+                                The sID attribute is a text string value containing the sub-identifier of this element.
                                 This value must be unique within the scope of the parent element. Optional attribute.
                             </xs:documentation>
                         </xs:annotation>
@@ -1828,10 +1828,10 @@
         <xs:complexType>
             <xs:simpleContent>
                 <xs:extension base="float7">
-                    <xs:attribute name="sid" type="xs:NCName">
+                    <xs:attribute name="sID" type="xs:NCName">
                         <xs:annotation>
                             <xs:documentation>
-                                The sid attribute is a text string value containing the sub-identifier of this element.
+                                The sID attribute is a text string value containing the sub-identifier of this element.
                                 This value must be unique within the scope of the parent element. Optional attribute.
                             </xs:documentation>
                         </xs:annotation>
@@ -2308,7 +2308,7 @@
                                                                             The ymag element contains a floating point
                                                                             number describing the vertical
                                                                             magnification of the view. It can also have
-                                                                            a sid.
+                                                                            a sID.
                                                                         </xs:documentation>
                                                                     </xs:annotation>
                                                                 </xs:element>
@@ -3315,10 +3315,10 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:attribute>
-            <xs:attribute name="sid" type="xs:NCName">
+            <xs:attribute name="sID" type="xs:NCName">
                 <xs:annotation>
                     <xs:documentation>
-                        The sid attribute is a text string value containing the sub-identifier of this element.
+                        The sID attribute is a text string value containing the sub-identifier of this element.
                         This value must be unique within the scope of the parent element. Optional attribute.
                     </xs:documentation>
                 </xs:annotation>
@@ -3554,10 +3554,10 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:attribute>
-            <xs:attribute name="sid" type="xs:NCName">
+            <xs:attribute name="sID" type="xs:NCName">
                 <xs:annotation>
                     <xs:documentation>
-                        The sid attribute is a text string value containing the sub-identifier of this element. This
+                        The sID attribute is a text string value containing the sub-identifier of this element. This
                         value must be unique within the scope of the parent element. Optional attribute.
                     </xs:documentation>
                 </xs:annotation>
@@ -3641,10 +3641,10 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:attribute>
-            <xs:attribute name="sid" type="xs:NCName">
+            <xs:attribute name="sID" type="xs:NCName">
                 <xs:annotation>
                     <xs:documentation>
-                        The sid attribute is a text string value containing the sub-identifier of this element. This
+                        The sID attribute is a text string value containing the sub-identifier of this element. This
                         value must be unique within the scope of the parent element. Optional attribute.
                     </xs:documentation>
                 </xs:annotation>
@@ -3700,10 +3700,10 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:attribute>
-            <xs:attribute name="sid" type="xs:NCName">
+            <xs:attribute name="sID" type="xs:NCName">
                 <xs:annotation>
                     <xs:documentation>
-                        The sid attribute is a text string value containing the sub-identifier of this element. This
+                        The sID attribute is a text string value containing the sub-identifier of this element. This
                         value must be unique within the scope of the parent element. Optional attribute.
                     </xs:documentation>
                 </xs:annotation>
@@ -3812,10 +3812,10 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:attribute>
-            <xs:attribute name="sid" type="xs:NCName">
+            <xs:attribute name="sID" type="xs:NCName">
                 <xs:annotation>
                     <xs:documentation>
-                        The sid attribute is a text string value containing the sub-identifier of this element. This
+                        The sID attribute is a text string value containing the sub-identifier of this element. This
                         value must be unique within the scope of the parent element. Optional attribute.
                     </xs:documentation>
                 </xs:annotation>
@@ -3891,10 +3891,10 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:attribute>
-            <xs:attribute name="sid" type="xs:NCName">
+            <xs:attribute name="sID" type="xs:NCName">
                 <xs:annotation>
                     <xs:documentation>
-                        The sid attribute is a text string value containing the sub-identifier of this element. This
+                        The sID attribute is a text string value containing the sub-identifier of this element. This
                         value must be unique within the scope of the parent element. Optional attribute.
                     </xs:documentation>
                 </xs:annotation>
@@ -3954,10 +3954,10 @@
                                 <xs:complexType>
                                     <xs:simpleContent>
                                         <xs:extension base="bool">
-                                            <xs:attribute name="sid" type="xs:NCName">
+                                            <xs:attribute name="sID" type="xs:NCName">
                                                 <xs:annotation>
                                                     <xs:documentation>
-                                                        The sid attribute is a text string value containing the
+                                                        The sID attribute is a text string value containing the
                                                         sub-identifier of this element.
                                                         This value must be unique within the scope of the parent
                                                         element. Optional attribute.
@@ -3989,10 +3989,10 @@
                                             <xs:complexType>
                                                 <xs:simpleContent>
                                                     <xs:extension base="bool">
-                                                        <xs:attribute name="sid" type="xs:NCName">
+                                                        <xs:attribute name="sID" type="xs:NCName">
                                                             <xs:annotation>
                                                                 <xs:documentation>
-                                                                    The sid attribute is a text string value containing
+                                                                    The sID attribute is a text string value containing
                                                                     the sub-identifier of this element. This value must
                                                                     be unique within the scope of the parent element.
                                                                     Optional attribute.
@@ -4058,10 +4058,10 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:attribute>
-            <xs:attribute name="sid" type="xs:NCName">
+            <xs:attribute name="sID" type="xs:NCName">
                 <xs:annotation>
                     <xs:documentation>
-                        The sid attribute is a text string value containing the sub-identifier of this element. This
+                        The sID attribute is a text string value containing the sub-identifier of this element. This
                         value must be unique within the scope of the parent element. Optional attribute.
                     </xs:documentation>
                 </xs:annotation>
@@ -4106,10 +4106,10 @@
                     </xs:documentation>
                 </xs:annotation>
             </xs:attribute>
-            <xs:attribute name="sid" type="xs:NCName">
+            <xs:attribute name="sID" type="xs:NCName">
                 <xs:annotation>
                     <xs:documentation>
-                        The sid attribute is a text string value containing the sub-identifier of this element. This
+                        The sID attribute is a text string value containing the sub-identifier of this element. This
                         value must be unique within the scope of the parent element. Optional attribute.
                     </xs:documentation>
                 </xs:annotation>
@@ -5606,10 +5606,10 @@
                 referencing an external resource.
             </xs:documentation>
         </xs:annotation>
-        <xs:attribute name="sid" type="xs:NCName" use="required">
+        <xs:attribute name="sID" type="xs:NCName" use="required">
             <xs:annotation>
                 <xs:documentation>
-                    The sid attribute is a text string value containing the sub-identifier of this element.
+                    The sID attribute is a text string value containing the sub-identifier of this element.
                     This value must be unique within the scope of the parent element. Optional attribute.
                 </xs:documentation>
             </xs:annotation>
@@ -5655,10 +5655,10 @@
             </xs:element>
             <xs:group ref="fx_basic_type_common"/>
         </xs:sequence>
-        <xs:attribute name="sid" type="xs:NCName" use="required">
+        <xs:attribute name="sID" type="xs:NCName" use="required">
             <xs:annotation>
                 <xs:documentation>
-                    The sid attribute is a text string value containing the sub-identifier of this element.
+                    The sID attribute is a text string value containing the sub-identifier of this element.
                     This value must be unique within the scope of the parent element. Optional attribute.
                 </xs:documentation>
             </xs:annotation>
@@ -5675,10 +5675,10 @@
         </xs:annotation>
         <xs:simpleContent>
             <xs:extension base="xs:string">
-                <xs:attribute name="sid" type="xs:NCName" use="optional">
+                <xs:attribute name="sID" type="xs:NCName" use="optional">
                     <xs:annotation>
                         <xs:documentation>
-                            The sid attribute is a text string value containing the sub-identifier of this element.
+                            The sID attribute is a text string value containing the sub-identifier of this element.
                             This value must be unique within the scope of the parent element. Optional attribute.
                         </xs:documentation>
                     </xs:annotation>
@@ -7419,7 +7419,7 @@
                 <xs:element name="source" type="glsl_newarray_type"/>
             </xs:choice>
         </xs:sequence>
-        <xs:attribute name="sid" type="glsl_identifier" use="required"/>
+        <xs:attribute name="sID" type="glsl_identifier" use="required"/>
     </xs:complexType>
     <xs:complexType name="glsl_setparam_simple">
         <xs:sequence>
@@ -7595,10 +7595,10 @@
                                         </xs:choice>
                                         <xs:element ref="extra" minOccurs="0" maxOccurs="unbounded"/>
                                     </xs:sequence>
-                                    <xs:attribute name="sid" type="xs:NCName" use="optional">
+                                    <xs:attribute name="sID" type="xs:NCName" use="optional">
                                         <xs:annotation>
                                             <xs:documentation>
-                                                The sid attribute is a text string value containing the sub-identifier
+                                                The sID attribute is a text string value containing the sub-identifier
                                                 of this element.
                                                 This value must be unique within the scope of the parent element.
                                                 Optional attribute.
@@ -7617,10 +7617,10 @@
                                 </xs:documentation>
                             </xs:annotation>
                         </xs:attribute>
-                        <xs:attribute name="sid" type="xs:NCName" use="required">
+                        <xs:attribute name="sID" type="xs:NCName" use="required">
                             <xs:annotation>
                                 <xs:documentation>
-                                    The sid attribute is a text string value containing the sub-identifier of this
+                                    The sID attribute is a text string value containing the sub-identifier of this
                                     element.
                                     This value must be unique within the scope of the parent element. Optional
                                     attribute.
@@ -7650,7 +7650,7 @@
                 <xs:complexType>
                     <xs:simpleContent>
                         <xs:extension base="float">
-                            <xs:attribute name="sid" type="xs:NCName"/>
+                            <xs:attribute name="sID" type="xs:NCName"/>
                         </xs:extension>
                     </xs:simpleContent>
                 </xs:complexType>
@@ -7668,7 +7668,7 @@
                 <xs:complexType>
                     <xs:simpleContent>
                         <xs:extension base="fx_color_common">
-                            <xs:attribute name="sid" type="xs:NCName"/>
+                            <xs:attribute name="sID" type="xs:NCName"/>
                         </xs:extension>
                     </xs:simpleContent>
                 </xs:complexType>
@@ -7708,10 +7708,10 @@
                 <xs:element name="sampler2D" type="fx_sampler2D_common"/>
             </xs:choice>
         </xs:sequence>
-        <xs:attribute name="sid" type="xs:NCName" use="required">
+        <xs:attribute name="sID" type="xs:NCName" use="required">
             <xs:annotation>
                 <xs:documentation>
-                    The sid attribute is a text string value containing the sub-identifier of this element.
+                    The sID attribute is a text string value containing the sub-identifier of this element.
                     This value must be unique within the scope of the parent element. Optional attribute.
                 </xs:documentation>
             </xs:annotation>
@@ -7860,10 +7860,10 @@
                                 </xs:documentation>
                             </xs:annotation>
                         </xs:attribute>
-                        <xs:attribute name="sid" type="xs:NCName" use="required">
+                        <xs:attribute name="sID" type="xs:NCName" use="required">
                             <xs:annotation>
                                 <xs:documentation>
-                                    The sid attribute is a text string value containing the sub-identifier of this
+                                    The sID attribute is a text string value containing the sub-identifier of this
                                     element.
                                     This value must be unique within the scope of the parent element. Optional
                                     attribute.
@@ -8898,7 +8898,7 @@
                 <xs:element name="source" type="cg_newarray_type"/>
             </xs:choice>
         </xs:sequence>
-        <xs:attribute name="sid" type="cg_identifier" use="required"/>
+        <xs:attribute name="sID" type="cg_identifier" use="required"/>
     </xs:complexType>
     <xs:complexType name="cg_setparam_simple">
         <xs:sequence>
@@ -9085,10 +9085,10 @@
                                         </xs:choice>
                                         <xs:element ref="extra" minOccurs="0" maxOccurs="unbounded"/>
                                     </xs:sequence>
-                                    <xs:attribute name="sid" type="xs:NCName" use="optional">
+                                    <xs:attribute name="sID" type="xs:NCName" use="optional">
                                         <xs:annotation>
                                             <xs:documentation>
-                                                The sid attribute is a text string value containing the sub-identifier
+                                                The sID attribute is a text string value containing the sub-identifier
                                                 of this element.
                                                 This value must be unique within the scope of the parent element.
                                                 Optional attribute.
@@ -9107,10 +9107,10 @@
                                 </xs:documentation>
                             </xs:annotation>
                         </xs:attribute>
-                        <xs:attribute name="sid" type="xs:NCName" use="required">
+                        <xs:attribute name="sID" type="xs:NCName" use="required">
                             <xs:annotation>
                                 <xs:documentation>
-                                    The sid attribute is a text string value containing the sub-identifier of this
+                                    The sID attribute is a text string value containing the sub-identifier of this
                                     element.
                                     This value must be unique within the scope of the parent element. Optional
                                     attribute.
@@ -9420,10 +9420,10 @@
                 </xs:annotation>
             </xs:element>
         </xs:choice>
-        <xs:attribute name="sid" type="xs:NCName">
+        <xs:attribute name="sID" type="xs:NCName">
             <xs:annotation>
                 <xs:documentation>
-                    The sid attribute is a text string value containing the sub-identifier of this element.
+                    The sID attribute is a text string value containing the sub-identifier of this element.
                     This value must be unique within the scope of the parent element. Optional attribute.
                 </xs:documentation>
             </xs:annotation>
@@ -9440,10 +9440,10 @@
             </xs:element>
             <xs:element ref="extra" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
-        <xs:attribute name="sid" type="xs:NCName">
+        <xs:attribute name="sID" type="xs:NCName">
             <xs:annotation>
                 <xs:documentation>
-                    The sid attribute is a text string value containing the sub-identifier of this element.
+                    The sID attribute is a text string value containing the sub-identifier of this element.
                     This value must be unique within the scope of the parent element. Optional attribute.
                 </xs:documentation>
             </xs:annotation>
@@ -9488,10 +9488,10 @@
                 </xs:annotation>
             </xs:element>
         </xs:sequence>
-        <xs:attribute name="sid" type="xs:NCName">
+        <xs:attribute name="sID" type="xs:NCName">
             <xs:annotation>
                 <xs:documentation>
-                    The sid attribute is a text string value containing the sub-identifier of this element.
+                    The sID attribute is a text string value containing the sub-identifier of this element.
                     This value must be unique within the scope of the parent element. Optional attribute.
                 </xs:documentation>
             </xs:annotation>
@@ -10133,10 +10133,10 @@
             </xs:element>
             <xs:group ref="gles_basic_type_common"/>
         </xs:sequence>
-        <xs:attribute name="sid" type="xs:NCName" use="required">
+        <xs:attribute name="sID" type="xs:NCName" use="required">
             <xs:annotation>
                 <xs:documentation>
-                    The sid attribute is a text string value containing the sub-identifier of this element.
+                    The sID attribute is a text string value containing the sub-identifier of this element.
                     This value must be unique within the scope of the parent element.
                 </xs:documentation>
             </xs:annotation>
@@ -10207,10 +10207,10 @@
                                         </xs:choice>
                                         <xs:element ref="extra" minOccurs="0" maxOccurs="unbounded"/>
                                     </xs:sequence>
-                                    <xs:attribute name="sid" type="xs:NCName" use="optional">
+                                    <xs:attribute name="sID" type="xs:NCName" use="optional">
                                         <xs:annotation>
                                             <xs:documentation>
-                                                The sid attribute is a text string value containing the sub-identifier
+                                                The sID attribute is a text string value containing the sub-identifier
                                                 of this element.
                                                 This value must be unique within the scope of the parent element.
                                                 Optional attribute.
@@ -10222,10 +10222,10 @@
                             <xs:element ref="extra" minOccurs="0" maxOccurs="unbounded"/>
                         </xs:sequence>
                         <xs:attribute name="id" type="xs:ID"/>
-                        <xs:attribute name="sid" type="xs:NCName" use="required">
+                        <xs:attribute name="sID" type="xs:NCName" use="required">
                             <xs:annotation>
                                 <xs:documentation>
-                                    The sid attribute is a text string value containing the sub-identifier of this
+                                    The sID attribute is a text string value containing the sub-identifier of this
                                     element.
                                     This value must be unique within the scope of the parent element.
                                 </xs:documentation>
@@ -10774,10 +10774,10 @@
                                 <xs:complexType>
                                     <xs:simpleContent>
                                         <xs:extension base="bool">
-                                            <xs:attribute name="sid" type="xs:NCName">
+                                            <xs:attribute name="sID" type="xs:NCName">
                                                 <xs:annotation>
                                                     <xs:documentation>
-                                                        The sid attribute is a text string value containing the
+                                                        The sID attribute is a text string value containing the
                                                         sub-identifier of this element.
                                                         This value must be unique within the scope of the parent
                                                         element. Optional attribute.
@@ -10854,10 +10854,10 @@
                                             <xs:complexType>
                                                 <xs:simpleContent>
                                                     <xs:extension base="bool">
-                                                        <xs:attribute name="sid" type="xs:NCName">
+                                                        <xs:attribute name="sID" type="xs:NCName">
                                                             <xs:annotation>
                                                                 <xs:documentation>
-                                                                    The sid attribute is a text string value containing
+                                                                    The sID attribute is a text string value containing
                                                                     the sub-identifier of this element.
                                                                     This value must be unique within the scope of the
                                                                     parent element. Optional attribute.
@@ -11000,10 +11000,10 @@
                     </xs:annotation>
                 </xs:element>
             </xs:sequence>
-            <xs:attribute name="sid" type="xs:NCName" use="required">
+            <xs:attribute name="sID" type="xs:NCName" use="required">
                 <xs:annotation>
                     <xs:documentation>
-                        The sid attribute is a text string value containing the sub-identifier of this element. This
+                        The sID attribute is a text string value containing the sub-identifier of this element. This
                         value must be unique within the scope of the parent element. Optional attribute.
                     </xs:documentation>
                 </xs:annotation>
@@ -11126,10 +11126,10 @@
                                 <xs:complexType>
                                     <xs:simpleContent>
                                         <xs:extension base="bool">
-                                            <xs:attribute name="sid" type="xs:NCName">
+                                            <xs:attribute name="sID" type="xs:NCName">
                                                 <xs:annotation>
                                                     <xs:documentation>
-                                                        The sid attribute is a text string value containing the
+                                                        The sID attribute is a text string value containing the
                                                         sub-identifier of this element.
                                                         This value must be unique within the scope of the parent
                                                         element. Optional attribute.
@@ -11149,10 +11149,10 @@
                                 <xs:complexType>
                                     <xs:simpleContent>
                                         <xs:extension base="bool">
-                                            <xs:attribute name="sid" type="xs:NCName">
+                                            <xs:attribute name="sID" type="xs:NCName">
                                                 <xs:annotation>
                                                     <xs:documentation>
-                                                        The sid attribute is a text string value containing the
+                                                        The sID attribute is a text string value containing the
                                                         sub-identifier of this element.
                                                         This value must be unique within the scope of the parent
                                                         element. Optional attribute.
@@ -11335,10 +11335,10 @@
                     </xs:annotation>
                 </xs:element>
             </xs:sequence>
-            <xs:attribute name="sid" type="xs:NCName" use="required">
+            <xs:attribute name="sID" type="xs:NCName" use="required">
                 <xs:annotation>
                     <xs:documentation>
-                        The sid attribute is a text string value containing the sub-identifier of this element.
+                        The sID attribute is a text string value containing the sub-identifier of this element.
                         This value must be unique within the scope of the parent element. Optional attribute.
                     </xs:documentation>
                 </xs:annotation>

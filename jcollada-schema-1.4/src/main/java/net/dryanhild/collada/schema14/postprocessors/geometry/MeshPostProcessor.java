@@ -46,7 +46,7 @@ import java.util.NoSuchElementException;
 
 public class MeshPostProcessor implements Postprocessor {
 
-    private static final Logger logger = LoggerFactory.getLogger(MeshPostProcessor.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MeshPostProcessor.class);
 
     private MeshImpl mesh;
 
@@ -72,21 +72,21 @@ public class MeshPostProcessor implements Postprocessor {
         sources.add(source);
     }
 
-    public void setVertices(Vertices vertices) {
-        this.vertices = vertices;
+    public void setVertices(Vertices verts) {
+        vertices = verts;
     }
 
     public void addPolylist(Polylist polylist) {
         polylists.add(polylist);
     }
 
-    public void addTriangles(TrianglesHolder triangles) {
-        this.triangles.add(triangles);
+    public void addTriangles(TrianglesHolder trianglesHolder) {
+        triangles.add(trianglesHolder);
     }
 
     @Override
     public void process(ParsingData data) {
-        logger.info("Postprocessing mesh '{}', id: {}", mesh.getName(), mesh.getId());
+        LOGGER.info("Postprocessing mesh '{}', id: {}", mesh.getName(), mesh.getId());
         createReaders(data);
 
         for (Polylist polys : polylists) {
@@ -97,7 +97,7 @@ public class MeshPostProcessor implements Postprocessor {
         }
 
         writeMesh();
-        logger.info("Done postprocessing mesh '{}', id: {}", mesh.getName(), mesh.getId());
+        LOGGER.info("Done postprocessing mesh '{}', id: {}", mesh.getName(), mesh.getId());
     }
 
     private void createReaders(ParsingData data) {
@@ -168,7 +168,7 @@ public class MeshPostProcessor implements Postprocessor {
         if (semanticDataCounts.containsKey(semantic)) {
             return;
         }
-        if (semantic.equals("VERTEX")) {
+        if ("VERTEX".equals(semantic)) {
             for (String semantic2 : vertices.getSemantics()) {
                 addSemantic(semantic2, vertices.getSource(semantic2));
             }

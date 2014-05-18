@@ -41,7 +41,7 @@ import static org.xmlpull.v1.XmlPullParser.TEXT;
 
 public abstract class AbstractParser<OutputType> implements XmlParser<OutputType> {
 
-    private static final Logger logger = LoggerFactory.getLogger(AbstractParser.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractParser.class);
 
     @Inject
     protected ParsingData data;
@@ -115,14 +115,14 @@ public abstract class AbstractParser<OutputType> implements XmlParser<OutputType
     protected void skipElement() throws XmlPullParserException, IOException {
         data.parser.require(START_TAG, null, null);
 
-        logger.trace("Skipping element [{}]{}", data.parser.getNamespace(), data.parser.getName());
+        LOGGER.trace("Skipping element [{}]{}", data.parser.getNamespace(), data.parser.getName());
 
         final int depth = data.parser.getDepth();
         while (data.parser.getDepth() >= depth) {
             data.parser.next();
         }
 
-        logger.trace("Finished skipping element");
+        LOGGER.trace("Finished skipping element");
     }
 
     protected void handleChildElement(OutputType parent, String childTag)

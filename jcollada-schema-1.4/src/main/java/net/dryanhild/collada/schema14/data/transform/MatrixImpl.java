@@ -51,7 +51,7 @@ public class MatrixImpl implements Matrix {
         return sid;
     }
 
-    public void setSID(String sid) {
-        this.sid = sid;
+    public void setSid(String scopedID) {
+        sid = scopedID;
     }
 }

@@ -46,22 +46,22 @@ public class TrianglesVertexReader {
         this.vertices = vertices;
     }
 
-    public TIntList process(TrianglesHolder trianglesHolder) {
-        reset(trianglesHolder);
+    public TIntList process(TrianglesHolder triangles) {
+        reset(triangles);
         while (pValues.hasNext()) {
             handleTriangle();
         }
         return triangleElements;
     }
 
-    private void reset(TrianglesHolder trianglesHolder) {
-        this.trianglesHolder = trianglesHolder;
-        triangleElements = new TIntArrayList(trianglesHolder.getCount() * 3);
-        pValues = trianglesHolder.getP().iterator();
+    private void reset(TrianglesHolder triangles) {
+        trianglesHolder = triangles;
+        triangleElements = new TIntArrayList(triangles.getCount() * 3);
+        pValues = triangles.getP().iterator();
 
         vertexSize = 0;
-        for (String semantic : trianglesHolder.getSemantics()) {
-            vertexSize = Math.max(vertexSize, trianglesHolder.getOffset(semantic));
+        for (String semantic : triangles.getSemantics()) {
+            vertexSize = Math.max(vertexSize, triangles.getOffset(semantic));
         }
         vertexSize++;
     }

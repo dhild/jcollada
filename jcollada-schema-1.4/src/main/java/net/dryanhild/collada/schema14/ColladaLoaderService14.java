@@ -45,10 +45,10 @@ import java.util.regex.Pattern;
 
 public class ColladaLoaderService14 implements ColladaLoaderService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ColladaLoaderService14.class);
-
     public static final VersionSupport VERSION_1_4_0 = new VersionSupport(1, 4, 0);
     public static final VersionSupport VERSION_1_4_1 = new VersionSupport(1, 4, 1);
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ColladaLoaderService14.class);
 
     private static final Pattern VERSION_PATTERN = Pattern.compile(
             ".*COLLADA[^>]+version\\s?=\\s?\\\"1\\.4\\.[01]\\\".*", Pattern.DOTALL);

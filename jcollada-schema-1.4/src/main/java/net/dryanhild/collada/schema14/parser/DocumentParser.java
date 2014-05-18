@@ -83,11 +83,11 @@ public class DocumentParser extends AbstractParser<ColladaDocument14> {
     protected void handleAttribute(ColladaDocument14 object, String attribute, String value) {
         switch (attribute) {
             case "version":
-                if (value.equals("1.4.0")) {
+                if ("1.4.0".equals(value)) {
                     object.setVersion(ColladaLoaderService14.VERSION_1_4_0);
                     break;
                 }
-                if (value.equals("1.4.1")) {
+                if ("1.4.1".equals(value)) {
                     object.setVersion(ColladaLoaderService14.VERSION_1_4_1);
                     break;
                 }

@@ -51,9 +51,9 @@ public class PolylistVertexReader {
         return triangleElements;
     }
 
-    public void process(Polylist polylist) {
-        reset(polylist);
-        TIntIterator it = polylist.getVcount().iterator();
+    public void process(Polylist polys) {
+        reset(polys);
+        TIntIterator it = polys.getVcount().iterator();
         while (it.hasNext()) {
             switch (it.next()) {
                 case 3:
@@ -65,12 +65,12 @@ public class PolylistVertexReader {
         }
     }
 
-    private void reset(Polylist polylist) {
-        this.polylist = polylist;
-        triangleElements = new TIntArrayList(polylist.getCount() * 3);
-        pValues = polylist.getP().iterator();
+    private void reset(Polylist polys) {
+        polylist = polys;
+        triangleElements = new TIntArrayList(polys.getCount() * 3);
+        pValues = polys.getP().iterator();
 
-        vertexSize = polylist.getSemantics().size();
+        vertexSize = polys.getSemantics().size();
     }
 
     private void handleTriangle() {

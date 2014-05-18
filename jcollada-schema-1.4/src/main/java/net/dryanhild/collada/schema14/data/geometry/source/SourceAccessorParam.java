@@ -44,8 +44,8 @@ public class SourceAccessorParam implements NameableType, ScopeAddressableType {
         return sid;
     }
 
-    public void setSID(String sid) {
-        this.sid = sid;
+    public void setSID(String scopedID) {
+        sid = scopedID;
     }
 
     public String getType() {
