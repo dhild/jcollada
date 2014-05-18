@@ -73,7 +73,7 @@ allprojects {
 subprojects {
     apply plugin: 'java'
     apply plugin: 'checkstyle'
-//    apply plugin: 'findbugs'
+    apply plugin: 'findbugs'
     apply plugin: 'jacoco'
     apply plugin: 'maven-publish'
 
@@ -81,6 +81,10 @@ subprojects {
 
     tasks.withType(JavaCompile) {
         options.compilerArgs << "-Xlint" << "-Werror"
+    }
+
+    checkstyle {
+        configFile = new File("$rootProject.projectDir/config/checkstyle/checkstyle.xml")
     }
 
     test {
