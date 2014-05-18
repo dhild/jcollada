@@ -44,7 +44,8 @@ public class MatrixParser extends AbstractParser<MatrixImpl> {
 
         TFloatList floatList = readFloats();
 
-        transposeIntoColumnMajor(floatList, matrix.getValues());
+        float[] values = transposeIntoColumnMajor(floatList, new float[16]);
+        matrix.setValues(values);
 
         return matrix;
     }
@@ -56,7 +57,7 @@ public class MatrixParser extends AbstractParser<MatrixImpl> {
         }
     }
 
-    private void transposeIntoColumnMajor(TFloatList floatList, float[] values) {
+    private float[] transposeIntoColumnMajor(TFloatList floatList, float[] values) {
         assert floatList.size() == 16;
         values[0] = floatList.get(0);
         values[1] = floatList.get(4);
@@ -74,6 +75,7 @@ public class MatrixParser extends AbstractParser<MatrixImpl> {
         values[13] = floatList.get(7);
         values[14] = floatList.get(11);
         values[15] = floatList.get(15);
+        return values;
     }
 
 }

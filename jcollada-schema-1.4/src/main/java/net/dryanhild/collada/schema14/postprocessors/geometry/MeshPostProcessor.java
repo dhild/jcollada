@@ -199,18 +199,18 @@ public class MeshPostProcessor implements Postprocessor {
         }
         mesh.setInterleaveOffset(offsets);
 
-        mesh.setTriangles(new TrianglesImpl(triangleElements.toArray()));
+        mesh.setTriangles(new TrianglesImpl(triangleElements));
 
         mesh.setVertexCount(vertexList.getVertexCount());
         mesh.setVertexData(getVertexData());
     }
 
-    private byte[] getVertexData() {
+    private ByteBuffer getVertexData() {
         ByteBuffer buffer = ByteBuffer.allocate(rawVertexSize()).order(ByteOrder.nativeOrder());
 
         vertexList.putElements(buffer, semanticDataCounts);
 
-        return buffer.array();
+        return buffer;
     }
 
     private int rawVertexSize() {

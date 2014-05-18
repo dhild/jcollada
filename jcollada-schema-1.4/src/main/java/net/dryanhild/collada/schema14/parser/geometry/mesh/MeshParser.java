@@ -78,6 +78,9 @@ public class MeshParser extends AbstractParser<MeshImpl> {
                 break;
             case "triangles":
                 postProcessor.addTriangles(trianglesParser.parse());
+                break;
+            default:
+                break;
         }
     }
 }

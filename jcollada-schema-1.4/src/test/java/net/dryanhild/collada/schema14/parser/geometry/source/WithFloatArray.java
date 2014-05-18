@@ -57,11 +57,11 @@ public class WithFloatArray extends BaseParserTest {
 
     @Test
     public void countIsCorrect() {
-        assertThat(floatArray.getValues()).hasSize(9);
+        assertThat(floatArray.values).hasSize(9);
     }
 
     @Test
     public void dataIsCorrect() {
-        assertThat(floatArray.getValues()).containsExactly(0, 0, -1, 1, 0, -1, 0, 1, -1);
+        assertThat(floatArray.values).containsExactly(0, 0, -1, 1, 0, -1, 0, 1, -1);
     }
 }

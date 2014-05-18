@@ -36,7 +36,7 @@ public class ColladaLoaderServiceImpl implements ColladaLoaderService {
 
     public static final String TEST_BASIC_FILE = "This is a test file for 0.0.0.";
 
-    public static ParsingContext lastContext = null;
+    public ParsingContext lastContext;
 
     @Override
     public Collection<VersionSupport> getColladaVersions() {

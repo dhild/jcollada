@@ -22,6 +22,7 @@
 
 package net.dryanhild.collada.schema14.data.geometry;
 
+import gnu.trove.list.TIntList;
 import net.dryanhild.collada.data.geometry.Triangles;
 
 import java.nio.IntBuffer;
@@ -30,8 +31,8 @@ public class TrianglesImpl implements Triangles {
 
     private final int[] indices;
 
-    public TrianglesImpl(int[] indices) {
-        this.indices = indices;
+    public TrianglesImpl(TIntList indices) {
+        this.indices = indices.toArray();
     }
 
     @Override

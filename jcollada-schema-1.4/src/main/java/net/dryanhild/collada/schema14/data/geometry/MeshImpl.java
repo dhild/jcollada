@@ -130,7 +130,7 @@ public class MeshImpl extends AbstractNameableAddressableType implements Geometr
         this.vertexCount = vertexCount;
     }
 
-    public void setVertexData(byte[] bytes) {
-        this.vertexData = bytes;
+    public void setVertexData(ByteBuffer bytes) {
+        vertexData = bytes.array();
     }
 }

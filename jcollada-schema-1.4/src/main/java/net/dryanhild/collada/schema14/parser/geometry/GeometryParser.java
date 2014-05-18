@@ -58,6 +58,8 @@ public class GeometryParser implements XmlParser<Geometry> {
                 case "id":
                     id = data.parser.getAttributeValue(i);
                     break;
+                default:
+                    break;
             }
         }
 

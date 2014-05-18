@@ -68,7 +68,7 @@ public class WithSkippingAccessor extends BaseParserTest {
 
     @Test
     public void floatArrayExists() {
-        assertThat(floatSource.getSource().getValues()).containsExactly(1, 2, 3, 4, 5, 6, 7, 8, 9);
+        assertThat(floatSource.getSource().values).containsExactly(1, 2, 3, 4, 5, 6, 7, 8, 9);
     }
 
     @Test

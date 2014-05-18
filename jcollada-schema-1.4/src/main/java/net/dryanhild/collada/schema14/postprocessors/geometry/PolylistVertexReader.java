@@ -36,7 +36,6 @@ public class PolylistVertexReader {
     private final VertexList vertexList;
     private final Vertices vertices;
 
-    private Polylist polylist;
     private int vertexSize;
     private TIntList triangleElements;
     private TIntIterator pValues;
@@ -66,7 +65,6 @@ public class PolylistVertexReader {
     }
 
     private void reset(Polylist polys) {
-        polylist = polys;
         triangleElements = new TIntArrayList(polys.getCount() * 3);
         pValues = polys.getP().iterator();
 

@@ -22,6 +22,9 @@
 
 package net.dryanhild.collada.schema14.data.geometry.source;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class FloatAccessor {
     private String source;
     private int offset;
@@ -62,12 +65,12 @@ public class FloatAccessor {
         this.stride = stride;
     }
 
-    public SourceAccessorParam[] getParams() {
-        return params;
+    public Iterable<SourceAccessorParam> getParams() {
+        return Arrays.asList(params);
     }
 
-    public void setParams(SourceAccessorParam[] params) {
-        this.params = params;
+    public void setParams(List<SourceAccessorParam> params) {
+        this.params = params.toArray(new SourceAccessorParam[params.size()]);
         paramCount = 0;
         for (SourceAccessorParam param : params) {
             if (param.getName() != null && !param.getName().isEmpty()) {

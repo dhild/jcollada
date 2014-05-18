@@ -31,6 +31,7 @@ import net.dryanhild.collada.schema14.data.geometry.source.FloatArray;
 import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public class VertexList {
 
@@ -45,8 +46,9 @@ public class VertexList {
 
     public void reset(Map<String, Integer> offsets, Map<String, FloatArray> semanticsAndSources) {
         semanticIndices = new int[sourceArrays.size()];
-        for (String semantic : offsets.keySet()) {
-            int offset = offsets.get(semantic);
+        for (Entry<String, Integer> entry : offsets.entrySet()) {
+            String semantic = entry.getKey();
+            int offset = entry.getValue();
             FloatArray mapped = semanticsAndSources.get(semantic);
             semanticIndices[offset] = sourceArrays.indexOf(mapped);
 

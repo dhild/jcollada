@@ -105,6 +105,9 @@ public abstract class AbstractParser<OutputType> implements XmlParser<OutputType
                 if (AbstractNameableAddressableType.class.isAssignableFrom(object.getClass())) {
                     ((AbstractNameableAddressableType) object).setName(value);
                 }
+                break;
+            default:
+                break;
         }
     }
 
@@ -179,7 +182,7 @@ public abstract class AbstractParser<OutputType> implements XmlParser<OutputType
                 count++;
             }
             if (count > 0) {
-                ints.add(Integer.valueOf(new String(text, i, count)));
+                ints.add(Integer.parseInt(new String(text, i, count)));
             }
             i += count;
         }

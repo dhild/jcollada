@@ -115,6 +115,9 @@ public class DocumentParser extends AbstractParser<ColladaDocument14> {
                 break;
             case "scene":
                 sceneParser.parse();
+                break;
+            default:
+                break;
         }
     }
 }

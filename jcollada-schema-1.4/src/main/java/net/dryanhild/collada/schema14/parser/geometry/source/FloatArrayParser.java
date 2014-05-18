@@ -43,7 +43,7 @@ public class FloatArrayParser extends AbstractParser<FloatArray> {
         FloatArray array = setAttributes(new FloatArray());
 
         TFloatList floatList = readFloats();
-        float[] values = array.getValues();
+        float[] values = array.values;
         assert values.length == floatList.size();
         floatList.toArray(values);
 
@@ -52,9 +52,8 @@ public class FloatArrayParser extends AbstractParser<FloatArray> {
 
     @Override
     protected void handleAttribute(FloatArray object, String attribute, String value) {
-        switch (attribute) {
-            case "count":
-                object.setSize(Integer.valueOf(value));
+        if ("count".equals(attribute)) {
+            object.setSize(Integer.parseInt(value));
         }
     }
 }

@@ -44,10 +44,8 @@ public class VerticesParser extends AbstractParser<Vertices> {
 
     @Override
     protected void handleChildElement(Vertices parent, String childTag) throws IOException, XmlPullParserException {
-        switch (childTag) {
-            case "input":
-                addInput(parent);
-                break;
+        if ("input".equals(childTag)) {
+            addInput(parent);
         }
     }
 
@@ -62,6 +60,8 @@ public class VerticesParser extends AbstractParser<Vertices> {
                     break;
                 case "source":
                     source = value;
+                    break;
+                default:
                     break;
             }
         }

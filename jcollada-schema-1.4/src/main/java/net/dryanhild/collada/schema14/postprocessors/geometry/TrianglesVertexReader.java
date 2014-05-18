@@ -35,7 +35,6 @@ public class TrianglesVertexReader {
     private final VertexList vertexList;
     private final Vertices vertices;
 
-    private TrianglesHolder trianglesHolder;
     private int vertexSize;
     private TIntList triangleElements;
     private TIntIterator pValues;
@@ -55,7 +54,6 @@ public class TrianglesVertexReader {
     }
 
     private void reset(TrianglesHolder triangles) {
-        trianglesHolder = triangles;
         triangleElements = new TIntArrayList(triangles.getCount() * 3);
         pValues = triangles.getP().iterator();
 

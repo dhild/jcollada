@@ -76,6 +76,9 @@ public class SourceParser extends AbstractParser<FloatSource> {
                 break;
             case "technique_common":
                 techniqueCommonParser.parse();
+                break;
+            default:
+                break;
         }
     }
 
@@ -98,9 +101,8 @@ public class SourceParser extends AbstractParser<FloatSource> {
         @Override
         protected void handleChildElement(FloatSource parent, String childTag)
                 throws IOException, XmlPullParserException {
-            switch (childTag) {
-                case "accessor":
-                    floatSource.setCommonAccessor(accessorParser.parse());
+            if ("accessor".equals(childTag)) {
+                floatSource.setCommonAccessor(accessorParser.parse());
             }
         }
     }
@@ -127,7 +129,7 @@ public class SourceParser extends AbstractParser<FloatSource> {
 
         @Override
         protected FloatAccessor finishObject(FloatAccessor object) throws XmlPullParserException, IOException {
-            object.setParams(params.toArray(new SourceAccessorParam[params.size()]));
+            object.setParams(params);
             return object;
         }
 
@@ -135,16 +137,18 @@ public class SourceParser extends AbstractParser<FloatSource> {
         protected void handleAttribute(FloatAccessor object, String attribute, String value) {
             switch (attribute) {
                 case "count":
-                    object.setCount(Integer.valueOf(value));
+                    object.setCount(Integer.parseInt(value));
                     break;
                 case "offset":
-                    object.setOffset(Integer.valueOf(value));
+                    object.setOffset(Integer.parseInt(value));
                     break;
                 case "source":
                     object.setSource(value);
                     break;
                 case "stride":
-                    object.setStride(Integer.valueOf(value));
+                    object.setStride(Integer.parseInt(value));
+                    break;
+                default:
                     break;
             }
         }
@@ -152,14 +156,13 @@ public class SourceParser extends AbstractParser<FloatSource> {
         @Override
         protected void handleChildElement(FloatAccessor parent, String childTag)
                 throws IOException, XmlPullParserException {
-            switch (childTag) {
-                case "param":
-                    params.add(paramParser.parse());
+            if ("param".equals(childTag)) {
+                params.add(paramParser.parse());
             }
         }
     }
 
-    private class ParamParser extends AbstractParser<SourceAccessorParam> {
+    private static class ParamParser extends AbstractParser<SourceAccessorParam> {
 
         public void setData(ParsingData data) {
             this.data = data;
@@ -189,6 +192,9 @@ public class SourceParser extends AbstractParser<FloatSource> {
                     break;
                 case "semantic":
                     object.setSemantic(value);
+                    break;
+                default:
+                    break;
             }
         }
     }

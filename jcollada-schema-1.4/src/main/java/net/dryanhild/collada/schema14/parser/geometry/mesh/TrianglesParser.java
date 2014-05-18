@@ -46,7 +46,7 @@ public class TrianglesParser extends AbstractParser<TrianglesHolder> {
     @Override
     protected void handleAttribute(@NotNull TrianglesHolder object, String attribute, String value) {
         if ("count".equals(attribute)) {
-            object.setCount(Integer.valueOf(value));
+            object.setCount(Integer.parseInt(value));
         }
     }
 
@@ -59,6 +59,9 @@ public class TrianglesParser extends AbstractParser<TrianglesHolder> {
                 break;
             case "p":
                 parent.setP(readInts());
+                break;
+            default:
+                break;
         }
     }
 
@@ -76,7 +79,10 @@ public class TrianglesParser extends AbstractParser<TrianglesHolder> {
                     source = value;
                     break;
                 case "offset":
-                    offset = Integer.valueOf(value);
+                    offset = Integer.parseInt(value);
+                    break;
+                default:
+                    break;
             }
         }
         parent.addInput(semantic, source, offset);

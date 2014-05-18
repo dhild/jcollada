@@ -63,6 +63,8 @@ public class NodeParser extends AbstractParser<NodeImpl> {
             case "id":
                 data.document.addNode(node);
                 break;
+            default:
+                break;
         }
     }
 
@@ -81,6 +83,9 @@ public class NodeParser extends AbstractParser<NodeImpl> {
                 break;
             case "node":
                 parent.addChild(parse());
+                break;
+            default:
+                break;
         }
     }
 

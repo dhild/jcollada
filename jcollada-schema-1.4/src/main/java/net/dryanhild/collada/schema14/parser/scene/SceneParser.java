@@ -51,9 +51,8 @@ public class SceneParser extends AbstractParser<Object> {
     @Override
     protected void handleChildElement(Object parent, String childTag)
             throws IOException, XmlPullParserException {
-        switch (childTag) {
-            case "instance_visual_scene":
-                data.postprocessors.add(getSceneProcessor());
+        if ("instance_visual_scene".equals(childTag)) {
+            data.postprocessors.add(getSceneProcessor());
         }
     }
 

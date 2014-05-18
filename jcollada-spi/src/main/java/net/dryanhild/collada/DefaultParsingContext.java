@@ -45,14 +45,21 @@ public class DefaultParsingContext implements ParsingContext {
         this.charset = charset;
 
         String bufferSizeStr = System.getProperty(BUFFER_SIZE_PROPERTY, Integer.toString(BUFFER_SIZE));
-        int bufferSize = Integer.valueOf(bufferSizeStr);
+        int bufferSize = Integer.parseInt(bufferSizeStr);
 
         inputStream = new BufferedInputStream(input, bufferSize);
 
         inputStream.mark(bufferSize);
-        byte[] read = new byte[bufferSize];
-        inputStream.read(read);
-        header = new String(read, StandardCharsets.UTF_8);
+        byte[] bytes = new byte[bufferSize];
+        int offset = 0;
+        while (offset < bufferSize) {
+            int read = inputStream.read(bytes, offset, bufferSize - offset);
+            offset += read;
+            if (read == -1) {
+                break;
+            }
+        }
+        header = new String(bytes, StandardCharsets.UTF_8);
         inputStream.reset();
     }
 
