@@ -25,8 +25,20 @@ task wrapper(type: Wrapper) {
 }
 
 buildscript {
-    repositories {
-        jcenter()
+    if (project.hasProperty('mavenRepo')) {
+        repositories {
+            maven {
+                url "$mavenRepo"
+                credentials {
+                    username "$mavenUser"
+                    password "$mavenPassword"
+                }
+            }
+        }
+    } else {
+        repositories {
+            jcenter()
+        }
     }
     dependencies {
         classpath "com.smokejumperit.gradle.license:Gradle-License-Report:0.0.2"
@@ -41,10 +53,10 @@ allprojects {
         repositories {
             maven {
                 url "$mavenRepo"
-		credentials {
-	 	    username "$mavenUser"
-		    password "$mavenPassword"
-		}
+                credentials {
+                    username "$mavenUser"
+                    password "$mavenPassword"
+                }
             }
         }
     } else {
