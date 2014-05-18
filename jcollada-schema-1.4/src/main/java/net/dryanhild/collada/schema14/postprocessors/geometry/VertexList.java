@@ -43,19 +43,19 @@ public class VertexList {
         this.sourceArrays = ImmutableList.copyOf(sourceArrays);
     }
 
-    public void reset(Map<String, Integer> offsets, Map<String, FloatArray> semanticsToSources) {
+    public void reset(Map<String, Integer> offsets, Map<String, FloatArray> semanticsAndSources) {
         semanticIndices = new int[sourceArrays.size()];
         for (String semantic : offsets.keySet()) {
             int offset = offsets.get(semantic);
-            FloatArray mapped = semanticsToSources.get(semantic);
+            FloatArray mapped = semanticsAndSources.get(semantic);
             semanticIndices[offset] = sourceArrays.indexOf(mapped);
 
-            if (this.semanticsToSources.containsKey(semantic)) {
-                if (!this.semanticsToSources.get(semantic).equals(mapped)) {
+            if (semanticsToSources.containsKey(semantic)) {
+                if (!semanticsToSources.get(semantic).equals(mapped)) {
                     throw new ParsingException("Unable to handle multiple sources for a single semantic");
                 }
             } else {
-                this.semanticsToSources.put(semantic, mapped);
+                semanticsToSources.put(semantic, mapped);
             }
         }
     }

@@ -26,7 +26,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
-import net.dryanhild.collada.NoSuchElementIdException;
 import net.dryanhild.collada.schema14.ParsingData;
 import net.dryanhild.collada.schema14.data.geometry.MeshImpl;
 import net.dryanhild.collada.schema14.data.geometry.Polylist;
@@ -43,6 +42,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 public class MeshPostProcessor implements Postprocessor {
 
@@ -186,7 +186,7 @@ public class MeshPostProcessor implements Postprocessor {
                 return source;
             }
         }
-        throw new NoSuchElementIdException(sourceId);
+        throw new NoSuchElementException(sourceId);
     }
 
     private void writeMesh() {

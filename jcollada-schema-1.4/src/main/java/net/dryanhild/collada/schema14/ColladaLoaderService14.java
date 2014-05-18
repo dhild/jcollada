@@ -31,6 +31,8 @@ import net.dryanhild.collada.schema14.parser.XmlParser;
 import net.dryanhild.collada.schema14.postprocessors.Postprocessor;
 import net.dryanhild.collada.spi.ColladaLoaderService;
 import net.dryanhild.collada.spi.ParsingContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -42,6 +44,8 @@ import java.util.Collection;
 import java.util.regex.Pattern;
 
 public class ColladaLoaderService14 implements ColladaLoaderService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ColladaLoaderService14.class);
 
     public static final VersionSupport VERSION_1_4_0 = new VersionSupport(1, 4, 0);
     public static final VersionSupport VERSION_1_4_1 = new VersionSupport(1, 4, 1);
@@ -63,12 +67,17 @@ public class ColladaLoaderService14 implements ColladaLoaderService {
 
     @Override
     public ColladaDocument load(ParsingContext context) throws IOException {
+        LOGGER.debug("Parsing file, validation={}", context.isValidating());
         ParsingData data = serviceRegistry.getParsingData();
         parseFile(context, data);
+
+        LOGGER.debug("Done parsing. Beginning postprocessing");
 
         for (Postprocessor proc : data.postprocessors) {
             proc.process(data);
         }
+
+        LOGGER.debug("Finished with postprocessing, returning completed document.");
 
         return data.document;
     }

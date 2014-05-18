@@ -50,8 +50,8 @@ public class ParsingData {
 
     public List<Postprocessor> postprocessors = Lists.newArrayList();
 
-    public void reset(XmlPullParser parser) {
-        this.parser = parser;
+    public void reset(XmlPullParser newParser) {
+        parser = newParser;
         sources.clear();
         vertices.clear();
         meshes.clear();

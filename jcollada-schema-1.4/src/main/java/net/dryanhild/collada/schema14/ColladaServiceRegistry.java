@@ -62,8 +62,7 @@ public class ColladaServiceRegistry {
             ClassLoader classLoader = ColladaServiceRegistry.class.getClassLoader();
             DescriptorFileFinder finder = new ClasspathDescriptorFileFinder(classLoader, SERVICE_NAME);
             populator.populate(finder);
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
 

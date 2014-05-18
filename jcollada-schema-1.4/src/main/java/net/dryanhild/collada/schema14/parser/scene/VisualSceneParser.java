@@ -49,9 +49,8 @@ public class VisualSceneParser extends AbstractParser<VisualSceneImpl> {
     @Override
     protected void handleChildElement(VisualSceneImpl parent, String childTag)
             throws IOException, XmlPullParserException {
-        switch (childTag) {
-            case "node":
-                parent.addNode(nodeParser.parse());
+        if (childTag.equals("node")) {
+            parent.addNode(nodeParser.parse());
         }
     }
 }
