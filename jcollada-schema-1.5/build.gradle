@@ -20,6 +20,8 @@
  * THE SOFTWARE.
  */
 
+
+
 dependencies {
     compile project(':jcollada-spi')
 }

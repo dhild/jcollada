@@ -59,6 +59,7 @@ task copyHK2Test(type: org.gradle.api.tasks.Copy) {
     into sourceSets.test.output.resourcesDir
 }
 
+// Due to a bug in the HK2 code, the services do not get populated correctly when using named locators.
 task copyHK2TestDefaults(type: org.gradle.api.tasks.Copy) {
     dependsOn processTestResources
     from "${buildDir}/generated/hk2"
