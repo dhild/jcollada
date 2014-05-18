@@ -26,7 +26,6 @@ import gnu.trove.list.TFloatList;
 import net.dryanhild.collada.schema14.data.transform.MatrixImpl;
 import net.dryanhild.collada.schema14.parser.AbstractParser;
 import org.jvnet.hk2.annotations.Service;
-import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
@@ -43,9 +42,6 @@ public class MatrixParser extends AbstractParser<MatrixImpl> {
     protected MatrixImpl createObject() throws XmlPullParserException, IOException {
         MatrixImpl matrix = setAttributes(new MatrixImpl());
 
-        while (data.parser.getEventType() != XmlPullParser.TEXT) {
-            data.parser.next();
-        }
         TFloatList floatList = readFloats();
 
         transposeIntoColumnMajor(floatList, matrix.getValues());
@@ -54,11 +50,10 @@ public class MatrixParser extends AbstractParser<MatrixImpl> {
     }
 
     @Override
-    protected MatrixImpl handleAttribute(MatrixImpl object, String attribute, String value) {
+    protected void handleAttribute(MatrixImpl object, String attribute, String value) {
         if (attribute.equals("sid")) {
             object.setSID(value);
         }
-        return object;
     }
 
     private void transposeIntoColumnMajor(TFloatList floatList, float[] values) {

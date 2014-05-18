@@ -24,7 +24,6 @@ package net.dryanhild.collada.schema14.data;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import net.dryanhild.collada.NoSuchElementIdException;
 import net.dryanhild.collada.VersionSupport;
 import net.dryanhild.collada.data.AddressableType;
 import net.dryanhild.collada.data.ColladaDocument;
@@ -35,6 +34,7 @@ import net.dryanhild.collada.data.scene.Node;
 import net.dryanhild.collada.data.scene.VisualScene;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 public class ColladaDocument14 implements ColladaDocument {
@@ -85,7 +85,7 @@ public class ColladaDocument14 implements ColladaDocument {
                 return element;
             }
         }
-        throw new NoSuchElementIdException("Could not find element " + id);
+        throw new NoSuchElementException("Could not find element " + id);
     }
 
     @Override

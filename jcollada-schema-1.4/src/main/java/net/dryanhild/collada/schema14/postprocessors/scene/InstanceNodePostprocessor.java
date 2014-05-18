@@ -20,23 +20,26 @@
  * THE SOFTWARE.
  */
 
-package net.dryanhild.collada.schema14.data.geometry.source;
+package net.dryanhild.collada.schema14.postprocessors.scene;
 
-import net.dryanhild.collada.schema14.data.AbstractNameableAddressableType;
+import net.dryanhild.collada.data.scene.Node;
+import net.dryanhild.collada.schema14.ParsingData;
+import net.dryanhild.collada.schema14.data.scene.NodeImpl;
+import net.dryanhild.collada.schema14.postprocessors.Postprocessor;
 
-public class FloatArray extends AbstractNameableAddressableType {
+public class InstanceNodePostprocessor implements Postprocessor {
 
-    private float[] values;
+    private String url;
+    private NodeImpl nodeImpl;
 
-    public void setSize(int size) {
-        values = new float[size];
+    public InstanceNodePostprocessor(String url, NodeImpl nodeImpl) {
+        this.url = url;
+        this.nodeImpl = nodeImpl;
     }
 
-    public float[] getValues() {
-        return values;
-    }
-
-    public float get(int index) {
-        return values[index];
+    @Override
+    public void process(ParsingData data) {
+        Node node = data.document.getNode(url.substring(1));
+        nodeImpl.addChild(node);
     }
 }

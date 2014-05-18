@@ -20,23 +20,22 @@
  * THE SOFTWARE.
  */
 
-package net.dryanhild.collada.schema14.data.geometry.source;
+package net.dryanhild.collada.schema14.parser.scene;
 
-import net.dryanhild.collada.schema14.data.AbstractNameableAddressableType;
+import javax.inject.Inject;
 
-public class FloatArray extends AbstractNameableAddressableType {
+public class WithNestedNodeElement extends WithInstanceNodeElement {
 
-    private float[] values;
+    @Inject
+    private NodeLibraryParser nodeParser;
 
-    public void setSize(int size) {
-        values = new float[size];
+    @Override
+    protected String getDataString() {
+        return "<library_nodes>" +
+               "  <node id=\"mainNode\" name=\"nodeA\">" +
+               "    <node id=\"otherNode\" name=\"nodeB\"/>" +
+               "  </node>" +
+               "</library_nodes>";
     }
 
-    public float[] getValues() {
-        return values;
-    }
-
-    public float get(int index) {
-        return values[index];
-    }
 }

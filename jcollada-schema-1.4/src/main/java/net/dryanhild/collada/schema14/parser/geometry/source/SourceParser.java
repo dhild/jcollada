@@ -132,7 +132,7 @@ public class SourceParser extends AbstractParser<FloatSource> {
         }
 
         @Override
-        protected FloatAccessor handleAttribute(FloatAccessor object, String attribute, String value) {
+        protected void handleAttribute(FloatAccessor object, String attribute, String value) {
             switch (attribute) {
                 case "count":
                     object.setCount(Integer.valueOf(value));
@@ -147,7 +147,6 @@ public class SourceParser extends AbstractParser<FloatSource> {
                     object.setStride(Integer.valueOf(value));
                     break;
             }
-            return object;
         }
 
         @Override
@@ -177,7 +176,7 @@ public class SourceParser extends AbstractParser<FloatSource> {
         }
 
         @Override
-        protected SourceAccessorParam handleAttribute(SourceAccessorParam object, String attribute, String value) {
+        protected void handleAttribute(SourceAccessorParam object, String attribute, String value) {
             switch (attribute) {
                 case "name":
                     object.setName(value);
@@ -191,7 +190,6 @@ public class SourceParser extends AbstractParser<FloatSource> {
                 case "semantic":
                     object.setSemantic(value);
             }
-            return object;
         }
     }
 }

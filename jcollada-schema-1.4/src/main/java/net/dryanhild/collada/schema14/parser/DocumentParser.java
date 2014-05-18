@@ -80,7 +80,7 @@ public class DocumentParser extends AbstractParser<ColladaDocument14> {
     }
 
     @Override
-    protected ColladaDocument14 handleAttribute(ColladaDocument14 object, String attribute, String value) {
+    protected void handleAttribute(ColladaDocument14 object, String attribute, String value) {
         switch (attribute) {
             case "version":
                 if (value.equals("1.4.0")) {
@@ -95,7 +95,6 @@ public class DocumentParser extends AbstractParser<ColladaDocument14> {
             case "base":
                 // TODO: Process the base URI attribute.
         }
-        return object;
     }
 
     @Override

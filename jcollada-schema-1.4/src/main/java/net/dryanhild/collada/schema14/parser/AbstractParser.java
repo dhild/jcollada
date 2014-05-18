@@ -33,9 +33,9 @@ import org.slf4j.LoggerFactory;
 import org.xmlpull.v1.XmlPullParserException;
 
 import javax.inject.Inject;
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 
-import static org.xmlpull.v1.XmlPullParser.END_TAG;
 import static org.xmlpull.v1.XmlPullParser.START_TAG;
 import static org.xmlpull.v1.XmlPullParser.TEXT;
 
@@ -56,10 +56,6 @@ public abstract class AbstractParser<OutputType> implements XmlParser<OutputType
         validate();
         final int depth = data.parser.getDepth();
         OutputType output = createObject();
-
-        if (data.parser.getEventType() == END_TAG && depth == data.parser.getDepth()) {
-            return finishObject(output);
-        }
 
         int token = data.parser.next();
         while (depth <= data.parser.getDepth()) {
@@ -85,7 +81,7 @@ public abstract class AbstractParser<OutputType> implements XmlParser<OutputType
         return object;
     }
 
-    protected OutputType setAttributes(OutputType object)
+    protected OutputType setAttributes(@NotNull OutputType object)
             throws XmlPullParserException, IOException {
         data.parser.require(START_TAG, null, getExpectedTag());
 
@@ -93,30 +89,27 @@ public abstract class AbstractParser<OutputType> implements XmlParser<OutputType
             String name = data.parser.getAttributeName(i);
             String value = data.parser.getAttributeValue(i);
             setBasicAttributes(object, name, value);
-            object = handleAttribute(object, name, value);
+            handleAttribute(object, name, value);
         }
         return object;
     }
 
-    protected void setBasicAttributes(OutputType object, String attribute, String value) {
-        if (object != null) {
-            switch (attribute) {
-                case "id":
-                    if (AbstractNameableAddressableType.class.isAssignableFrom(object.getClass())) {
-                        ((AbstractNameableAddressableType) object).setId(value);
-                    }
-                    break;
-                case "name":
-                    if (AbstractNameableAddressableType.class.isAssignableFrom(object.getClass())) {
-                        ((AbstractNameableAddressableType) object).setName(value);
-                    }
-            }
+    protected void setBasicAttributes(@NotNull OutputType object, String attribute, String value) {
+        switch (attribute) {
+            case "id":
+                if (AbstractNameableAddressableType.class.isAssignableFrom(object.getClass())) {
+                    ((AbstractNameableAddressableType) object).setId(value);
+                }
+                break;
+            case "name":
+                if (AbstractNameableAddressableType.class.isAssignableFrom(object.getClass())) {
+                    ((AbstractNameableAddressableType) object).setName(value);
+                }
         }
     }
 
-    protected OutputType handleAttribute(OutputType object, String attribute, String value) {
+    protected void handleAttribute(@NotNull OutputType object, String attribute, String value) {
         // By default, ignores most attributes.
-        return object;
     }
 
     protected void skipElement() throws XmlPullParserException, IOException {
@@ -139,9 +132,8 @@ public abstract class AbstractParser<OutputType> implements XmlParser<OutputType
     }
 
     protected TFloatList readFloats() throws XmlPullParserException, IOException {
-        if (data.parser.getEventType() == START_TAG) {
-            data.parser.next();
-        }
+        data.parser.require(START_TAG, null, null);
+        data.parser.next();
         data.parser.require(TEXT, null, null);
 
         TFloatList floats = new TFloatArrayList();
@@ -168,9 +160,8 @@ public abstract class AbstractParser<OutputType> implements XmlParser<OutputType
     }
 
     protected TIntList readInts() throws XmlPullParserException, IOException {
-        if (data.parser.getEventType() == START_TAG) {
-            data.parser.next();
-        }
+        data.parser.require(START_TAG, null, null);
+        data.parser.next();
         data.parser.require(TEXT, null, null);
 
         TIntList ints = new TIntArrayList();

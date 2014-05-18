@@ -56,22 +56,18 @@ public class ColladaLoaderServiceTests {
     }
 
     @Test
-    public void loaderCanRecognize140() {
+    public void loaderCanRecognize140() throws IOException {
         byte[] bytes = FRAGMENT_140.getBytes();
-        try (ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes)) {
-            assertThat(colladaLoader.load(inputStream)).isNotNull();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
+        assertThat(colladaLoader.load(inputStream)).isNotNull();
+        inputStream.close();
     }
 
     @Test
-    public void loaderCanRecognize141() {
+    public void loaderCanRecognize141() throws IOException {
         byte[] bytes = FRAGMENT_141.getBytes();
-        try (ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes)) {
-            assertThat(colladaLoader.load(inputStream)).isNotNull();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
+        assertThat(colladaLoader.load(inputStream)).isNotNull();
+        inputStream.close();
     }
 }

@@ -27,6 +27,7 @@ import net.dryanhild.collada.schema14.parser.AbstractParser;
 import org.jvnet.hk2.annotations.Service;
 import org.xmlpull.v1.XmlPullParserException;
 
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 
 @Service
@@ -40,6 +41,13 @@ public class TrianglesParser extends AbstractParser<TrianglesHolder> {
     @Override
     protected TrianglesHolder createObject() throws XmlPullParserException {
         return new TrianglesHolder();
+    }
+
+    @Override
+    protected void handleAttribute(@NotNull TrianglesHolder object, String attribute, String value) {
+        if (attribute.equals("count")) {
+            object.setCount(Integer.valueOf(value));
+        }
     }
 
     @Override

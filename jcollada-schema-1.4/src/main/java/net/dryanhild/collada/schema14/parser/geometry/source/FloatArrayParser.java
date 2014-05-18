@@ -41,11 +41,8 @@ public class FloatArrayParser extends AbstractParser<FloatArray> {
 
     @Override
     protected FloatArray createObject() throws XmlPullParserException, IOException {
-        FloatArray array = setAttributes(new FloatArray(0));
+        FloatArray array = setAttributes(new FloatArray());
 
-        while (data.parser.getEventType() != XmlPullParser.TEXT) {
-            data.parser.next();
-        }
         TFloatList floatList = readFloats();
         float[] values = array.getValues();
         assert values.length == floatList.size();
@@ -55,14 +52,10 @@ public class FloatArrayParser extends AbstractParser<FloatArray> {
     }
 
     @Override
-    protected FloatArray handleAttribute(FloatArray object, String attribute, String value) {
+    protected void handleAttribute(FloatArray object, String attribute, String value) {
         switch (attribute) {
             case "count":
-                FloatArray newObject = new FloatArray(Integer.valueOf(value));
-                newObject.setName(object.getName());
-                newObject.setId(object.getId());
-                object = newObject;
+                object.setSize(Integer.valueOf(value));
         }
-        return object;
     }
 }
