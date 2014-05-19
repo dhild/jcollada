@@ -29,6 +29,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 
@@ -51,19 +52,20 @@ public class ColladaLoaderTests {
     public Object[][] flagConfigurations() {
         return new Object[][]{ //
                 //
-                {Boolean.FALSE}, //
-                {Boolean.TRUE}, //
+                {Boolean.FALSE, StandardCharsets.UTF_8}, //
+                {Boolean.TRUE, StandardCharsets.UTF_8}, //
         };
     }
 
     @Test(dataProvider = "flagConfigurations")
-    public void loadReader(boolean validate) throws IOException, NoSuchFieldException, IllegalAccessException {
-        ColladaLoader loader = createLoader(validate);
+    public void loadReader(boolean validate, Charset charset) throws IOException, NoSuchFieldException, IllegalAccessException {
+        ColladaLoader loader = createLoader(validate, charset);
 
         InputStream reader =
                 new ByteArrayInputStream(ColladaLoaderServiceImpl.TEST_BASIC_FILE.getBytes(StandardCharsets.UTF_8));
         loader.load(reader);
 
+        assertThat(loader.isValidating()).isEqualTo(validate);
         assertThat(testService.lastContext.isValidating()).isEqualTo(validate);
         assertThat(testService.lastContext.getMainFileInputStream()).isNotNull();
     }
@@ -113,9 +115,10 @@ public class ColladaLoaderTests {
 
     }
 
-    private ColladaLoader createLoader(boolean validate) throws NoSuchFieldException, IllegalAccessException {
+    private ColladaLoader createLoader(boolean validate, Charset charset) throws NoSuchFieldException, IllegalAccessException {
         ColladaLoader loader = new ColladaLoader();
         loader.setValidating(validate);
+        loader.setCharset(charset);
 
         Class<?> c = loader.getClass();
         Field field = c.getDeclaredField("loaders");
