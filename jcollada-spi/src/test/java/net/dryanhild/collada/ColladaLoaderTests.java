@@ -58,7 +58,8 @@ public class ColladaLoaderTests {
     }
 
     @Test(dataProvider = "flagConfigurations")
-    public void loadReader(boolean validate, Charset charset) throws IOException, NoSuchFieldException, IllegalAccessException {
+    public void loadReader(boolean validate, Charset charset)
+            throws IOException, NoSuchFieldException, IllegalAccessException {
         ColladaLoader loader = createLoader(validate, charset);
 
         InputStream reader =
@@ -115,7 +116,8 @@ public class ColladaLoaderTests {
 
     }
 
-    private ColladaLoader createLoader(boolean validate, Charset charset) throws NoSuchFieldException, IllegalAccessException {
+    private ColladaLoader createLoader(boolean validate, Charset charset)
+            throws NoSuchFieldException, IllegalAccessException {
         ColladaLoader loader = new ColladaLoader();
         loader.setValidating(validate);
         loader.setCharset(charset);
