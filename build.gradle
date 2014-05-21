@@ -41,17 +41,20 @@ allprojects {
         mavenCentral()
     }
 
+    apply plugin: 'license-report'    
     apply plugin: 'project-report'
-
-    apply plugin:'license-report'
+    apply plugin: 'build-dashboard'
 }
 
 subprojects {
     apply plugin: 'java'
-    apply plugin: 'checkstyle'
-    apply plugin: 'findbugs'
     apply plugin: 'jacoco'
     apply plugin: 'maven-publish'
+    
+    apply plugin: 'checkstyle'
+    apply plugin: 'findbugs'
+    apply plugin: 'pmd'
+    apply plugin: 'jdepend'
 
     sourceCompatibility = '1.7'
 
@@ -61,6 +64,12 @@ subprojects {
 
     checkstyle {
         configFile = new File("$rootProject.projectDir/config/checkstyle/checkstyle.xml")
+    }
+    
+    pmd {
+        ignoreFailures = true
+        targetJdk = 1.7
+        ruleSetFiles = files("$rootDir/config/pmd/custom.xml")
     }
 
     test {
@@ -75,7 +84,6 @@ subprojects {
         }
         options {
             listeners << 'org.uncommons.reportng.HTMLReporter'
-            listeners << 'org.uncommons.reportng.JUnitXMLReporter'
             listeners << 'org.testng.reporters.XMLReporter'
         }
         ext.useDefaultListeners = true
