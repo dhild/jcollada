@@ -25,20 +25,8 @@ task wrapper(type: Wrapper) {
 }
 
 buildscript {
-    if (project.hasProperty('mavenRepo')) {
-        repositories {
-            maven {
-                url "$mavenRepo"
-                credentials {
-                    username "$mavenUser"
-                    password "$mavenPassword"
-                }
-            }
-        }
-    } else {
-        repositories {
-            jcenter()
-        }
+    repositories {
+        jcenter()
     }
     dependencies {
         classpath "com.smokejumperit.gradle.license:Gradle-License-Report:0.0.2"
@@ -49,20 +37,8 @@ allprojects {
     group = 'net.dryanhild.jcollada'
     version = '1.2-SNAPSHOT'
 
-    if (project.hasProperty('mavenRepo')) {
-        repositories {
-            maven {
-                url "$mavenRepo"
-                credentials {
-                    username "$mavenUser"
-                    password "$mavenPassword"
-                }
-            }
-        }
-    } else {
-        repositories {
-            mavenCentral()
-        }
+    repositories {
+        mavenCentral()
     }
 
     apply plugin: 'project-report'
