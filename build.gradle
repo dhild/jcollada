@@ -24,15 +24,6 @@ task wrapper(type: Wrapper) {
     gradleVersion = '1.11'
 }
 
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath "com.smokejumperit.gradle.license:Gradle-License-Report:0.0.2"
-    }
-}
-
 allprojects {
     group = 'net.dryanhild.jcollada'
     version = '1.2-SNAPSHOT'
@@ -40,8 +31,7 @@ allprojects {
     repositories {
         mavenCentral()
     }
-
-    apply plugin: 'license-report'    
+ 
     apply plugin: 'project-report'
     apply plugin: 'build-dashboard'
 }
@@ -59,7 +49,7 @@ subprojects {
     sourceCompatibility = '1.7'
 
     tasks.withType(JavaCompile) {
-        options.compilerArgs << "-Xlint" << "-Werror"
+        options.compilerArgs << "-Xlint"
     }
 
     checkstyle {
