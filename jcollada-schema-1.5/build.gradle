@@ -25,3 +25,15 @@
 dependencies {
     compile project(':jcollada-spi')
 }
+
+jar {
+    manifest {
+        attributes("Implementation-Title": "JCollada for Collada Schema 1.4",
+                   "Implementation-Version": "$version",
+                   "Implementation-Vendor": "D. Ryan Hild",
+                   "Specification-Title": "JCollada SPI",
+                   "Specification-Version": "$version",
+                   "Specification-Vendor": "D. Ryan Hild")
+    }
+}
+

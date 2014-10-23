@@ -20,4 +20,14 @@
  * THE SOFTWARE.
  */
 
+jar {
+    manifest {
+        attributes("Implementation-Title": "JCollada SPI",
+                   "Implementation-Version": "$version",
+                   "Implementation-Vendor": "D. Ryan Hild",
+                   "Specification-Title": "JCollada SPI",
+                   "Specification-Version": "$version",
+                   "Specification-Vendor": "D. Ryan Hild")
+    }
+}
 
