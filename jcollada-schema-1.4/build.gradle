@@ -57,10 +57,17 @@ task copyHK2Test(type: org.gradle.api.tasks.Copy) {
     dependsOn processTestResources
     from "${buildDir}/generated/hk2"
     into sourceSets.test.output.resourcesDir
+}
+
+// Due to a bug in the HK2 code, the services do not get populated correctly when using named locators.
+task copyHK2TestDefaults(type: org.gradle.api.tasks.Copy) {
+    dependsOn processTestResources
+    from "${buildDir}/generated/hk2"
+    into sourceSets.test.output.resourcesDir
     rename "JCollada-Schema-1.4", "default"
 }
 
-test.dependsOn copyHK2Test
+test.dependsOn copyHK2Test, copyHK2TestDefaults
 
 jar {
     dependsOn generateHK2
@@ -70,5 +77,13 @@ jar {
                 it.name.contains("default")
             }
         }
+    }
+    manifest {
+        attributes("Implementation-Title": "JCollada for Collada Schema 1.4",
+                   "Implementation-Version": "$version",
+                   "Implementation-Vendor": "D. Ryan Hild",
+                   "Specification-Title": "JCollada SPI",
+                   "Specification-Version": "$version",
+                   "Specification-Vendor": "D. Ryan Hild")
     }
 }

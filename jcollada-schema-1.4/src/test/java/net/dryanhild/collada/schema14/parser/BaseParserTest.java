@@ -37,10 +37,10 @@ import java.io.StringReader;
 @HK2(enablePerThread = true)
 public abstract class BaseParserTest {
 
-    protected abstract String getDataString();
-
     @Inject
     protected ParsingData data;
+
+    protected abstract String getDataString();
 
     @BeforeMethod
     public void resetParser() throws XmlPullParserException, IOException {

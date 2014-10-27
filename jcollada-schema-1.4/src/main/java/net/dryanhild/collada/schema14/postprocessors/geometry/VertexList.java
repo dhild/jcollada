@@ -31,6 +31,7 @@ import net.dryanhild.collada.schema14.data.geometry.source.FloatArray;
 import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public class VertexList {
 
@@ -43,19 +44,20 @@ public class VertexList {
         this.sourceArrays = ImmutableList.copyOf(sourceArrays);
     }
 
-    public void reset(Map<String, Integer> offsets, Map<String, FloatArray> semanticsToSources) {
+    public void reset(Map<String, Integer> offsets, Map<String, FloatArray> semanticsAndSources) {
         semanticIndices = new int[sourceArrays.size()];
-        for (String semantic : offsets.keySet()) {
-            int offset = offsets.get(semantic);
-            FloatArray mapped = semanticsToSources.get(semantic);
+        for (Entry<String, Integer> entry : offsets.entrySet()) {
+            String semantic = entry.getKey();
+            int offset = entry.getValue();
+            FloatArray mapped = semanticsAndSources.get(semantic);
             semanticIndices[offset] = sourceArrays.indexOf(mapped);
 
-            if (this.semanticsToSources.containsKey(semantic)) {
-                if (!this.semanticsToSources.get(semantic).equals(mapped)) {
+            if (semanticsToSources.containsKey(semantic)) {
+                if (!semanticsToSources.get(semantic).equals(mapped)) {
                     throw new ParsingException("Unable to handle multiple sources for a single semantic");
                 }
             } else {
-                this.semanticsToSources.put(semantic, mapped);
+                semanticsToSources.put(semantic, mapped);
             }
         }
     }

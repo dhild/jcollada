@@ -49,7 +49,7 @@ public class NodeLibraryParser extends AbstractParser<Object> {
     protected void handleChildElement(Object parent, String childTag)
             throws IOException, XmlPullParserException {
         if (childTag.equals(nodeParser.getExpectedTag())) {
-            data.document.addNode(nodeParser.parse());
+           nodeParser.parse();
         }
     }
 }

@@ -23,11 +23,13 @@
 package net.dryanhild.collada.schema14.data.geometry;
 
 import net.dryanhild.collada.data.fx.Material;
+import net.dryanhild.collada.data.geometry.AttribPointerData;
 import net.dryanhild.collada.data.geometry.Geometry;
 import net.dryanhild.collada.data.geometry.GeometryInstance;
 import net.dryanhild.collada.data.geometry.Triangles;
 
 import java.nio.ByteBuffer;
+import java.util.List;
 import java.util.Set;
 
 public class GeometryInstanceImpl implements GeometryInstance {
@@ -57,13 +59,8 @@ public class GeometryInstanceImpl implements GeometryInstance {
     }
 
     @Override
-    public int getDataBytes(String semantic) {
-        return geometry.getDataBytes(semantic);
-    }
-
-    @Override
-    public int getInterleaveOffset(String semantic) {
-        return geometry.getInterleaveOffset(semantic);
+    public List<AttribPointerData> getAttribPointerData() {
+        return geometry.getAttribPointerData();
     }
 
     @Override
@@ -89,6 +86,11 @@ public class GeometryInstanceImpl implements GeometryInstance {
     @Override
     public String getName() {
         return geometry.getName();
+    }
+
+    @Override
+    public int getInterleavedDataSize() {
+        return geometry.getInterleavedDataSize();
     }
 
     public void setGeometry(Geometry geometry) {

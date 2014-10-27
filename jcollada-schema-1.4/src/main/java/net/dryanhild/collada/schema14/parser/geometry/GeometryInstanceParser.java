@@ -44,10 +44,9 @@ public class GeometryInstanceParser extends AbstractParser<GeometryInstanceImpl>
     }
 
     @Override
-    protected GeometryInstanceImpl handleAttribute(GeometryInstanceImpl object, String attribute, String value) {
-        if (attribute.equals("url")) {
+    protected void handleAttribute(GeometryInstanceImpl object, String attribute, String value) {
+        if ("url".equals(attribute)) {
             data.postprocessors.add(new GeometryInstancePostprocessor(value, object));
         }
-        return object;
     }
 }

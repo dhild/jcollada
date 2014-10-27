@@ -21,42 +21,49 @@
  */
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.11'
+    gradleVersion = '2.1'
 }
 
 allprojects {
     group = 'net.dryanhild.jcollada'
     version = '1.2-SNAPSHOT'
 
-    if ("$mavenRepo".length() > 0) {
-        repositories {
-            maven {
-                url "$mavenRepo"
-            }
-        }
-    } else {
-        repositories {
-            mavenCentral()
-        }
+    repositories {
+        mavenCentral()
     }
 
+    apply plugin: 'idea'
     apply plugin: 'project-report'
+    apply plugin: 'build-dashboard'
 }
 
 subprojects {
     apply plugin: 'java'
-    apply plugin: 'checkstyle'
-//    apply plugin: 'findbugs'
     apply plugin: 'jacoco'
     apply plugin: 'maven-publish'
+    
+    apply plugin: 'checkstyle'
+    apply plugin: 'findbugs'
+    apply plugin: 'pmd'
+    apply plugin: 'jdepend'
 
     sourceCompatibility = '1.7'
 
     tasks.withType(JavaCompile) {
-        options.compilerArgs << "-Xlint" << "-Werror"
+        options.compilerArgs << "-Xlint"
     }
 
-    test {
+    checkstyle {
+        configFile = new File("$rootProject.projectDir/config/checkstyle/checkstyle.xml")
+    }
+    
+    pmd {
+        ignoreFailures = true
+        targetJdk = 1.7
+        ruleSetFiles = files("$rootDir/config/pmd/custom.xml")
+    }
+
+    tasks.withType(Test) {
         useTestNG() {
             suiteXmlBuilder().suite(name: 'jcollada', parallel: 'tests') {
                 test(name: 'all-tests') {
@@ -68,7 +75,6 @@ subprojects {
         }
         options {
             listeners << 'org.uncommons.reportng.HTMLReporter'
-            listeners << 'org.uncommons.reportng.JUnitXMLReporter'
             listeners << 'org.testng.reporters.XMLReporter'
         }
         ext.useDefaultListeners = true
@@ -95,6 +101,10 @@ subprojects {
         from sourceSets.main.allJava
     }
 
+    tasks.withType(PublishToMavenRepository) {
+        dependsOn ':jcollada-test:integTest'
+    }
+
     publishing {
         publications {
             mavenJava(MavenPublication) {
@@ -108,9 +118,9 @@ subprojects {
         repositories {
             maven {
                 if (version.endsWith("-SNAPSHOT")) {
-                    url "http://mcsrv.dryanhild.net:8080/nexus/content/repositories/snapshots/"
+                    url "http://dev.dryanhild.net:8080/nexus/content/repositories/snapshots/"
                 } else {
-                    url "http://mcsrv.dryanhild.net:8080/nexus/content/repositories/releases/"
+                    url "http://dev.dryanhild.net:8080/nexus/content/repositories/releases/"
                 }
                 credentials {
                     username "$mavenUser"

@@ -48,8 +48,7 @@ public class GeometryLibraryParser extends AbstractParser<Object> {
     @Override
     protected void handleChildElement(Object parent, String childTag)
             throws IOException, XmlPullParserException {
-        switch (childTag) {
-            case "geometry":
+        if ("geometry".equals(childTag)) {
                 data.document.addGeometry(geometryParser.parse());
         }
     }

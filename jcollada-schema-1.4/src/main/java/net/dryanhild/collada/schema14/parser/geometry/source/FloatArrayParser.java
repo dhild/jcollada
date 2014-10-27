@@ -26,7 +26,6 @@ import gnu.trove.list.TFloatList;
 import net.dryanhild.collada.schema14.data.geometry.source.FloatArray;
 import net.dryanhild.collada.schema14.parser.AbstractParser;
 import org.jvnet.hk2.annotations.Service;
-import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
@@ -41,13 +40,10 @@ public class FloatArrayParser extends AbstractParser<FloatArray> {
 
     @Override
     protected FloatArray createObject() throws XmlPullParserException, IOException {
-        FloatArray array = setAttributes(new FloatArray(0));
+        FloatArray array = setAttributes(new FloatArray());
 
-        while (data.parser.getEventType() != XmlPullParser.TEXT) {
-            data.parser.next();
-        }
         TFloatList floatList = readFloats();
-        float[] values = array.getValues();
+        float[] values = array.values;
         assert values.length == floatList.size();
         floatList.toArray(values);
 
@@ -55,14 +51,9 @@ public class FloatArrayParser extends AbstractParser<FloatArray> {
     }
 
     @Override
-    protected FloatArray handleAttribute(FloatArray object, String attribute, String value) {
-        switch (attribute) {
-            case "count":
-                FloatArray newObject = new FloatArray(Integer.valueOf(value));
-                newObject.setName(object.getName());
-                newObject.setId(object.getId());
-                object = newObject;
+    protected void handleAttribute(FloatArray object, String attribute, String value) {
+        if ("count".equals(attribute)) {
+            object.setSize(Integer.parseInt(value));
         }
-        return object;
     }
 }

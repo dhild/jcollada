@@ -19,6 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package net.dryanhild.collada.data.geometry;
 
 import net.dryanhild.collada.data.fx.Material;

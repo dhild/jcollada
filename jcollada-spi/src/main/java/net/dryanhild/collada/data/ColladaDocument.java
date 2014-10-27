@@ -19,6 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package net.dryanhild.collada.data;
 
 import net.dryanhild.collada.VersionSupport;
@@ -34,10 +35,24 @@ public interface ColladaDocument {
 
     Iterable<Geometry> getGeometries();
 
+    /**
+     * Accessor method for geometries by ID.
+     *
+     * @param id The ID of the geometry (not including the '#' character for URI references.)
+     * @return The geometry with the given ID, if it is present.
+     * @throws java.util.NoSuchElementException If the given geometry does not exist.
+     */
     Geometry getGeometry(@NotNull String id);
 
     Iterable<Node> getNodes();
 
+    /**
+     * Accessor method for nodes by ID.
+     *
+     * @param id The ID of the node (not including the '#' character for URI references.)
+     * @return The node with the given ID, if it is present.
+     * @throws java.util.NoSuchElementException If the given node does not exist.
+     */
     Node getNode(@NotNull String id);
 
     Iterable<VisualScene> getVisualScenes();

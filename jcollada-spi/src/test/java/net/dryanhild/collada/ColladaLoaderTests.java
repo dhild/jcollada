@@ -28,9 +28,16 @@ import org.testng.annotations.Test;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class ColladaLoaderTests {
+
+    private ColladaLoaderServiceImpl testService;
 
     @Test
     public void serviceProviderImplementationFound() {
@@ -38,33 +45,37 @@ public class ColladaLoaderTests {
 
         Collection<VersionSupport> versions = loader.getRegisteredVersions();
 
-        assert versions.contains(ColladaLoaderServiceImpl.TEST_VERSION);
+        assertThat(versions).contains(ColladaLoaderServiceImpl.TEST_VERSION);
     }
 
     @DataProvider
     public Object[][] flagConfigurations() {
         return new Object[][]{ //
                 //
-                {Boolean.FALSE}, //
-                {Boolean.TRUE}, //
+                {Boolean.FALSE, StandardCharsets.UTF_8}, //
+                {Boolean.TRUE, StandardCharsets.UTF_8}, //
         };
     }
 
     @Test(dataProvider = "flagConfigurations")
-    public void loadReader(boolean validate) throws IOException {
-        ColladaLoader loader = createLoader(validate);
+    public void loadReader(boolean validate, Charset charset)
+            throws IOException, NoSuchFieldException, IllegalAccessException {
+        ColladaLoader loader = createLoader(validate, charset);
 
-        InputStream reader = new ByteArrayInputStream(ColladaLoaderServiceImpl.TEST_BASIC_FILE.getBytes());
+        InputStream reader =
+                new ByteArrayInputStream(ColladaLoaderServiceImpl.TEST_BASIC_FILE.getBytes(StandardCharsets.UTF_8));
         loader.load(reader);
 
-        checkLoadContext(validate);
+        assertThat(loader.isValidating()).isEqualTo(validate);
+        assertThat(testService.lastContext.isValidating()).isEqualTo(validate);
+        assertThat(testService.lastContext.getMainFileInputStream()).isNotNull();
     }
 
     @Test(expectedExceptions = IncorrectFormatException.class)
     public void loadNonImplementedLoader() throws IOException {
         ColladaLoader loader = new ColladaLoader();
 
-        InputStream reader = new ByteArrayInputStream("Bad input.".getBytes());
+        InputStream reader = new ByteArrayInputStream("Bad input.".getBytes(StandardCharsets.UTF_8));
         loader.load(reader);
     }
 
@@ -82,16 +93,16 @@ public class ColladaLoaderTests {
         loader.load(reader);
     }
 
-    private class ErrorOnReadReader extends InputStream {
+    private static class ErrorOnReadReader extends InputStream {
         @Override
         public int read() throws IOException {
             throw new IOException();
         }
     }
 
-    private class ErrorOnCloseReader extends InputStream {
+    private static class ErrorOnCloseReader extends InputStream {
         private final InputStream reader =
-                new ByteArrayInputStream(ColladaLoaderServiceImpl.TEST_BASIC_FILE.getBytes());
+                new ByteArrayInputStream(ColladaLoaderServiceImpl.TEST_BASIC_FILE.getBytes(StandardCharsets.UTF_8));
 
         @Override
         public void close() throws IOException {
@@ -105,14 +116,24 @@ public class ColladaLoaderTests {
 
     }
 
-    private ColladaLoader createLoader(boolean validate) {
+    private ColladaLoader createLoader(boolean validate, Charset charset)
+            throws NoSuchFieldException, IllegalAccessException {
         ColladaLoader loader = new ColladaLoader();
         loader.setValidating(validate);
-        return loader;
-    }
+        loader.setCharset(charset);
 
-    private void checkLoadContext(boolean validate) {
-        assert ColladaLoaderServiceImpl.lastContext.isValidating() == validate;
-        assert ColladaLoaderServiceImpl.lastContext.getMainFileInputStream() != null;
+        Class<?> c = loader.getClass();
+        Field field = c.getDeclaredField("loaders");
+        field.setAccessible(true);
+        Object services = field.get(loader);
+        if (Iterable.class.isAssignableFrom(services.getClass())) {
+            for (Object o : (Iterable<?>) services) {
+                if (o instanceof ColladaLoaderServiceImpl) {
+                    testService = (ColladaLoaderServiceImpl) o;
+                }
+            }
+        }
+
+        return loader;
     }
 }

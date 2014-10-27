@@ -28,7 +28,7 @@ import net.dryanhild.collada.schema14.data.scene.NodeImpl;
 import net.dryanhild.collada.schema14.parser.AbstractParser;
 import net.dryanhild.collada.schema14.parser.geometry.GeometryInstanceParser;
 import net.dryanhild.collada.schema14.parser.transform.MatrixParser;
-import net.dryanhild.collada.schema14.postprocessors.scene.NodePostprocessor;
+import net.dryanhild.collada.schema14.postprocessors.scene.InstanceNodePostprocessor;
 import org.jvnet.hk2.annotations.Service;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -55,12 +55,17 @@ public class NodeParser extends AbstractParser<NodeImpl> {
     }
 
     @Override
-    protected NodeImpl handleAttribute(NodeImpl node, String attribute, String value) {
+    protected void handleAttribute(NodeImpl node, String attribute, String value) {
         switch (attribute) {
             case "type":
                 node.setType(NodeType.valueOf(value));
+                break;
+            case "id":
+                data.document.addNode(node);
+                break;
+            default:
+                break;
         }
-        return node;
     }
 
     @Override
@@ -78,15 +83,18 @@ public class NodeParser extends AbstractParser<NodeImpl> {
                 break;
             case "node":
                 parent.addChild(parse());
+                break;
+            default:
+                break;
         }
     }
 
     private void addInstanceNodeProcessor(NodeImpl parent) {
         for (int i = 0; i < data.parser.getAttributeCount(); i++) {
             String key = data.parser.getAttributeName(i);
-            if (key.equals("url")) {
+            if ("url".equals(key)) {
                 String url = data.parser.getAttributeValue(i);
-                data.postprocessors.add(new NodePostprocessor(url, parent));
+                data.postprocessors.add(new InstanceNodePostprocessor(url, parent));
                 return;
             }
         }

@@ -27,6 +27,7 @@ import org.testng.annotations.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -46,7 +47,6 @@ public class ColladaLoaderServiceTests {
 
     public ColladaLoaderServiceTests() {
         colladaLoader.setValidating(false);
-        ClassLoader classLoader = ClassLoader.getSystemClassLoader();
     }
 
     @Test
@@ -56,22 +56,18 @@ public class ColladaLoaderServiceTests {
     }
 
     @Test
-    public void loaderCanRecognize140() {
-        byte[] bytes = FRAGMENT_140.getBytes();
-        try (ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes)) {
-            assertThat(colladaLoader.load(inputStream)).isNotNull();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    public void loaderCanRecognize140() throws IOException {
+        byte[] bytes = FRAGMENT_140.getBytes(StandardCharsets.UTF_8);
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
+        assertThat(colladaLoader.load(inputStream)).isNotNull();
+        inputStream.close();
     }
 
     @Test
-    public void loaderCanRecognize141() {
-        byte[] bytes = FRAGMENT_141.getBytes();
-        try (ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes)) {
-            assertThat(colladaLoader.load(inputStream)).isNotNull();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    public void loaderCanRecognize141() throws IOException {
+        byte[] bytes = FRAGMENT_141.getBytes(StandardCharsets.UTF_8);
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
+        assertThat(colladaLoader.load(inputStream)).isNotNull();
+        inputStream.close();
     }
 }

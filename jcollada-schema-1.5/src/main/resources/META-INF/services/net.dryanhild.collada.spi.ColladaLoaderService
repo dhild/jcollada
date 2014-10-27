@@ -19,5 +19,4 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 #
-
-schema14.ColladaLoaderService15
+net.dryanhild.collada.schema14.ColladaLoaderService15

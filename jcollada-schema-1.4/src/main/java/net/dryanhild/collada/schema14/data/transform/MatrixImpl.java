@@ -25,15 +25,21 @@ package net.dryanhild.collada.schema14.data.transform;
 import net.dryanhild.collada.data.transform.Matrix;
 
 import java.nio.FloatBuffer;
+import java.util.Arrays;
 
 public class MatrixImpl implements Matrix {
 
-    private final float[] values = new float[16];
+    public final float[] values = new float[16];
     private String sid;
 
     @Override
     public float[] getValues() {
-        return values;
+        return Arrays.copyOf(values, values.length);
+    }
+
+    public void setValues(float[] values) {
+        assert values.length == 16;
+        System.arraycopy(values, 0, this.values, 0, 16);
     }
 
     @Override
@@ -51,7 +57,7 @@ public class MatrixImpl implements Matrix {
         return sid;
     }
 
-    public void setSID(String sid) {
-        this.sid = sid;
+    public void setSid(String scopedID) {
+        sid = scopedID;
     }
 }

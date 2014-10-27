@@ -20,26 +20,35 @@
  * THE SOFTWARE.
  */
 
-package net.dryanhild.collada.schema14.postprocessors.scene;
-
-import net.dryanhild.collada.data.scene.Node;
-import net.dryanhild.collada.schema14.ParsingData;
-import net.dryanhild.collada.schema14.data.scene.NodeImpl;
-import net.dryanhild.collada.schema14.postprocessors.Postprocessor;
-
-public class NodePostprocessor implements Postprocessor {
-
-    private String url;
-    private NodeImpl nodeImpl;
-
-    public NodePostprocessor(String url, NodeImpl nodeImpl) {
-        this.url = url;
-        this.nodeImpl = nodeImpl;
+sourceSets {
+    integTest {
+        java {
+            srcDirs = ['src/integTest/java']
+        }
+        resources {
+            srcDirs = ['src/integTest/resources']
+        }
     }
+}
 
-    @Override
-    public void process(ParsingData data) {
-        Node node = data.document.getNode(url.substring(1));
-        nodeImpl.addChild(node);
+configurations {
+    integTestCompile {
+        extendsFrom testCompile
     }
+    integTestRuntime {
+        extendsFrom testRuntime
+    }
+}
+
+dependencies {
+    integTestCompile project(':jcollada-spi')
+    integTestCompile project(':jcollada-schema-1.4')
+    integTestRuntime 'net.sf.kxml:kxml2:2.2.2'
+}
+
+task integTest(type: Test) {
+    dependsOn ':jcollada-spi:test'
+    dependsOn ':jcollada-schema-1.4:test'
+    testClassesDir = sourceSets.integTest.output.classesDir
+    classpath = sourceSets.integTest.runtimeClasspath
 }

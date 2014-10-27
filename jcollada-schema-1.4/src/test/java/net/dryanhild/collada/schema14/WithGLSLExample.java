@@ -33,7 +33,7 @@ import java.net.URL;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Test(groups = {"functional"})
+@Test(groups = "functional")
 public class WithGLSLExample {
 
     private ColladaLoader colladaLoader = new ColladaLoader();

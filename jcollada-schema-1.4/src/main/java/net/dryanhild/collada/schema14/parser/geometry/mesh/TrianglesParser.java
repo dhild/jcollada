@@ -27,6 +27,7 @@ import net.dryanhild.collada.schema14.parser.AbstractParser;
 import org.jvnet.hk2.annotations.Service;
 import org.xmlpull.v1.XmlPullParserException;
 
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 
 @Service
@@ -43,13 +44,24 @@ public class TrianglesParser extends AbstractParser<TrianglesHolder> {
     }
 
     @Override
-    protected void handleChildElement(TrianglesHolder parent, String childTag) throws IOException, XmlPullParserException {
+    protected void handleAttribute(@NotNull TrianglesHolder object, String attribute, String value) {
+        if ("count".equals(attribute)) {
+            object.setCount(Integer.parseInt(value));
+        }
+    }
+
+    @Override
+    protected void handleChildElement(TrianglesHolder parent, String childTag)
+            throws IOException, XmlPullParserException {
         switch (childTag) {
             case "input":
                 addInput(parent);
                 break;
             case "p":
                 parent.setP(readInts());
+                break;
+            default:
+                break;
         }
     }
 
@@ -67,7 +79,10 @@ public class TrianglesParser extends AbstractParser<TrianglesHolder> {
                     source = value;
                     break;
                 case "offset":
-                    offset = Integer.valueOf(value);
+                    offset = Integer.parseInt(value);
+                    break;
+                default:
+                    break;
             }
         }
         parent.addInput(semantic, source, offset);

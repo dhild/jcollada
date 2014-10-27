@@ -26,14 +26,10 @@ import net.dryanhild.collada.schema14.data.AbstractNameableAddressableType;
 
 public class FloatArray extends AbstractNameableAddressableType {
 
-    private final float[] values;
+    public float[] values;
 
-    public FloatArray(int size) {
-        this.values = new float[size];
-    }
-
-    public float[] getValues() {
-        return values;
+    public void setSize(int size) {
+        values = new float[size];
     }
 
     public float get(int index) {

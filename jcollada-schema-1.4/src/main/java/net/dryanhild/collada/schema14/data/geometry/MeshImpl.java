@@ -22,11 +22,14 @@
 
 package net.dryanhild.collada.schema14.data.geometry;
 
+import com.google.common.collect.ImmutableList;
+import net.dryanhild.collada.data.geometry.AttribPointerData;
 import net.dryanhild.collada.data.geometry.Geometry;
 import net.dryanhild.collada.data.geometry.Triangles;
 import net.dryanhild.collada.schema14.data.AbstractNameableAddressableType;
 
 import java.nio.ByteBuffer;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -54,16 +57,6 @@ public class MeshImpl extends AbstractNameableAddressableType implements Geometr
     }
 
     @Override
-    public int getDataBytes(String semantic) {
-        return dataBytes.get(semantic);
-    }
-
-    @Override
-    public int getInterleaveOffset(String semantic) {
-        return interleaveOffset.get(semantic);
-    }
-
-    @Override
     public ByteBuffer putInterleavedVertexData(ByteBuffer buffer) {
         return buffer.put(vertexData);
     }
@@ -76,6 +69,49 @@ public class MeshImpl extends AbstractNameableAddressableType implements Geometr
     @Override
     public int getVertexCount() {
         return vertexCount;
+    }
+
+    @Override
+    public int getInterleavedDataSize() {
+        int size = 0;
+        for (int bytes : dataBytes.values()) {
+            size += bytes;
+        }
+        return size * vertexCount;
+    }
+
+    @Override
+    public List<AttribPointerData> getAttribPointerData() {
+        String[] semantics = new String[dataCount.size()];
+        for (String semantic : getSemantics()) {
+            semantics[interleaveOffset.get(semantic)] = semantic;
+        }
+
+        int[] sizes = new int[semantics.length];
+        int[] offsets = new int[semantics.length];
+        int totalSize = 0;
+
+        for (int i = 0; i < semantics.length; i++) {
+            sizes[i] = dataCount.get(semantics[i]);
+            totalSize += dataBytes.get(semantics[i]);
+        }
+
+        for (int i = 0; i < offsets.length - 1; i++) {
+            offsets[i + 1] = offsets[i] + dataBytes.get(semantics[i]);
+        }
+
+        AttribPointerData[] datas = new AttribPointerData[sizes.length];
+
+        for (String semantic : getSemantics()) {
+            int type = AttribPointerData.GL_FLOAT;
+            boolean normalized = false;
+            int i = interleaveOffset.get(semantic);
+            AttribPointerData data =
+                    new AttribPointerDataImpl(semantic, sizes[i], type, normalized, totalSize, offsets[i]);
+            datas[interleaveOffset.get(semantic)] = data;
+        }
+
+        return ImmutableList.copyOf(datas);
     }
 
     public void setTriangles(Triangles triangles) {
@@ -94,7 +130,7 @@ public class MeshImpl extends AbstractNameableAddressableType implements Geometr
         this.vertexCount = vertexCount;
     }
 
-    public void setVertexData(byte[] bytes) {
-        this.vertexData = bytes;
+    public void setVertexData(ByteBuffer bytes) {
+        vertexData = bytes.array();
     }
 }

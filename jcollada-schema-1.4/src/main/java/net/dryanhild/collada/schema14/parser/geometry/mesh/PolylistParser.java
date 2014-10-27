@@ -53,6 +53,9 @@ public class PolylistParser extends AbstractParser<Polylist> {
                 break;
             case "p":
                 parent.setP(readInts());
+                break;
+            default:
+                break;
         }
     }
 
@@ -70,7 +73,10 @@ public class PolylistParser extends AbstractParser<Polylist> {
                     source = value;
                     break;
                 case "offset":
-                    offset = Integer.valueOf(value);
+                    offset = Integer.parseInt(value);
+                    break;
+                default:
+                    break;
             }
         }
         parent.addInput(semantic, source, offset);

@@ -40,14 +40,14 @@ import java.util.List;
 @PerThread
 public class SourceParser extends AbstractParser<FloatSource> {
 
-    @Inject
-    private FloatArrayParser floatArrayParser;
-
     protected FloatSource floatSource;
 
     protected TechniqueCommonParser techniqueCommonParser = new TechniqueCommonParser();
     protected AccessorParser accessorParser = new AccessorParser();
     protected ParamParser paramParser = new ParamParser();
+
+    @Inject
+    private FloatArrayParser floatArrayParser;
 
     private void setChildData() {
         techniqueCommonParser.setData(data);
@@ -76,6 +76,9 @@ public class SourceParser extends AbstractParser<FloatSource> {
                 break;
             case "technique_common":
                 techniqueCommonParser.parse();
+                break;
+            default:
+                break;
         }
     }
 
@@ -98,9 +101,8 @@ public class SourceParser extends AbstractParser<FloatSource> {
         @Override
         protected void handleChildElement(FloatSource parent, String childTag)
                 throws IOException, XmlPullParserException {
-            switch (childTag) {
-                case "accessor":
-                    floatSource.setCommonAccessor(accessorParser.parse());
+            if ("accessor".equals(childTag)) {
+                floatSource.setCommonAccessor(accessorParser.parse());
             }
         }
     }
@@ -127,40 +129,40 @@ public class SourceParser extends AbstractParser<FloatSource> {
 
         @Override
         protected FloatAccessor finishObject(FloatAccessor object) throws XmlPullParserException, IOException {
-            object.setParams(params.toArray(new SourceAccessorParam[params.size()]));
+            object.setParams(params);
             return object;
         }
 
         @Override
-        protected FloatAccessor handleAttribute(FloatAccessor object, String attribute, String value) {
+        protected void handleAttribute(FloatAccessor object, String attribute, String value) {
             switch (attribute) {
                 case "count":
-                    object.setCount(Integer.valueOf(value));
+                    object.setCount(Integer.parseInt(value));
                     break;
                 case "offset":
-                    object.setOffset(Integer.valueOf(value));
+                    object.setOffset(Integer.parseInt(value));
                     break;
                 case "source":
                     object.setSource(value);
                     break;
                 case "stride":
-                    object.setStride(Integer.valueOf(value));
+                    object.setStride(Integer.parseInt(value));
+                    break;
+                default:
                     break;
             }
-            return object;
         }
 
         @Override
         protected void handleChildElement(FloatAccessor parent, String childTag)
                 throws IOException, XmlPullParserException {
-            switch (childTag) {
-                case "param":
-                    params.add(paramParser.parse());
+            if ("param".equals(childTag)) {
+                params.add(paramParser.parse());
             }
         }
     }
 
-    private class ParamParser extends AbstractParser<SourceAccessorParam> {
+    private static class ParamParser extends AbstractParser<SourceAccessorParam> {
 
         public void setData(ParsingData data) {
             this.data = data;
@@ -177,7 +179,7 @@ public class SourceParser extends AbstractParser<FloatSource> {
         }
 
         @Override
-        protected SourceAccessorParam handleAttribute(SourceAccessorParam object, String attribute, String value) {
+        protected void handleAttribute(SourceAccessorParam object, String attribute, String value) {
             switch (attribute) {
                 case "name":
                     object.setName(value);
@@ -190,8 +192,10 @@ public class SourceParser extends AbstractParser<FloatSource> {
                     break;
                 case "semantic":
                     object.setSemantic(value);
+                    break;
+                default:
+                    break;
             }
-            return object;
         }
     }
 }

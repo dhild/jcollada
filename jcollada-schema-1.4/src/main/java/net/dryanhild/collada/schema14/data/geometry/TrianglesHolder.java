@@ -30,7 +30,6 @@ import java.util.Set;
 
 public class TrianglesHolder {
 
-    private String name;
     private int count;
     private final Map<String, String> sources = Maps.newHashMap();
     private final Map<String, Integer> offsets = Maps.newHashMap();
@@ -42,14 +41,6 @@ public class TrianglesHolder {
 
     public void setCount(int count) {
         this.count = count;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public void addInput(String semantic, String source, int offset) {

@@ -26,7 +26,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
-import net.dryanhild.collada.NoSuchElementIdException;
 import net.dryanhild.collada.schema14.ParsingData;
 import net.dryanhild.collada.schema14.data.geometry.MeshImpl;
 import net.dryanhild.collada.schema14.data.geometry.Polylist;
@@ -36,12 +35,18 @@ import net.dryanhild.collada.schema14.data.geometry.Vertices;
 import net.dryanhild.collada.schema14.data.geometry.source.FloatArray;
 import net.dryanhild.collada.schema14.data.geometry.source.FloatSource;
 import net.dryanhild.collada.schema14.postprocessors.Postprocessor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 public class MeshPostProcessor implements Postprocessor {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(MeshPostProcessor.class);
 
     private MeshImpl mesh;
 
@@ -67,20 +72,21 @@ public class MeshPostProcessor implements Postprocessor {
         sources.add(source);
     }
 
-    public void setVertices(Vertices vertices) {
-        this.vertices = vertices;
+    public void setVertices(Vertices verts) {
+        vertices = verts;
     }
 
     public void addPolylist(Polylist polylist) {
         polylists.add(polylist);
     }
 
-    public void addTriangles(TrianglesHolder triangles) {
-        this.triangles.add(triangles);
+    public void addTriangles(TrianglesHolder trianglesHolder) {
+        triangles.add(trianglesHolder);
     }
 
     @Override
     public void process(ParsingData data) {
+        LOGGER.info("Postprocessing mesh '{}', id: {}", mesh.getName(), mesh.getId());
         createReaders(data);
 
         for (Polylist polys : polylists) {
@@ -91,6 +97,7 @@ public class MeshPostProcessor implements Postprocessor {
         }
 
         writeMesh();
+        LOGGER.info("Done postprocessing mesh '{}', id: {}", mesh.getName(), mesh.getId());
     }
 
     private void createReaders(ParsingData data) {
@@ -161,7 +168,7 @@ public class MeshPostProcessor implements Postprocessor {
         if (semanticDataCounts.containsKey(semantic)) {
             return;
         }
-        if (semantic.equals("VERTEX")) {
+        if ("VERTEX".equals(semantic)) {
             for (String semantic2 : vertices.getSemantics()) {
                 addSemantic(semantic2, vertices.getSource(semantic2));
             }
@@ -179,7 +186,7 @@ public class MeshPostProcessor implements Postprocessor {
                 return source;
             }
         }
-        throw new NoSuchElementIdException(sourceId);
+        throw new NoSuchElementException(sourceId);
     }
 
     private void writeMesh() {
@@ -192,22 +199,18 @@ public class MeshPostProcessor implements Postprocessor {
         }
         mesh.setInterleaveOffset(offsets);
 
-        mesh.setTriangles(new TrianglesImpl(triangleElements.toArray()));
+        mesh.setTriangles(new TrianglesImpl(triangleElements));
 
         mesh.setVertexCount(vertexList.getVertexCount());
         mesh.setVertexData(getVertexData());
     }
 
-    private byte[] getVertexData() {
-        ByteBuffer buffer = ByteBuffer.allocate(rawVertexSize());
-        buffer.clear();
+    private ByteBuffer getVertexData() {
+        ByteBuffer buffer = ByteBuffer.allocate(rawVertexSize()).order(ByteOrder.nativeOrder());
 
         vertexList.putElements(buffer, semanticDataCounts);
 
-        byte[] data = new byte[buffer.capacity()];
-        buffer.flip();
-        buffer.get(data);
-        return data;
+        return buffer;
     }
 
     private int rawVertexSize() {

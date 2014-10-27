@@ -20,13 +20,26 @@
  * THE SOFTWARE.
  */
 
-package net.dryanhild.collada;
+package net.dryanhild.collada.schema14.postprocessors.scene;
 
-@SuppressWarnings("serial")
-public class NoSuchElementIdException extends RuntimeException {
+import net.dryanhild.collada.data.scene.Node;
+import net.dryanhild.collada.schema14.ParsingData;
+import net.dryanhild.collada.schema14.data.scene.NodeImpl;
+import net.dryanhild.collada.schema14.postprocessors.Postprocessor;
 
-    public NoSuchElementIdException(String message) {
-        super(message);
+public class InstanceNodePostprocessor implements Postprocessor {
+
+    private String url;
+    private NodeImpl nodeImpl;
+
+    public InstanceNodePostprocessor(String url, NodeImpl nodeImpl) {
+        this.url = url;
+        this.nodeImpl = nodeImpl;
     }
 
+    @Override
+    public void process(ParsingData data) {
+        Node node = data.document.getNode(url.substring(1));
+        nodeImpl.addChild(node);
+    }
 }
