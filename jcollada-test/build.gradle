@@ -20,8 +20,35 @@
  * THE SOFTWARE.
  */
 
-include 'jcollada-spi'
-include 'jcollada-schema-1.4'
-//include 'jcollada-schema-1.5'
-include 'jcollada-test'
+sourceSets {
+    integTest {
+        java {
+            srcDirs = ['src/integTest/java']
+        }
+        resources {
+            srcDirs = ['src/integTest/resources']
+        }
+    }
+}
 
+configurations {
+    integTestCompile {
+        extendsFrom testCompile
+    }
+    integTestRuntime {
+        extendsFrom testRuntime
+    }
+}
+
+dependencies {
+    integTestCompile project(':jcollada-spi')
+    integTestCompile project(':jcollada-schema-1.4')
+    integTestRuntime 'net.sf.kxml:kxml2:2.2.2'
+}
+
+task integTest(type: Test) {
+    dependsOn ':jcollada-spi:test'
+    dependsOn ':jcollada-schema-1.4:test'
+    testClassesDir = sourceSets.integTest.output.classesDir
+    classpath = sourceSets.integTest.runtimeClasspath
+}

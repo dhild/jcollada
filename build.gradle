@@ -31,7 +31,8 @@ allprojects {
     repositories {
         mavenCentral()
     }
- 
+
+    apply plugin: 'idea'
     apply plugin: 'project-report'
     apply plugin: 'build-dashboard'
 }
@@ -62,7 +63,7 @@ subprojects {
         ruleSetFiles = files("$rootDir/config/pmd/custom.xml")
     }
 
-    test {
+    tasks.withType(Test) {
         useTestNG() {
             suiteXmlBuilder().suite(name: 'jcollada', parallel: 'tests') {
                 test(name: 'all-tests') {
@@ -98,6 +99,10 @@ subprojects {
 
     task sourceJar(type: Jar) {
         from sourceSets.main.allJava
+    }
+
+    tasks.withType(PublishToMavenRepository) {
+        dependsOn ':jcollada-test:integTest'
     }
 
     publishing {
