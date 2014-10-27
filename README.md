@@ -61,6 +61,13 @@ However, you would probably like to use a snapshot or released version that you 
 
 ## Releases
 
+### V1.2
+A little bit of a minor release, but reworked a little bit of the API for interleaved data.
+
+- Added version information to the .jar itself.
+- Added test coverage, license headers, more logging.
+- Added an integration test suite. Eventually this should hold some examples.
+
 ### V1.1
 Reorganized a lot of internal code & restructured some of the API. Internally, now using the HK2 library to perform
 some of the dependency injection. Version detection and support is still done through the java service provider
