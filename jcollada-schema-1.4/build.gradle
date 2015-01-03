@@ -44,7 +44,7 @@ task(generateHK2, type: JavaExec) {
     inputs.dir sourceSets.main.output.classesDir
     dependsOn compileJava, processResources
 
-    classpath configurations.hk2Generator.asPath
+    classpath configurations.hk2Generator
 
     args "--locator", "JCollada-Schema-1.4",
             "--directory", "${buildDir}/generated/hk2/META-INF/hk2-locator",
