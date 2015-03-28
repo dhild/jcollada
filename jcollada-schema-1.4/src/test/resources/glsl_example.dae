@@ -2,15 +2,15 @@
 <COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
  <asset>
    <contributor>
-     <author></author>
+     <author/>
      <authoring_tool>RenderMonkey</authoring_tool>
      <comments>Output from RenderMonkey COLLADA Exporter</comments>
-     <copyright></copyright>
-     <source_data></source_data>
+     <copyright/>
+     <source_data/>
    </contributor>
    <created>2007-12-11T14:24:00Z</created>
    <modified>2007-12-11T14:24:00Z</modified>
-   <unit meter="0.01" name="centimeter"></unit>
+   <unit meter="0.01" name="centimeter"/>
    <up_axis>Y_UP</up_axis>
  </asset>
  <library_visual_scenes>
@@ -20,8 +20,8 @@
          <bind_material>
            <technique_common>
              <instance_material symbol="Textured_Bump_E0_MP_MAT" target="#Textured_Bump_E0_MP_MAT">
-               <bind_vertex_input semantic="rm_Binormal" input_semantic="BINORMAL" input_set="2"></bind_vertex_input>
-               <bind_vertex_input semantic="rm_Tangent" input_semantic="TANGENT" input_set="1"></bind_vertex_input>
+               <bind_vertex_input semantic="rm_Binormal" input_semantic="BINORMAL" input_set="2"/>
+               <bind_vertex_input semantic="rm_Tangent" input_semantic="TANGENT" input_set="1"/>
              </instance_material>
            </technique_common>
          </bind_material>
@@ -32,7 +32,7 @@
  <library_materials>
    <material id="Textured_Bump_E0_MP_MAT" name="Textured_Bump_E0_MP_MAT">
      <instance_effect url="#Textured_Bump_E0_MP_FX">
-       <technique_hint platform="PC-OGL" profile="GLSL" ref="Textured_Bump_E0_MP_TECH"></technique_hint>
+       <technique_hint platform="PC-OGL" profile="GLSL" ref="Textured_Bump_E0_MP_TECH"/>
        <setparam ref="fSpecularPower_E0_P0">
          <float>25</float>
        </setparam>

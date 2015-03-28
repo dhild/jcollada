@@ -2,15 +2,15 @@
 <COLLADA xmlns="http://www.collada.org/2008/03/COLLADASchema" version="1.5.0">
  <asset>
    <contributor>
-     <author></author>
+     <author/>
      <authoring_tool>RenderMonkey</authoring_tool>
      <comments>Output from RenderMonkey COLLADA Exporter</comments>
-     <copyright></copyright>
-     <source_data></source_data>
+     <copyright/>
+     <source_data/>
    </contributor>
    <created>2007-12-11T14:24:00Z</created>
    <modified>2007-12-11T14:24:00Z</modified>
-   <unit meter="0.01" name="centimeter"></unit>
+   <unit meter="0.01" name="centimeter"/>
    <up_axis>Y_UP</up_axis>
  </asset>
  <library_visual_scenes>
@@ -20,8 +20,8 @@
          <bind_material>
            <technique_common>
              <instance_material symbol="Textured_Bump_E0_MP_MAT" target="#Textured_Bump_E0_MP_MAT">
-               <bind_vertex_input semantic="rm_Binormal" input_semantic="BINORMAL" input_set="2"></bind_vertex_input>
-               <bind_vertex_input semantic="rm_Tangent" input_semantic="TANGENT" input_set="1"></bind_vertex_input>
+               <bind_vertex_input semantic="rm_Binormal" input_semantic="BINORMAL" input_set="2"/>
+               <bind_vertex_input semantic="rm_Tangent" input_semantic="TANGENT" input_set="1"/>
              </instance_material>
            </technique_common>
          </bind_material>
@@ -32,7 +32,7 @@
  <library_materials>
    <material id="Textured_Bump_E0_MP_MAT" name="Textured_Bump_E0_MP_MAT">
      <instance_effect url="#Textured_Bump_E0_MP_FX">
-       <technique_hint platform="PC-OGL" profile="GLSL" ref="Textured_Bump_E0_MP_TECH"></technique_hint>
+       <technique_hint platform="PC-OGL" profile="GLSL" ref="Textured_Bump_E0_MP_TECH"/>
        <setparam ref="fSpecularPower_E0_P0">
          <float>25</float>
        </setparam>
@@ -128,7 +128,7 @@
        </newparam>
        <newparam sid="baseMap_Sampler">
          <sampler2D>
-           <instance_image url="base"></instance_image>
+           <instance_image url="base"/>
            <minfilter>LINEAR</minfilter>
            <magfilter>LINEAR</magfilter>
            <mipfilter>LINEAR</mipfilter>
@@ -136,7 +136,7 @@
        </newparam>
        <newparam sid="bumpMap_Sampler">
          <sampler2D>
-           <instance_image url="bump"></instance_image>
+           <instance_image url="bump"/>
            <minfilter>LINEAR</minfilter>
            <magfilter>LINEAR</magfilter>
            <mipfilter>LINEAR</mipfilter>
@@ -156,28 +156,28 @@
                </sources>
              </shader> 
               <bind_uniform symbol="fSpecularPower"> 
-                <param ref="fSpecularPower_E0_P0"></param> 
+                <param ref="fSpecularPower_E0_P0"/>
               </bind_uniform> 
               <bind_uniform symbol="fvAmbient"> 
-                <param ref="fvAmbient_E0_P0"></param> 
+                <param ref="fvAmbient_E0_P0"/>
               </bind_uniform> 
               <bind_uniform symbol="fvDiffuse"> 
-                <param ref="fvDiffuse_E0_P0"></param> 
+                <param ref="fvDiffuse_E0_P0"/>
               </bind_uniform> 
               <bind_uniform symbol="fvEyePosition"> 
-                <param ref="fvEyePosition_E0_P0"></param> 
+                <param ref="fvEyePosition_E0_P0"/>
               </bind_uniform> 
               <bind_uniform symbol="fvLightPosition"> 
-                <param ref="fvLightPosition_E0_P0"></param> 
+                <param ref="fvLightPosition_E0_P0"/>
               </bind_uniform> 
               <bind_uniform symbol="fvSpecular"> 
-                <param ref="fvSpecular_E0_P0"></param> 
+                <param ref="fvSpecular_E0_P0"/>
               </bind_uniform> 
               <bind_uniform symbol="baseMap"> 
-                <param ref="baseMap_Sampler"></param> 
+                <param ref="baseMap_Sampler"/>
               </bind_uniform> 
               <bind_uniform symbol="bumpMap"> 
-                <param ref="bumpMap_Sampler"></param> 
+                <param ref="bumpMap_Sampler"/>
               </bind_uniform>
            </program>
          </pass>
@@ -200,9 +200,9 @@
          <float_array id="Model_E0_MESH_0_REF_1_lib_positions_array" count="9">-50 -50 0 50 -50 0 0 50 0</float_array>
          <technique_common>
            <accessor count="3" source="#Model_E0_MESH_0_REF_1_lib_positions_array" stride="3">
-             <param name="X" type="float"></param>
-             <param name="Y" type="float"></param>
-             <param name="Z" type="float"></param>
+             <param name="X" type="float"/>
+             <param name="Y" type="float"/>
+             <param name="Z" type="float"/>
            </accessor>
          </technique_common>
        </source>
@@ -210,9 +210,9 @@
          <float_array id="Model_E0_MESH_0_REF_1_lib_normals_array" count="9">0 0 -1 0 0 -1 0 0 -1</float_array>
          <technique_common>
            <accessor count="3" source="#Model_E0_MESH_0_REF_1_lib_normals_array" stride="3">
-             <param name="X" type="float"></param>
-             <param name="Y" type="float"></param>
-             <param name="Z" type="float"></param>
+             <param name="X" type="float"/>
+             <param name="Y" type="float"/>
+             <param name="Z" type="float"/>
            </accessor>
          </technique_common>
        </source>
@@ -220,8 +220,8 @@
          <float_array id="Model_E0_MESH_0_REF_1_lib_texcoords_array" count="6">0 0 1 0 0.5 1</float_array>
          <technique_common>
            <accessor count="3" source="#Model_E0_MESH_0_REF_1_lib_texcoords_array" stride="2">
-             <param name="X" type="float"></param>
-             <param name="Y" type="float"></param>
+             <param name="X" type="float"/>
+             <param name="Y" type="float"/>
            </accessor>
          </technique_common>
        </source>
@@ -229,9 +229,9 @@
          <float_array id="Model_E0_MESH_0_REF_1_lib_tangents_array" count="9">1 0 0 1 0 0 1 0 0</float_array>
          <technique_common>
            <accessor count="3" source="#Model_E0_MESH_0_REF_1_lib_tangents_array" stride="3">
-             <param name="X" type="float"></param>
-             <param name="Y" type="float"></param>
-             <param name="Z" type="float"></param>
+             <param name="X" type="float"/>
+             <param name="Y" type="float"/>
+             <param name="Z" type="float"/>
            </accessor>
          </technique_common>
        </source>
@@ -239,27 +239,27 @@
          <float_array id="Model_E0_MESH_0_REF_1_lib_binormals_array" count="9">0 1 0 0 0 0 0 1 0</float_array>
          <technique_common>
            <accessor count="3" source="#Model_E0_MESH_0_REF_1_lib_binormals_array" stride="3">
-             <param name="X" type="float"></param>
-             <param name="Y" type="float"></param>
-             <param name="Z" type="float"></param>
+             <param name="X" type="float"/>
+             <param name="Y" type="float"/>
+             <param name="Z" type="float"/>
            </accessor>
          </technique_common>
        </source>
        <vertices id="Model_E0_MESH_0_REF_1_lib_vertices">
-         <input semantic="POSITION" source="#Model_E0_MESH_0_REF_1_lib_positions"></input>
-         <input semantic="NORMAL" source="#Model_E0_MESH_0_REF_1_lib_normals"></input>
-         <input semantic="TEXCOORD" source="#Model_E0_MESH_0_REF_1_lib_texcoords"></input>
+         <input semantic="POSITION" source="#Model_E0_MESH_0_REF_1_lib_positions"/>
+         <input semantic="NORMAL" source="#Model_E0_MESH_0_REF_1_lib_normals"/>
+         <input semantic="TEXCOORD" source="#Model_E0_MESH_0_REF_1_lib_texcoords"/>
        </vertices>
        <triangles count="1" material="Textured_Bump_E0_MP_MAT">
-         <input offset="0" semantic="VERTEX" source="#Model_E0_MESH_0_REF_1_lib_vertices"></input>
-         <input offset="0" semantic="TANGENT" source="#Model_E0_MESH_0_REF_1_lib_tangents"></input>
-         <input offset="0" semantic="BINORMAL" source="#Model_E0_MESH_0_REF_1_lib_binormals"></input>
+         <input offset="0" semantic="VERTEX" source="#Model_E0_MESH_0_REF_1_lib_vertices"/>
+         <input offset="0" semantic="TANGENT" source="#Model_E0_MESH_0_REF_1_lib_tangents"/>
+         <input offset="0" semantic="BINORMAL" source="#Model_E0_MESH_0_REF_1_lib_binormals"/>
           <p>0 1 2</p>
        </triangles>
      </mesh>
    </geometry>
  </library_geometries>
  <scene>
-   <instance_visual_scene url="#VisualSceneNode"></instance_visual_scene>
+   <instance_visual_scene url="#VisualSceneNode"/>
  </scene>
 </COLLADA>
