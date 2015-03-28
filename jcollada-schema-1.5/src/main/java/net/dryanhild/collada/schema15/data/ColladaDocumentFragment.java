@@ -1,16 +1,17 @@
 package net.dryanhild.collada.schema15.data;
 
 import lombok.Getter;
+import lombok.Setter;
+import net.dryanhild.collada.common.metadata.MutableAsset;
 
 import java.net.URI;
 
 @Getter
+@Setter
 public class ColladaDocumentFragment {
 
-    private final URI uri;
+    private URI uri;
 
-    public ColladaDocumentFragment(URI uri) {
-        this.uri = uri;
-    }
+    private MutableAsset asset;
 
 }

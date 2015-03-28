@@ -1,50 +1,34 @@
 package net.dryanhild.collada.common.parser;
 
 import com.carrotsearch.hppc.FloatArrayList;
-import lombok.SneakyThrows;
 import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
 
-import java.io.IOException;
-import java.util.function.BiConsumer;
+import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import static org.xmlpull.v1.XmlPullParser.START_TAG;
-import static org.xmlpull.v1.XmlPullParser.TEXT;
+public class FloatParser implements Function<XmlPullParser, FloatArrayList> {
 
-public class FloatParser<OutputType> implements BiConsumer<OutputType, XmlPullParser> {
+    private static final Pattern pattern = Pattern.compile("\\S+");
+    private final SimpleTextParser textParser;
 
-    private FloatArrayList floats;
-
-    @Override
-    @SneakyThrows({IOException.class, XmlPullParserException.class})
-    public void accept(OutputType object, XmlPullParser parser) {
-        parser.require(START_TAG, null, null);
-        parser.next();
-        parser.require(TEXT, null, null);
-
-        FloatArrayList floats = new FloatArrayList();
-
-        int[] startAndLength = new int[2];
-        char[] text = parser.getTextCharacters(startAndLength);
-        final int maxIndex = startAndLength[0] + startAndLength[1];
-        int i = startAndLength[0];
-        while (i < (startAndLength[0] + startAndLength[1])) {
-            while (Character.isWhitespace(text[i])) {
-                i++;
-            }
-            int count = 0;
-            while (!Character.isWhitespace(text[i + count]) && (i + count) < maxIndex) {
-                count++;
-            }
-            if (count > 0) {
-                floats.add(Float.valueOf(new String(text, i, count)));
-            }
-            i += count;
-        }
-        this.floats = floats;
+    public FloatParser(String tag) {
+        this(XmlParser.COLLADA_NAMESPACE, tag);
     }
 
-    public FloatArrayList getFloats() {
+    public FloatParser(String namespace, String tag) {
+        textParser = new SimpleTextParser(namespace, tag);
+    }
+
+    @Override
+    public FloatArrayList apply(XmlPullParser parser) {
+        StringBuilder builder = textParser.apply(parser);
+        FloatArrayList floats = new FloatArrayList();
+
+        Matcher matcher = pattern.matcher(builder);
+        while (matcher.find()) {
+            floats.add(Float.parseFloat(matcher.group()));
+        }
         return floats;
     }
 }

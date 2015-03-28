@@ -7,7 +7,9 @@ import java.nio.charset.StandardCharsets
 
 class ColladaLoaderSchema15Spec extends Specification {
 
-    static String MINIMAL = "<COLLADA xmlns=\"http://www.collada.org/2008/03/COLLADASchema\" version=\"1.5.0\"/>"
+    static String MINIMAL = "<COLLADA xmlns=\"http://www.collada.org/2008/03/COLLADASchema\" version=\"1.5.0\">" +
+            " <asset><modified>2007-12-11T14:24:00Z</modified></asset>" +
+            "</COLLADA>"
 
     ColladaLoaderSchema15 loader
 

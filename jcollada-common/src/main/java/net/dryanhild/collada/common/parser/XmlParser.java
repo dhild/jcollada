@@ -60,15 +60,24 @@ public class XmlParser<OutputType> {
         }
     }
 
+    public static final String COLLADA_NAMESPACE = "http://www.collada.org/2008/03/COLLADASchema";
+
     private final Logger logger;
 
+    private final String expectedNamespace;
     private final String expectedTag;
     private final Multimap<String, BiConsumer<OutputType, String>> attributeConsumers = HashMultimap.create();
     private final Multimap<String, BiConsumer<OutputType, XmlPullParser>> elementConsumers = HashMultimap.create();
 
     public XmlParser(String tag, Class<OutputType> type) {
+        this(COLLADA_NAMESPACE, tag, type);
+    }
+
+    public XmlParser(String namespace, String tag, Class<OutputType> type) {
         logger = LoggerFactory.getLogger(XmlParser.class.getName() + "." + type.getName());
+        expectedNamespace = namespace;
         expectedTag = tag;
+        logger.debug("Expecting namespace {}, tag {} for type {}", namespace, tag, type);
         try {
             Method m = type.getMethod("setId", String.class);
             attributeConsumers.put("id", (object, value) -> trySet(m, object, value));
@@ -107,7 +116,7 @@ public class XmlParser<OutputType> {
 
     @SneakyThrows({IOException.class, XmlPullParserException.class})
     public final OutputType parse(XmlPullParser parser, OutputType object) {
-        parser.require(START_TAG, null, expectedTag);
+        parser.require(START_TAG, expectedNamespace, expectedTag);
         final int depth = parser.getDepth();
 
         setAttributes(parser, object);
@@ -126,7 +135,7 @@ public class XmlParser<OutputType> {
 
     @SneakyThrows({IOException.class, XmlPullParserException.class})
     protected void setAttributes(XmlPullParser parser, OutputType object) {
-        parser.require(START_TAG, null, expectedTag);
+        parser.require(START_TAG, expectedNamespace, expectedTag);
 
         for (int i = 0; i < parser.getAttributeCount(); i++) {
             String name = parser.getAttributeName(i);
