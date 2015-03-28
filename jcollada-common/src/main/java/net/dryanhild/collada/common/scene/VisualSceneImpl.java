@@ -22,21 +22,20 @@
 
 package net.dryanhild.collada.common.scene;
 
-import net.dryanhild.collada.common.AbstractNameableAddressableType;
-import net.dryanhild.collada.data.scene.Node;
+import lombok.Getter;
+import lombok.Setter;
 import net.dryanhild.collada.data.scene.VisualScene;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class VisualSceneImpl extends AbstractNameableAddressableType implements VisualScene {
+@Getter
+@Setter
+public class VisualSceneImpl implements VisualScene {
 
+    private String id;
+    private String name;
     private final List<NodeImpl> nodes = new ArrayList<>();
-
-    @Override
-    public List<? extends Node> getNodes() {
-        return nodes;
-    }
 
     public void addNode(NodeImpl node) {
         nodes.add(node);

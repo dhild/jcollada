@@ -22,7 +22,8 @@
 
 package net.dryanhild.collada.common.scene;
 
-import net.dryanhild.collada.common.AbstractNameableAddressableType;
+import lombok.Getter;
+import lombok.Setter;
 import net.dryanhild.collada.data.geometry.GeometryInstance;
 import net.dryanhild.collada.data.scene.Node;
 import net.dryanhild.collada.data.scene.NodeType;
@@ -31,37 +32,16 @@ import net.dryanhild.collada.data.transform.Transform;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NodeImpl extends AbstractNameableAddressableType implements Node {
+@Getter
+@Setter
+public class NodeImpl implements Node {
 
+    private String id;
+    private String name;
     private NodeType type;
     private final List<Node> children = new ArrayList<>();
     private final List<GeometryInstance> geometries = new ArrayList<>();
     private final List<Transform> transforms = new ArrayList<>();
-
-
-    @Override
-    public NodeType getType() {
-        return type;
-    }
-
-    @Override
-    public List<Node> getChildren() {
-        return children;
-    }
-
-    @Override
-    public List<GeometryInstance> getGeometries() {
-        return geometries;
-    }
-
-    @Override
-    public List<Transform> getTransforms() {
-        return transforms;
-    }
-
-    public void setType(NodeType type) {
-        this.type = type;
-    }
 
     public void addChild(Node node) {
         children.add(node);
