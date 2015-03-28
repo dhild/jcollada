@@ -6,16 +6,24 @@ import com.google.inject.Injector;
 import net.dryanhild.collada.VersionSupport;
 import net.dryanhild.collada.common.parser.XmlParser;
 import net.dryanhild.collada.data.ColladaDocument;
-import net.dryanhild.collada.schema15.parser.ColladaDocumentParser;
+import net.dryanhild.collada.schema15.data.ColladaDocumentFragment;
+import net.dryanhild.collada.schema15.parser.ColladaFragmentParser;
+import net.dryanhild.collada.schema15.postprocess.ColladaDocumentAssembler;
 import net.dryanhild.collada.spi.ColladaLoaderService;
 import net.dryanhild.collada.spi.ParsingContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xmlpull.v1.XmlPullParser;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
 import java.util.Collection;
 import java.util.regex.Pattern;
 
 public class ColladaLoaderSchema15 implements ColladaLoaderService {
+
+    private static final Logger logger = LoggerFactory.getLogger(ColladaLoaderSchema15.class);
 
     public static final VersionSupport VERSION_1_5_0 = new VersionSupport(1, 5, 0);
 
@@ -35,15 +43,26 @@ public class ColladaLoaderSchema15 implements ColladaLoaderService {
 
     @Override
     public boolean canLoad(ParsingContext context) throws IOException {
+        if (context.getSourceUri().getPath().endsWith(".zae")) {
+            logger.debug("Unable to load .zae files (yet)");
+            return false;
+        }
         return SCHEMA_PATTERN.matcher(context.getMainFileHeader()).matches();
     }
 
     @Override
     public ColladaDocument load(ParsingContext context) throws IOException {
-        XmlPullParser parser = XmlParser.createPullParser(context);
+        ColladaDocumentAssembler assembler = injector.getInstance(ColladaDocumentAssembler.class);
 
-        ColladaDocumentParser documentParser = injector.getInstance(ColladaDocumentParser.class);
+        assembler.addFragment(parseFragment(context, context.getSourceUri(), context.getMainFileInputStream()));
 
-        return documentParser.parse(parser);
+        return assembler.assemble();
+    }
+
+    private ColladaDocumentFragment parseFragment(ParsingContext context, URI uri, InputStream inputStream)
+            throws IOException {
+        XmlPullParser parser = XmlParser.createPullParser(context.isValidating(), inputStream, context.getCharset());
+        ColladaFragmentParser documentParser = injector.getInstance(ColladaFragmentParser.class);
+        return documentParser.parse(uri, parser);
     }
 }

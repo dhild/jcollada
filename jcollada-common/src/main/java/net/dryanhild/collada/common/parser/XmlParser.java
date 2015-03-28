@@ -26,7 +26,6 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import lombok.SneakyThrows;
 import net.dryanhild.collada.ParsingException;
-import net.dryanhild.collada.spi.ParsingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xmlpull.v1.XmlPullParser;
@@ -34,23 +33,26 @@ import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.nio.charset.Charset;
 import java.util.function.BiConsumer;
 
 import static org.xmlpull.v1.XmlPullParser.START_TAG;
 
 public class XmlParser<OutputType> {
 
-    public static XmlPullParser createPullParser(ParsingContext context) throws IOException {
+    public static XmlPullParser createPullParser(boolean validating, InputStream inputStream, Charset charset)
+            throws IOException {
         try {
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
             factory.setNamespaceAware(true);
-            factory.setValidating(context.isValidating());
+            factory.setValidating(validating);
             XmlPullParser parser = factory.newPullParser();
-            Reader reader = new InputStreamReader(context.getMainFileInputStream(), context.getCharset());
+            Reader reader = new InputStreamReader(inputStream, charset);
             parser.setInput(reader);
             return parser;
         } catch (XmlPullParserException e) {
