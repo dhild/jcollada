@@ -31,6 +31,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -42,7 +44,7 @@ import java.util.ServiceLoader;
  * Main API class for loading files. Loading is thread-safe, although the validation and charset settings are not. In
  * other words, it is perfectly valid to be loading several files concurrently where the loaders are expected to have
  * the same settings.
- * <p/>
+ * <p>
  * Validation and charset settings may be used differently by the different implementations. You should make sure
  * that these are set to sane values, or that you are comfortable with the defaults.
  *
@@ -92,48 +94,53 @@ public class ColladaLoader {
 
     /**
      * Loads the given URL into a collada document, using the current settings for validation and charset.
-     * <p/>
+     * <p>
      * Version detection is currently done by reading in the first few kilobytes of data and converting it into a
-     * String for regex detection. This is subject to change in future versions, but for now,
-     * the <code>charset</code> setting is used to determine the encoding to use.
-     * <p/>
-     * Note that if the underlying XML reader implementation does not support validation,
-     * it may throw an exception if you have <code>validating</code> set to true.
+     * String for regex detection. This is subject to change in future versions, but for now, the <code>charset</code>
+     * setting is used to determine the encoding to use.
+     * <p>
+     * Note that if the underlying XML reader implementation does not support validation, it may throw an exception if
+     * you have <code>validating</code> set to true.
      *
-     * @param url The {@link java.net.URL} to read from.
+     * @param url
+     *         The {@link java.net.URL} to read from.
+     *
      * @return The loaded file.
-     * @throws IOException                                    If an I/O Exception occurs.
-     * @throws net.dryanhild.collada.IncorrectFormatException If there is a problem detected with the format.
+     *
+     * @throws IOException
+     *         If an I/O Exception occurs.
+     * @throws net.dryanhild.collada.IncorrectFormatException
+     *         If there is a problem detected with the format.
      * @see {@link #setValidating(boolean)}
      * @see {@link #setCharset(java.nio.charset.Charset)}
      */
-    public ColladaDocument load(URL url) throws IOException {
-        return load(url.openStream());
+    public ColladaDocument load(URL url) throws IOException, URISyntaxException {
+        return load(url.toURI(), url.openStream());
     }
 
     /**
      * Loads the given input stream into a collada document, using the current settings for validation and charset.
-     * <p/>
-     * In the future,
-     * loading extra resources may be supported (such as additional files referenced by the original file). For this
-     * reason, it is preferred to use the {@link java.net.URL} version of this method. However,
-     * if it is not possible to obtain a URL for the file, then this method should do the trick.
      *
-     * @param input The {@link java.io.InputStream} to read from.
+     * @param input
+     *         The {@link java.io.InputStream} to read from.
+     *
      * @return The loaded file.
-     * @throws IOException                                    If an I/O Exception occurs.
-     * @throws net.dryanhild.collada.IncorrectFormatException If there is a problem detected with the format.
+     *
+     * @throws IOException
+     *         If an I/O Exception occurs.
+     * @throws net.dryanhild.collada.IncorrectFormatException
+     *         If there is a problem detected with the format.
      * @see {@link #load(java.net.URL)}
      * @see {@link #setValidating(boolean)}
      * @see {@link #setCharset(java.nio.charset.Charset)}
      */
-    public ColladaDocument load(InputStream input) throws IOException {
-        return loadImpl(new DefaultParsingContext(validating, input, charset));
+    public ColladaDocument load(URI uri, InputStream input) throws IOException {
+        return loadImpl(new DefaultParsingContext(validating, charset, uri, input));
     }
 
     private ColladaDocument loadImpl(ParsingContext context) throws IOException {
         for (ColladaLoaderService loader : loaders) {
-            if (loader.canLoad(context.getMainFileHeader())) {
+            if (loader.canLoad(context)) {
                 return loadWithService(context, loader);
             }
         }
@@ -157,9 +164,9 @@ public class ColladaLoader {
 
     /**
      * Returns the validation flag for this loader.
-     * <p/>
+     * <p>
      * Note that this flag will not be respected by all underlying implementations, depending upon the XML parser used.
-     * <p/>
+     * <p>
      * By default, this flag is set to <code>true</code>.
      *
      * @return Whether calls to {@link #load(java.net.URL)} or {@link #load(java.io.InputStream)} will attempt to use
@@ -172,8 +179,10 @@ public class ColladaLoader {
     /**
      * Sets the validation flag.
      *
-     * @param validating Whether calls to {@link #load(java.net.URL)} or {@link #load(java.io.InputStream)} should
-     *                   attempt to use a validating parser.
+     * @param validating
+     *         Whether calls to {@link #load(java.net.URL)} or {@link #load(java.io.InputStream)} should
+     *         attempt to use a validating parser.
+     *
      * @see {@link #isValidating()}
      */
     public void setValidating(boolean validating) {
@@ -184,10 +193,10 @@ public class ColladaLoader {
      * Returns the charset that should be used to interpret the data. Note that this setting applies mainly to the
      * XML header for version selection. If a standard ASCII-like charset was used,
      * then this setting probably does not matter.
-     * <p/>
+     * <p>
      * This setting may go away in the future and be replaced with a charset-detecting XML reader that only gets to
      * the version string.
-     * <p/>
+     * <p>
      * By default, this is set to use {@link java.nio.charset.StandardCharsets#UTF_8}.
      *
      * @return The {@link java.nio.charset.Charset} to be used for reading the header for version detection.
@@ -199,7 +208,9 @@ public class ColladaLoader {
     /**
      * Sets the Charset to use for reading the COLLADA version.
      *
-     * @param charset The Charset to use.
+     * @param charset
+     *         The Charset to use.
+     *
      * @see {@link #getCharset()}
      */
     public void setCharset(Charset charset) {

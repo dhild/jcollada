@@ -28,6 +28,7 @@ import net.dryanhild.collada.spi.ColladaLoaderService;
 import net.dryanhild.collada.spi.ParsingContext;
 import org.mockito.Mockito;
 
+import java.io.IOException;
 import java.util.Collection;
 
 public class ColladaLoaderServiceImpl implements ColladaLoaderService {
@@ -44,8 +45,8 @@ public class ColladaLoaderServiceImpl implements ColladaLoaderService {
     }
 
     @Override
-    public boolean canLoad(CharSequence header) {
-        return header.toString().contains(TEST_BASIC_FILE);
+    public boolean canLoad(ParsingContext context) throws IOException {
+        return context.getMainFileHeader().toString().contains(TEST_BASIC_FILE);
     }
 
     @Override

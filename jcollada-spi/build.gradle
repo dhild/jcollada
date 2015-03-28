@@ -50,6 +50,7 @@ tasks.withType(Test) {
 }
 
 dependencies {
+    provided 'org.projectlombok:lombok:1.16.2'
     testCompile "org.testng:testng:${testngVersion}"
     testCompile "org.uncommons:reportng:$reportngVersion"
     testCompile "org.assertj:assertj-core:${assertjVersion}"

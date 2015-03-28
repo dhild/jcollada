@@ -25,7 +25,6 @@ package net.dryanhild.collada.spi;
 import net.dryanhild.collada.VersionSupport;
 import net.dryanhild.collada.data.ColladaDocument;
 
-import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.Collection;
 
@@ -33,7 +32,7 @@ public interface ColladaLoaderService {
 
     Collection<VersionSupport> getColladaVersions();
 
-    boolean canLoad(CharSequence header);
+    boolean canLoad(ParsingContext context) throws IOException;
 
     ColladaDocument load(ParsingContext context) throws IOException;
 

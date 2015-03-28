@@ -27,6 +27,7 @@ import org.testng.annotations.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -59,7 +60,7 @@ public class ColladaLoaderServiceTests {
     public void loaderCanRecognize140() throws IOException {
         byte[] bytes = FRAGMENT_140.getBytes(StandardCharsets.UTF_8);
         ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
-        assertThat(colladaLoader.load(inputStream)).isNotNull();
+        assertThat(colladaLoader.load(URI.create("test.dae"), inputStream)).isNotNull();
         inputStream.close();
     }
 
@@ -67,7 +68,7 @@ public class ColladaLoaderServiceTests {
     public void loaderCanRecognize141() throws IOException {
         byte[] bytes = FRAGMENT_141.getBytes(StandardCharsets.UTF_8);
         ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
-        assertThat(colladaLoader.load(inputStream)).isNotNull();
+        assertThat(colladaLoader.load(URI.create("test.dae"), inputStream)).isNotNull();
         inputStream.close();
     }
 }

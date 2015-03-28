@@ -29,6 +29,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -47,7 +48,7 @@ public class WithTestDae {
     }
 
     @BeforeMethod
-    public void loadDocument() throws IOException {
+    public void loadDocument() throws IOException, URISyntaxException {
         document = colladaLoader.load(resourceUrl);
     }
 

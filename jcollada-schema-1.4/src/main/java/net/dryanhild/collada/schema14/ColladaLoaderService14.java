@@ -61,8 +61,8 @@ public class ColladaLoaderService14 implements ColladaLoaderService {
     }
 
     @Override
-    public boolean canLoad(CharSequence header) {
-        return VERSION_PATTERN.matcher(header).matches();
+    public boolean canLoad(ParsingContext context) throws IOException {
+        return VERSION_PATTERN.matcher(context.getMainFileHeader()).matches();
     }
 
     @Override

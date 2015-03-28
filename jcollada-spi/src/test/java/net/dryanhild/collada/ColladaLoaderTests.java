@@ -29,6 +29,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.net.URI;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
@@ -37,6 +38,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ColladaLoaderTests {
 
+    public static final URI TEST_URI = URI.create("test.dae");
     private ColladaLoaderServiceImpl testService;
 
     @Test
@@ -64,7 +66,7 @@ public class ColladaLoaderTests {
 
         InputStream reader =
                 new ByteArrayInputStream(ColladaLoaderServiceImpl.TEST_BASIC_FILE.getBytes(StandardCharsets.UTF_8));
-        loader.load(reader);
+        loader.load(TEST_URI, reader);
 
         assertThat(loader.isValidating()).isEqualTo(validate);
         assertThat(testService.lastContext.isValidating()).isEqualTo(validate);
@@ -76,21 +78,21 @@ public class ColladaLoaderTests {
         ColladaLoader loader = new ColladaLoader();
 
         InputStream reader = new ByteArrayInputStream("Bad input.".getBytes(StandardCharsets.UTF_8));
-        loader.load(reader);
+        loader.load(URI.create("test.dae"), reader);
     }
 
     @Test(expectedExceptions = IOException.class)
     public void ioExceptionInHeaderRead() throws IOException {
         InputStream reader = new ErrorOnReadReader();
         ColladaLoader loader = new ColladaLoader();
-        loader.load(reader);
+        loader.load(TEST_URI, reader);
     }
 
     @Test(expectedExceptions = IOException.class)
     public void ioExceptionInClose() throws IOException {
         InputStream reader = new ErrorOnCloseReader();
         ColladaLoader loader = new ColladaLoader();
-        loader.load(reader);
+        loader.load(TEST_URI, reader);
     }
 
     private static class ErrorOnReadReader extends InputStream {

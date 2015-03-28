@@ -34,8 +34,8 @@ public class ColladaLoaderSchema15 implements ColladaLoaderService {
     }
 
     @Override
-    public boolean canLoad(CharSequence header) {
-        return SCHEMA_PATTERN.matcher(header).matches();
+    public boolean canLoad(ParsingContext context) throws IOException {
+        return SCHEMA_PATTERN.matcher(context.getMainFileHeader()).matches();
     }
 
     @Override

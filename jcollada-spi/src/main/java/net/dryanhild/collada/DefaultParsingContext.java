@@ -22,64 +22,77 @@
 
 package net.dryanhild.collada;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.dryanhild.collada.spi.ParsingContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 
+@Getter
+@Setter
 public class DefaultParsingContext implements ParsingContext {
 
+    private static final Logger logger = LoggerFactory.getLogger(DefaultParsingContext.class);
+
     public static final int BUFFER_SIZE = 4096;
-    public static final String BUFFER_SIZE_PROPERTY = "jcollada.parsing.buffersize";
+    public static final String HEADER_SEARCH_LENGTH = "jcollada.parsing.header-search-length";
 
     private final boolean validating;
-    private final BufferedInputStream inputStream;
     private final Charset charset;
-    private final String header;
+    private final BufferedInputStream mainFileInputStream;
+    private final URI sourceUri;
+    private final Map<Object, Object> variables = new HashMap<>();
 
-    public DefaultParsingContext(boolean validating, InputStream input, Charset charset) throws IOException {
+    public DefaultParsingContext(boolean validating, Charset charset, URI uri, InputStream input) throws IOException {
         this.validating = validating;
         this.charset = charset;
+        sourceUri = uri;
 
-        String bufferSizeStr = System.getProperty(BUFFER_SIZE_PROPERTY, Integer.toString(BUFFER_SIZE));
-        int bufferSize = Integer.parseInt(bufferSizeStr);
+        mainFileInputStream = new BufferedInputStream(input, BUFFER_SIZE);
+    }
 
-        inputStream = new BufferedInputStream(input, bufferSize);
+    @Override
+    public CharSequence getMainFileHeader() throws IOException {
+        String searchStr = System.getProperty(HEADER_SEARCH_LENGTH, Integer.toString(BUFFER_SIZE));
+        int searchSize = Integer.parseInt(searchStr);
 
-        inputStream.mark(bufferSize);
-        byte[] bytes = new byte[bufferSize];
-        int offset = 0;
-        while (offset < bufferSize) {
-            int read = inputStream.read(bytes, offset, bufferSize - offset);
-            offset += read;
-            if (read == -1) {
-                break;
+        mainFileInputStream.mark(searchSize);
+        try {
+            byte[] bytes = new byte[searchSize];
+            int offset = 0;
+            while (offset < searchSize) {
+                int read = mainFileInputStream.read(bytes, offset, searchSize - offset);
+                offset += read;
+                if (read == -1) {
+                    break;
+                }
             }
+            return new String(bytes, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            logger.debug("IOException encountered, will try to reset stream", e);
+            throw e;
+        } finally {
+            mainFileInputStream.reset();
         }
-        header = new String(bytes, StandardCharsets.UTF_8);
-        inputStream.reset();
     }
 
     @Override
-    public boolean isValidating() {
-        return validating;
+    public void store(Object key, Object value) {
+        variables.put(key, value);
     }
 
     @Override
-    public CharSequence getMainFileHeader() {
-        return header;
-    }
-
-    @Override
-    public InputStream getMainFileInputStream() {
-        return inputStream;
-    }
-
-    @Override
-    public Charset getCharset() {
-        return charset;
+    public <T> T retrieve(Object key, Class<T> type) {
+        Object result = variables.get(key);
+        return type.cast(result);
     }
 }
