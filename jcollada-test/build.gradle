@@ -20,35 +20,35 @@
  * THE SOFTWARE.
  */
 
-sourceSets {
-    integTest {
-        java {
-            srcDirs = ['src/integTest/java']
-        }
-        resources {
-            srcDirs = ['src/integTest/resources']
-        }
-    }
-}
-
-configurations {
-    integTestCompile {
-        extendsFrom testCompile
-    }
-    integTestRuntime {
-        extendsFrom testRuntime
-    }
-}
-
 dependencies {
-    integTestCompile project(':jcollada-spi')
-    integTestCompile project(':jcollada-schema-1.4')
-    integTestRuntime 'net.sf.kxml:kxml2:2.2.2'
+    testCompile project(':jcollada-spi')
+    testCompile project(':jcollada-schema-1.4')
+    testRuntime 'net.sf.kxml:kxml2:2.2.2'
+    testCompile "org.testng:testng:${testngVersion}"
+    testCompile "org.uncommons:reportng:$reportngVersion"
+    testCompile "org.assertj:assertj-core:${assertjVersion}"
+    testCompile "org.mockito:mockito-all:${mockitoVersion}"
+    // known issue with TestNG and ReportNG: explicitly add Guice
+    testCompile "com.google.inject:guice:3.0"
 }
 
-task integTest(type: Test) {
-    dependsOn ':jcollada-spi:test'
-    dependsOn ':jcollada-schema-1.4:test'
-    testClassesDir = sourceSets.integTest.output.classesDir
-    classpath = sourceSets.integTest.runtimeClasspath
+test.dependsOn ':jcollada-spi:test'
+test.dependsOn ':jcollada-schema-1.4:test'
+
+tasks.withType(Test) {
+    useTestNG() {
+        suiteXmlBuilder().suite(name: 'jcollada', parallel: 'tests') {
+            test(name: 'all-tests') {
+                packages {
+                    'package'(name: 'net.dryanhild.collada.*')
+                }
+            }
+        }
+    }
+    options {
+        listeners << 'org.uncommons.reportng.HTMLReporter'
+        listeners << 'org.testng.reporters.XMLReporter'
+    }
+    ext.useDefaultListeners = true
+    ext.workingDirectory = 'build/'
 }

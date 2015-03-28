@@ -35,8 +35,14 @@ dependencies {
 
     hk2Generator "org.glassfish.hk2:hk2-inhabitant-generator:${hk2Version}"
 
-    testRuntime "net.sf.kxml:kxml2:2.2.2"
+    provided "net.sf.kxml:kxml2:2.2.2"
     testCompile "org.glassfish.hk2:hk2-testng:${hk2Version}"
+    testCompile "org.testng:testng:${testngVersion}"
+    testCompile "org.uncommons:reportng:$reportngVersion"
+    testCompile "org.assertj:assertj-core:${assertjVersion}"
+    testCompile "org.mockito:mockito-all:${mockitoVersion}"
+    // known issue with TestNG and ReportNG: explicitly add Guice
+    testCompile "com.google.inject:guice:3.0"
 }
 
 task(generateHK2, type: JavaExec) {
@@ -65,6 +71,24 @@ task copyHK2TestDefaults(type: org.gradle.api.tasks.Copy) {
     from "${buildDir}/generated/hk2"
     into sourceSets.test.output.resourcesDir
     rename "JCollada-Schema-1.4", "default"
+}
+
+tasks.withType(Test) {
+    useTestNG() {
+        suiteXmlBuilder().suite(name: 'jcollada', parallel: 'tests') {
+            test(name: 'all-tests') {
+                packages {
+                    'package'(name: 'net.dryanhild.collada.*')
+                }
+            }
+        }
+    }
+    options {
+        listeners << 'org.uncommons.reportng.HTMLReporter'
+        listeners << 'org.testng.reporters.XMLReporter'
+    }
+    ext.useDefaultListeners = true
+    ext.workingDirectory = 'build/'
 }
 
 test.dependsOn copyHK2Test, copyHK2TestDefaults
