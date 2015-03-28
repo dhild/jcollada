@@ -20,47 +20,36 @@
  * THE SOFTWARE.
  */
 
-package net.dryanhild.collada.schema14.data.geometry.source;
+package net.dryanhild.collada.common.geometry.source;
 
-import net.dryanhild.collada.data.NameableType;
-import net.dryanhild.collada.data.ScopeAddressableType;
+import lombok.Getter;
+import lombok.Setter;
 
-public class SourceAccessorParam implements NameableType, ScopeAddressableType {
+import java.util.Arrays;
+import java.util.List;
 
-    private String name;
-    private String sid;
-    private String type;
-    private String semantic;
+@Getter
+@Setter
+public class FloatAccessor {
+    private String source;
+    private int offset;
+    private int count;
+    private int stride = 1;
+    private SourceAccessorParam[] params;
+    private int paramCount;
 
-    public String getName() {
-        return name;
+    public Iterable<SourceAccessorParam> getParams() {
+        return Arrays.asList(params);
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setParams(List<SourceAccessorParam> params) {
+        this.params = params.toArray(new SourceAccessorParam[params.size()]);
+        paramCount = 0;
+        for (SourceAccessorParam param : params) {
+            if (param.getName() != null && !param.getName().isEmpty()) {
+                paramCount++;
+            }
+        }
     }
 
-    public String getSid() {
-        return sid;
-    }
-
-    public void setSID(String scopedID) {
-        sid = scopedID;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getSemantic() {
-        return semantic;
-    }
-
-    public void setSemantic(String semantic) {
-        this.semantic = semantic;
-    }
 }

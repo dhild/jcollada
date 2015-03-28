@@ -20,47 +20,39 @@
  * THE SOFTWARE.
  */
 
-package net.dryanhild.collada.schema14.data.geometry.source;
+package net.dryanhild.collada.common.transform;
 
-import net.dryanhild.collada.data.NameableType;
-import net.dryanhild.collada.data.ScopeAddressableType;
+import lombok.Getter;
+import lombok.Setter;
+import net.dryanhild.collada.data.transform.Matrix;
 
-public class SourceAccessorParam implements NameableType, ScopeAddressableType {
+import java.nio.FloatBuffer;
+import java.util.Arrays;
 
-    private String name;
+@Getter
+@Setter
+public class MatrixImpl implements Matrix {
+
+    public final float[] values = new float[16];
     private String sid;
-    private String type;
-    private String semantic;
 
-    public String getName() {
-        return name;
+    @Override
+    public float[] getValues() {
+        return Arrays.copyOf(values, values.length);
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setValues(float[] values) {
+        assert values.length == 16;
+        System.arraycopy(values, 0, this.values, 0, 16);
     }
 
-    public String getSid() {
-        return sid;
+    @Override
+    public Matrix toMatrix() {
+        return this;
     }
 
-    public void setSID(String scopedID) {
-        sid = scopedID;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getSemantic() {
-        return semantic;
-    }
-
-    public void setSemantic(String semantic) {
-        this.semantic = semantic;
+    @Override
+    public void putAsColumnMatrix(FloatBuffer buffer) {
+        buffer.put(values);
     }
 }

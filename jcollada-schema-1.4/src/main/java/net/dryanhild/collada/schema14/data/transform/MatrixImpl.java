@@ -53,7 +53,7 @@ public class MatrixImpl implements Matrix {
     }
 
     @Override
-    public String getSID() {
+    public String getSid() {
         return sid;
     }
 

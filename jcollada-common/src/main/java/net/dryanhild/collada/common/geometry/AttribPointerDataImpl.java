@@ -20,47 +20,30 @@
  * THE SOFTWARE.
  */
 
-package net.dryanhild.collada.schema14.data.geometry.source;
+package net.dryanhild.collada.common.geometry;
 
-import net.dryanhild.collada.data.NameableType;
-import net.dryanhild.collada.data.ScopeAddressableType;
+import lombok.Getter;
+import lombok.Setter;
+import net.dryanhild.collada.data.geometry.AttribPointerData;
 
-public class SourceAccessorParam implements NameableType, ScopeAddressableType {
+@Getter
+@Setter
+public class AttribPointerDataImpl implements AttribPointerData {
 
-    private String name;
-    private String sid;
-    private String type;
-    private String semantic;
+    private final String semantic;
+    private final int size;
+    private final int type;
+    private final boolean normalized;
+    private final int stride;
+    private final int offset;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSid() {
-        return sid;
-    }
-
-    public void setSID(String scopedID) {
-        sid = scopedID;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getSemantic() {
-        return semantic;
-    }
-
-    public void setSemantic(String semantic) {
+    public AttribPointerDataImpl(String semantic, int size, int type, boolean normalized, int stride, int offset) {
         this.semantic = semantic;
+        this.size = size;
+        this.type = type;
+        this.normalized = normalized;
+        this.stride = stride;
+        this.offset = offset;
     }
+
 }

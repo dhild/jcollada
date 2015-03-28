@@ -20,47 +20,28 @@
  * THE SOFTWARE.
  */
 
-package net.dryanhild.collada.schema14.data.geometry.source;
+package net.dryanhild.collada.common.geometry;
 
-import net.dryanhild.collada.data.NameableType;
-import net.dryanhild.collada.data.ScopeAddressableType;
+import com.carrotsearch.hppc.IntArrayList;
+import net.dryanhild.collada.data.geometry.Triangles;
 
-public class SourceAccessorParam implements NameableType, ScopeAddressableType {
+import java.nio.IntBuffer;
 
-    private String name;
-    private String sid;
-    private String type;
-    private String semantic;
+public class TrianglesImpl implements Triangles {
 
-    public String getName() {
-        return name;
+    private final int[] indices;
+
+    public TrianglesImpl(IntArrayList indices) {
+        this.indices = indices.toArray();
     }
 
-    public void setName(String name) {
-        this.name = name;
+    @Override
+    public int getCount() {
+        return indices.length / 3;
     }
 
-    public String getSid() {
-        return sid;
-    }
-
-    public void setSID(String scopedID) {
-        sid = scopedID;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getSemantic() {
-        return semantic;
-    }
-
-    public void setSemantic(String semantic) {
-        this.semantic = semantic;
+    @Override
+    public IntBuffer putElementIndices(IntBuffer buffer) {
+        return buffer.put(indices);
     }
 }

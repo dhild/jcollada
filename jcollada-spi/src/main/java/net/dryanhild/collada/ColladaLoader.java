@@ -51,8 +51,6 @@ import java.util.ServiceLoader;
  */
 public class ColladaLoader {
 
-    private static final int HEADER_LENGTH = 1024;
-
     private static final Logger LOG = LoggerFactory.getLogger(ColladaLoader.class);
 
     private final Collection<ColladaLoaderService> loaders;

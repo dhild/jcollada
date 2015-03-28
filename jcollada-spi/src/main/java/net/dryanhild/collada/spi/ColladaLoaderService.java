@@ -33,8 +33,8 @@ public interface ColladaLoaderService {
 
     Collection<VersionSupport> getColladaVersions();
 
-    boolean canLoad(@NotNull CharSequence header);
+    boolean canLoad(CharSequence header);
 
-    ColladaDocument load(@NotNull ParsingContext context) throws IOException;
+    ColladaDocument load(ParsingContext context) throws IOException;
 
 }

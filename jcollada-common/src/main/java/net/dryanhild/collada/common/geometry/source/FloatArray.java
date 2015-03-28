@@ -20,47 +20,26 @@
  * THE SOFTWARE.
  */
 
-package net.dryanhild.collada.schema14.data.geometry.source;
+package net.dryanhild.collada.common.geometry.source;
 
-import net.dryanhild.collada.data.NameableType;
-import net.dryanhild.collada.data.ScopeAddressableType;
 
-public class SourceAccessorParam implements NameableType, ScopeAddressableType {
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class FloatArray {
 
     private String name;
-    private String sid;
-    private String type;
-    private String semantic;
+    private String id;
 
-    public String getName() {
-        return name;
+    public float[] values;
+
+    public void setSize(int size) {
+        values = new float[size];
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSid() {
-        return sid;
-    }
-
-    public void setSID(String scopedID) {
-        sid = scopedID;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getSemantic() {
-        return semantic;
-    }
-
-    public void setSemantic(String semantic) {
-        this.semantic = semantic;
+    public float get(int index) {
+        return values[index];
     }
 }

@@ -57,7 +57,7 @@ public class WithMatrixElement extends BaseParserTest {
 
     @Test
     public void matrixHasCorrectSID() {
-        assertThat(matrix.getSID()).isEqualTo("transform");
+        assertThat(matrix.getSid()).isEqualTo("transform");
     }
 
 }

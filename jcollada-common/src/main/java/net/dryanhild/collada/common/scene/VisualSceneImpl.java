@@ -20,47 +20,25 @@
  * THE SOFTWARE.
  */
 
-package net.dryanhild.collada.schema14.data.geometry.source;
+package net.dryanhild.collada.common.scene;
 
-import net.dryanhild.collada.data.NameableType;
-import net.dryanhild.collada.data.ScopeAddressableType;
+import net.dryanhild.collada.common.AbstractNameableAddressableType;
+import net.dryanhild.collada.data.scene.Node;
+import net.dryanhild.collada.data.scene.VisualScene;
 
-public class SourceAccessorParam implements NameableType, ScopeAddressableType {
+import java.util.ArrayList;
+import java.util.List;
 
-    private String name;
-    private String sid;
-    private String type;
-    private String semantic;
+public class VisualSceneImpl extends AbstractNameableAddressableType implements VisualScene {
 
-    public String getName() {
-        return name;
+    private final List<NodeImpl> nodes = new ArrayList<>();
+
+    @Override
+    public List<? extends Node> getNodes() {
+        return nodes;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSid() {
-        return sid;
-    }
-
-    public void setSID(String scopedID) {
-        sid = scopedID;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getSemantic() {
-        return semantic;
-    }
-
-    public void setSemantic(String semantic) {
-        this.semantic = semantic;
+    public void addNode(NodeImpl node) {
+        nodes.add(node);
     }
 }

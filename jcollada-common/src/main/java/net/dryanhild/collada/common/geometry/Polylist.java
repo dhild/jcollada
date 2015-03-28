@@ -20,47 +20,42 @@
  * THE SOFTWARE.
  */
 
-package net.dryanhild.collada.schema14.data.geometry.source;
+package net.dryanhild.collada.common.geometry;
 
-import net.dryanhild.collada.data.NameableType;
-import net.dryanhild.collada.data.ScopeAddressableType;
+import com.carrotsearch.hppc.IntArrayList;
+import lombok.Getter;
+import lombok.Setter;
 
-public class SourceAccessorParam implements NameableType, ScopeAddressableType {
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+@Getter
+@Setter
+public class Polylist {
 
     private String name;
-    private String sid;
-    private String type;
-    private String semantic;
+    private int count;
+    private final Map<String, String> sources = new HashMap<>();
+    private final Map<String, Integer> offsets = new HashMap<>();
+    private IntArrayList vcount;
+    private IntArrayList p;
 
-    public String getName() {
-        return name;
+    public void addInput(String semantic, String source, int offset) {
+        sources.put(semantic, source);
+        offsets.put(semantic, offset);
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public Set<String> getSemantics() {
+        return sources.keySet();
     }
 
-    public String getSid() {
-        return sid;
+    public String getSource(String semantic) {
+        return sources.get(semantic);
     }
 
-    public void setSID(String scopedID) {
-        sid = scopedID;
+    public int getOffset(String semantic) {
+        return offsets.get(semantic);
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getSemantic() {
-        return semantic;
-    }
-
-    public void setSemantic(String semantic) {
-        this.semantic = semantic;
-    }
 }

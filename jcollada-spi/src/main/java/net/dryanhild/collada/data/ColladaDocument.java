@@ -29,8 +29,6 @@ import net.dryanhild.collada.data.geometry.Geometry;
 import net.dryanhild.collada.data.scene.Node;
 import net.dryanhild.collada.data.scene.VisualScene;
 
-import javax.validation.constraints.NotNull;
-
 public interface ColladaDocument {
 
     Iterable<Geometry> getGeometries();
@@ -42,7 +40,7 @@ public interface ColladaDocument {
      * @return The geometry with the given ID, if it is present.
      * @throws java.util.NoSuchElementException If the given geometry does not exist.
      */
-    Geometry getGeometry(@NotNull String id);
+    Geometry getGeometry(String id);
 
     Iterable<Node> getNodes();
 
@@ -53,19 +51,19 @@ public interface ColladaDocument {
      * @return The node with the given ID, if it is present.
      * @throws java.util.NoSuchElementException If the given node does not exist.
      */
-    Node getNode(@NotNull String id);
+    Node getNode(String id);
 
     Iterable<VisualScene> getVisualScenes();
 
-    VisualScene getVisualScene(@NotNull String id);
+    VisualScene getVisualScene(String id);
 
     Iterable<? extends Effect> getEffects();
 
-    Effect getEffect(@NotNull String id);
+    Effect getEffect(String id);
 
     Iterable<? extends Material> getMaterials();
 
-    Material getMaterial(@NotNull String id);
+    Material getMaterial(String id);
 
     VisualScene getMainScene();
 

@@ -20,47 +20,24 @@
  * THE SOFTWARE.
  */
 
-package net.dryanhild.collada.schema14.data.geometry.source;
+package net.dryanhild.collada.common.geometry;
 
-import net.dryanhild.collada.data.NameableType;
-import net.dryanhild.collada.data.ScopeAddressableType;
+import java.util.HashMap;
+import java.util.Map;
 
-public class SourceAccessorParam implements NameableType, ScopeAddressableType {
+public class Vertices {
 
-    private String name;
-    private String sid;
-    private String type;
-    private String semantic;
+    private Map<String, String> semantics = new HashMap<>();
 
-    public String getName() {
-        return name;
+    public void addInput(String semantic, String source) {
+        semantics.put(semantic, source);
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public Iterable<String> getSemantics() {
+        return semantics.keySet();
     }
 
-    public String getSid() {
-        return sid;
-    }
-
-    public void setSID(String scopedID) {
-        sid = scopedID;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getSemantic() {
-        return semantic;
-    }
-
-    public void setSemantic(String semantic) {
-        this.semantic = semantic;
+    public String getSource(String semantic) {
+        return semantics.get(semantic);
     }
 }
