@@ -114,8 +114,15 @@ public class ColladaLoader {
      * @see {@link #setValidating(boolean)}
      * @see {@link #setCharset(java.nio.charset.Charset)}
      */
-    public ColladaDocument load(URL url) throws IOException, URISyntaxException {
-        return load(url.toURI(), url.openStream());
+    public ColladaDocument load(URL url) throws IOException {
+        URI uri;
+        try {
+            uri = url.toURI();
+        } catch (URISyntaxException e) {
+            LOG.debug("Unable to convert directly to a URI, using just the path instead", e);
+            uri = URI.create(url.getPath());
+        }
+        return load(uri, url.openStream());
     }
 
     /**
