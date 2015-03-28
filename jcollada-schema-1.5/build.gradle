@@ -20,10 +20,14 @@
  * THE SOFTWARE.
  */
 
-
+apply plugin: 'groovy'
 
 dependencies {
     compile project(':jcollada-spi')
+
+    compile 'com.google.inject:guice:3.0'
+
+    testCompile 'org.spockframework:spock-guice:1.0-groovy-2.4'
 }
 
 jar {

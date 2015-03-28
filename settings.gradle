@@ -21,7 +21,8 @@
  */
 
 include 'jcollada-spi'
+include 'jcollada-common'
 include 'jcollada-schema-1.4'
-//include 'jcollada-schema-1.5'
+include 'jcollada-schema-1.5'
 include 'jcollada-test'
 

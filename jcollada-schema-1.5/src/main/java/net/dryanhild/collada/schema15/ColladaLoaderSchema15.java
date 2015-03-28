@@ -1,44 +1,35 @@
-package net.dryanhild.collada.schema14;
+package net.dryanhild.collada.schema15;
 
 import com.google.common.collect.ImmutableList;
 import net.dryanhild.collada.VersionSupport;
 import net.dryanhild.collada.data.ColladaDocument;
-import net.dryanhild.collada.hk2spi.ColladaLoader;
-import net.dryanhild.collada.hk2spi.ParsingContext;
-import net.dryanhild.collada.schema14.parser.DAEParser;
-import org.jvnet.hk2.annotations.Service;
+import net.dryanhild.collada.schema15.data.Collada15Document;
+import net.dryanhild.collada.spi.ColladaLoaderService;
+import net.dryanhild.collada.spi.ParsingContext;
 
-import javax.inject.Inject;
-import java.util.regex.Matcher;
+import java.io.IOException;
+import java.util.Collection;
 import java.util.regex.Pattern;
 
-@Service
-@Schema15
-public class ColladaLoaderSchema15 implements ColladaLoader {
+public class ColladaLoaderSchema15 implements ColladaLoaderService {
 
     public static final VersionSupport VERSION_1_5_0 = new VersionSupport(1, 5, 0);
 
-    private static final Pattern SCHEMA_PATTERN = Pattern.compile(".*COLLADA[^>]+version\\s?=\\s?\\\"1\\.5\\.0\\\".*",
-            Pattern.DOTALL);
-
-    @Inject
-    private DAEParser parser;
+    private static final Pattern SCHEMA_PATTERN =
+            Pattern.compile(".*COLLADA[^>]+version\\s?=\\s?\"1\\.5\\.0\".*", Pattern.DOTALL);
 
     @Override
-    public Iterable<VersionSupport> getColladaVersions() {
+    public Collection<VersionSupport> getColladaVersions() {
         return ImmutableList.of(VERSION_1_5_0);
     }
 
     @Override
-    public boolean canLoad(ParsingContext context) {
-        byte[] header = context.getMainFileHeader();
-        String headerString = new String(header);
-        Matcher matcher = SCHEMA_PATTERN.matcher(headerString);
-        return matcher.matches();
+    public boolean canLoad(CharSequence header) {
+        return SCHEMA_PATTERN.matcher(header).matches();
     }
 
     @Override
-    public ColladaDocument load(ParsingContext context) {
-        return parser.parse(context.getMainFileInputStream());
+    public ColladaDocument load(ParsingContext context) throws IOException {
+        return new Collada15Document();
     }
 }

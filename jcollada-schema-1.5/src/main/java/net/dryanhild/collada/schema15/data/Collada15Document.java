@@ -1,23 +1,17 @@
-package net.dryanhild.collada.schema14;
+package net.dryanhild.collada.schema15.data;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import net.dryanhild.collada.NoSuchElementIdException;
+import net.dryanhild.collada.VersionSupport;
 import net.dryanhild.collada.data.ColladaDocument;
 import net.dryanhild.collada.data.fx.Effect;
 import net.dryanhild.collada.data.fx.Material;
 import net.dryanhild.collada.data.geometry.Geometry;
 import net.dryanhild.collada.data.scene.Node;
 import net.dryanhild.collada.data.scene.VisualScene;
+import net.dryanhild.collada.schema15.ColladaLoaderSchema15;
 
 import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 
-public class ColladaDocument15 implements ColladaDocument {
-
-    private final List<Effect> effects = Lists.newArrayList();
-    private final Map<String, Effect> effectsById = Maps.newHashMap();
+public class Collada15Document implements ColladaDocument {
 
     @Override
     public Iterable<Geometry> getGeometries() {
@@ -26,7 +20,7 @@ public class ColladaDocument15 implements ColladaDocument {
 
     @Override
     public Geometry getGeometry(String id) {
-        throw new NoSuchElementIdException(id);
+        return null;
     }
 
     @Override
@@ -36,7 +30,7 @@ public class ColladaDocument15 implements ColladaDocument {
 
     @Override
     public Node getNode(String id) {
-        throw new NoSuchElementIdException(id);
+        return null;
     }
 
     @Override
@@ -46,24 +40,17 @@ public class ColladaDocument15 implements ColladaDocument {
 
     @Override
     public VisualScene getVisualScene(String id) {
-        throw new NoSuchElementIdException(id);
-    }
-
-    public void addEffect(Effect effect) {
-        effects.add(effect);
-        if (effect.getId() != null) {
-            effectsById.put("#" + effect.getId(), effect);
-        }
+        return null;
     }
 
     @Override
     public Iterable<? extends Effect> getEffects() {
-        return effects;
+        return Collections.emptyList();
     }
 
     @Override
     public Effect getEffect(String id) {
-        return effectsById.get(id);
+        return null;
     }
 
     @Override
@@ -73,12 +60,16 @@ public class ColladaDocument15 implements ColladaDocument {
 
     @Override
     public Material getMaterial(String id) {
-        throw new NoSuchElementIdException(id);
+        return null;
     }
 
     @Override
     public VisualScene getMainScene() {
-        throw new NoSuchElementIdException("Main scene of the COLLADA file");
+        return null;
     }
 
+    @Override
+    public VersionSupport getVersion() {
+        return ColladaLoaderSchema15.VERSION_1_5_0;
+    }
 }
