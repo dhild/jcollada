@@ -1,8 +1,7 @@
 package net.dryanhild.collada.schema15;
 
 import com.google.common.collect.ImmutableList;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
+import dagger.ObjectGraph;
 import net.dryanhild.collada.VersionSupport;
 import net.dryanhild.collada.common.parser.XmlParser;
 import net.dryanhild.collada.data.ColladaDocument;
@@ -23,17 +22,17 @@ import java.util.regex.Pattern;
 
 public class ColladaLoaderSchema15 implements ColladaLoaderService {
 
-    private static final Logger logger = LoggerFactory.getLogger(ColladaLoaderSchema15.class);
-
     public static final VersionSupport VERSION_1_5_0 = new VersionSupport(1, 5, 0);
 
     private static final Pattern SCHEMA_PATTERN =
             Pattern.compile(".*COLLADA[^>]+version\\s?=\\s?\"1\\.5\\.0\".*", Pattern.DOTALL);
 
-    private Injector injector;
+    private static final Logger logger = LoggerFactory.getLogger(ColladaLoaderSchema15.class);
+
+    private ObjectGraph objectGraph;
 
     public ColladaLoaderSchema15() {
-        injector = Guice.createInjector(new ColladaModule());
+        objectGraph = ObjectGraph.create(new ColladaModule());
     }
 
     @Override
@@ -52,7 +51,7 @@ public class ColladaLoaderSchema15 implements ColladaLoaderService {
 
     @Override
     public ColladaDocument load(ParsingContext context) throws IOException {
-        ColladaDocumentAssembler assembler = injector.getInstance(ColladaDocumentAssembler.class);
+        ColladaDocumentAssembler assembler = objectGraph.get(ColladaDocumentAssembler.class);
 
         assembler.addFragment(parseFragment(context, context.getSourceUri(), context.getMainFileInputStream()));
 
@@ -62,7 +61,7 @@ public class ColladaLoaderSchema15 implements ColladaLoaderService {
     private ColladaDocumentFragment parseFragment(ParsingContext context, URI uri, InputStream inputStream)
             throws IOException {
         XmlPullParser parser = XmlParser.createPullParser(context.isValidating(), inputStream, context.getCharset());
-        ColladaFragmentParser documentParser = injector.getInstance(ColladaFragmentParser.class);
+        ColladaFragmentParser documentParser = objectGraph.get(ColladaFragmentParser.class);
         return documentParser.parse(uri, parser);
     }
 }

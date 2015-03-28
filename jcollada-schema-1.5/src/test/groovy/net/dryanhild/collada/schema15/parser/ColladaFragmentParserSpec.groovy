@@ -1,20 +1,20 @@
 package net.dryanhild.collada.schema15.parser
 
-import net.dryanhild.collada.schema15.ColladaModule
-import net.dryanhild.collada.schema15.parser.metadata.AssetParser
-import spock.guice.UseModules
+import dagger.ObjectGraph
 import spock.lang.Specification
 
-import javax.inject.Inject
-
-@UseModules(ColladaModule)
 class ColladaFragmentParserSpec extends Specification implements ParserSpec {
 
-    @Inject
-    AssetParser assetParser
-
-    @Inject
+    static ObjectGraph graph
     ColladaFragmentParser parser
+
+    def setupSpec() {
+        graph = ObjectGraph.create(new ParserModule())
+    }
+
+    def setup() {
+        parser = graph.get(ColladaFragmentParser)
+    }
 
     def 'can parse a minimalist file'() {
         setup:

@@ -26,12 +26,15 @@ dependencies {
     compile project(':jcollada-spi')
     compile project(':jcollada-common')
 
-    compile 'com.google.inject:guice:3.0'
-    compile "xmlpull:xmlpull:$xmlpullVersion"
     provided 'org.projectlombok:lombok:1.16.2'
+
+    compile 'com.squareup.dagger:dagger:1.2.2'
+    provided 'com.squareup.dagger:dagger-compiler:1.2.2'
+
+    compile "xmlpull:xmlpull:$xmlpullVersion"
     provided "net.sf.kxml:kxml2:2.2.2"
 
-    testCompile 'org.spockframework:spock-guice:1.0-groovy-2.4'
+    testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
 }
 
 jar {

@@ -41,8 +41,7 @@ subprojects {
     apply plugin: 'java'
     apply plugin: 'jacoco'
     apply plugin: 'maven-publish'
-    
-    apply plugin: 'checkstyle'
+
     apply plugin: 'findbugs'
     apply plugin: 'pmd'
 
@@ -73,10 +72,6 @@ subprojects {
 
     tasks.withType(JavaCompile) {
         options.compilerArgs << "-Xlint"
-    }
-
-    checkstyle {
-        configFile = file("$rootDir/config/checkstyle/checkstyle.xml")
     }
     
     pmd {

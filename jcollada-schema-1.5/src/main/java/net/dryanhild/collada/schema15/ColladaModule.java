@@ -1,15 +1,12 @@
 package net.dryanhild.collada.schema15;
 
-import com.google.inject.AbstractModule;
-import net.dryanhild.collada.schema15.parser.ColladaFragmentParser;
-import net.dryanhild.collada.schema15.parser.metadata.AssetParser;
-import net.dryanhild.collada.schema15.postprocess.ColladaDocumentAssembler;
+import dagger.Module;
+import net.dryanhild.collada.schema15.parser.ParserModule;
+import net.dryanhild.collada.schema15.postprocess.PostProcessModule;
 
-public class ColladaModule extends AbstractModule {
-    @Override
-    protected void configure() {
-        bind(ColladaFragmentParser.class);
-        bind(AssetParser.class);
-        bind(ColladaDocumentAssembler.class);
-    }
+@Module(injects = {
+        ParserModule.class,
+        PostProcessModule.class
+})
+public class ColladaModule {
 }
