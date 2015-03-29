@@ -1,12 +1,12 @@
 package net.dryanhild.collada.data.metadata;
 
-import java.time.ZonedDateTime;
+import java.time.Instant;
 
 public interface Asset {
 
-    ZonedDateTime getCreated();
+    Instant getCreated();
 
-    ZonedDateTime getModified();
+    Instant getModified();
 
     String getSubject();
     String getTitle();

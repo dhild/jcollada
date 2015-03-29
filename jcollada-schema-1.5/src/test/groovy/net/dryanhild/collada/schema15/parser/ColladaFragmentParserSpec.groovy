@@ -38,4 +38,16 @@ class ColladaFragmentParserSpec extends Specification implements ParserSpec {
         then:
         result.uri == URI.create("http://example.org/collada/")
     }
+
+    def 'asset loading is triggered'() {
+        setup:
+        def data = "<COLLADA xmlns=\"http://www.collada.org/2008/03/COLLADASchema\" version=\"1.5.0\">" +
+                " <asset><modified>2007-12-11T14:24:00Z</modified></asset>" +
+                "</COLLADA>"
+        when:
+        def result = parser.parse(URI.create("test.dae"), createDocumentParser(data))
+
+        then:
+        result.asset.modified.epochSecond
+    }
 }

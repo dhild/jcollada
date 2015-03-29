@@ -3,7 +3,7 @@ package net.dryanhild.collada.schema15.parser.metadata;
 import net.dryanhild.collada.common.metadata.MutableAsset;
 import net.dryanhild.collada.common.parser.SimpleTextParser;
 import net.dryanhild.collada.common.parser.XmlParser;
-import net.dryanhild.collada.common.parser.ZonedDateTimeParser;
+import net.dryanhild.collada.common.parser.InstantParser;
 import org.xmlpull.v1.XmlPullParser;
 
 public class AssetParser {
@@ -13,8 +13,8 @@ public class AssetParser {
     private final SimpleTextParser subjectParser = new SimpleTextParser("subject");
     private final SimpleTextParser titleParser = new SimpleTextParser("title");
     private final SimpleTextParser revisionParser = new SimpleTextParser("revision");
-    private final ZonedDateTimeParser createdParser = new ZonedDateTimeParser("created");
-    private final ZonedDateTimeParser modifiedParser = new ZonedDateTimeParser("modified");
+    private final InstantParser createdParser = new InstantParser("created");
+    private final InstantParser modifiedParser = new InstantParser("modified");
 
     public AssetParser() {
         parser.addElementConsumer("created",
