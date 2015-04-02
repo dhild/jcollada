@@ -38,12 +38,15 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URI;
 import java.nio.charset.Charset;
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 import static org.xmlpull.v1.XmlPullParser.START_TAG;
 
-public class XmlParser<OutputType> {
+public class XmlParser<OutputType> implements BiFunction<XmlPullParser, OutputType, OutputType> {
 
     public static XmlPullParser createPullParser(boolean validating, InputStream inputStream, Charset charset)
             throws IOException {
@@ -64,10 +67,10 @@ public class XmlParser<OutputType> {
 
     private final Logger logger;
 
-    private final String expectedNamespace;
-    private final String expectedTag;
-    private final Multimap<String, BiConsumer<OutputType, String>> attributeConsumers = HashMultimap.create();
-    private final Multimap<String, BiConsumer<OutputType, XmlPullParser>> elementConsumers = HashMultimap.create();
+    protected final String expectedNamespace;
+    protected final String expectedTag;
+    protected final Multimap<String, BiConsumer<OutputType, String>> attributeConsumers = HashMultimap.create();
+    protected final Multimap<String, BiConsumer<OutputType, XmlPullParser>> elementConsumers = HashMultimap.create();
 
     public XmlParser(String tag, Class<OutputType> type) {
         this(COLLADA_NAMESPACE, tag, type);
@@ -102,6 +105,36 @@ public class XmlParser<OutputType> {
         attributeConsumers.put(tag, consumer);
     }
 
+    public void addIntConsumer(String tag, BiConsumer<OutputType, Integer> consumer) {
+        addAttributeConsumer(tag, consumer, Integer::valueOf);
+    }
+
+    public void addURIConsumer(String tag, BiConsumer<OutputType, URI> consumer) {
+        addAttributeConsumer(tag, consumer, URI::create);
+    }
+
+    public void addLongConsumer(String tag, BiConsumer<OutputType, Long> consumer) {
+        addAttributeConsumer(tag, consumer, Long::valueOf);
+    }
+
+    public void addFloatConsumer(String tag, BiConsumer<OutputType, Float> consumer) {
+        addAttributeConsumer(tag, consumer, Float::valueOf);
+    }
+
+    public <V> void addAttributeConsumer(String tag, BiConsumer<OutputType, V> consumer,
+                                         Function<String, V> valueConsumer) {
+        attributeConsumers.put(tag, (outputType, s) -> consumer.accept(outputType, valueConsumer.apply(s)));
+    }
+
+    public <V> void addElementConsumer(String tag, BiConsumer<OutputType, V> consumer,
+                                       Function<XmlPullParser, V> valueFunction) {
+        elementConsumers.put(tag, (outputType, parser) -> consumer.accept(outputType, valueFunction.apply(parser)));
+    }
+
+    public void addStringElementConsumer(String tag, BiConsumer<OutputType, String> consumer) {
+        addElementConsumer(tag, consumer, new SimpleTextParser(tag).andThen(StringBuilder::toString));
+    }
+
     public void addElementConsumer(String tag, BiConsumer<OutputType, XmlPullParser> consumer) {
         elementConsumers.put(tag, consumer);
     }
@@ -114,13 +147,22 @@ public class XmlParser<OutputType> {
         }
     }
 
+    @Override
     @SneakyThrows({IOException.class, XmlPullParserException.class})
-    public final OutputType parse(XmlPullParser parser, OutputType object) {
+    public OutputType apply(XmlPullParser parser, OutputType object) {
         parser.require(START_TAG, expectedNamespace, expectedTag);
         final int depth = parser.getDepth();
 
         setAttributes(parser, object);
 
+        parseInnerElements(parser, object, depth);
+        parseInnerElements(parser, object, depth);
+
+        return object;
+    }
+
+    protected void parseInnerElements(XmlPullParser parser, OutputType object, int depth)
+            throws XmlPullParserException, IOException {
         int token = parser.next();
         while (depth <= parser.getDepth()) {
             if (token == START_TAG) {
@@ -129,12 +171,9 @@ public class XmlParser<OutputType> {
                 token = parser.next();
             }
         }
-
-        return object;
     }
 
-    @SneakyThrows({IOException.class, XmlPullParserException.class})
-    protected void setAttributes(XmlPullParser parser, OutputType object) {
+    protected void setAttributes(XmlPullParser parser, OutputType object) throws IOException, XmlPullParserException {
         parser.require(START_TAG, expectedNamespace, expectedTag);
 
         for (int i = 0; i < parser.getAttributeCount(); i++) {
@@ -147,8 +186,7 @@ public class XmlParser<OutputType> {
         }
     }
 
-    @SneakyThrows({XmlPullParserException.class})
-    private int processElement(XmlPullParser parser, OutputType object) {
+    protected int processElement(XmlPullParser parser, OutputType object) throws IOException, XmlPullParserException {
         final int line = parser.getLineNumber();
         final int col = parser.getColumnNumber();
 
@@ -161,8 +199,7 @@ public class XmlParser<OutputType> {
         return parser.getEventType();
     }
 
-    @SneakyThrows({IOException.class, XmlPullParserException.class})
-    protected void skipElement(XmlPullParser parser) {
+    protected void skipElement(XmlPullParser parser) throws IOException, XmlPullParserException {
         parser.require(START_TAG, null, null);
 
         logger.trace("Skipping element [{}]{}", parser.getNamespace(), parser.getName());

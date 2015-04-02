@@ -1,19 +1,19 @@
 package net.dryanhild.collada.schema15.data.geometry;
 
-import com.carrotsearch.hppc.FloatArrayList;
+import com.carrotsearch.hppc.IntArrayList;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class RawFloats {
+public class RawInts {
 
     private String id;
     private String name;
     private int count;
-    private int digits;
-    private int magnitude;
+    private int minInclusive;
+    private int maxInclusive;
 
-    private FloatArrayList floats;
+    private IntArrayList ints;
 
 }

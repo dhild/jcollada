@@ -10,8 +10,6 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
 import java.net.URI;
 
-import javax.inject.Inject;
-
 import static org.xmlpull.v1.XmlPullParser.START_DOCUMENT;
 import static org.xmlpull.v1.XmlPullParser.START_TAG;
 
@@ -19,11 +17,9 @@ public class ColladaFragmentParser {
 
     private final XmlParser<ColladaDocumentFragment> parser = new XmlParser<>("COLLADA", ColladaDocumentFragment.class);
 
-    @Inject
-    public ColladaFragmentParser(AssetParser assetParser) {
+    public ColladaFragmentParser() {
         parser.addAttributeConsumer("base", ((fragment, value) -> fragment.setUri(fragment.getUri().resolve(value))));
-
-        parser.addElementConsumer("asset", (fragment, pullParser) -> fragment.setAsset(assetParser.parse(pullParser)));
+        parser.addElementConsumer("asset", ColladaDocumentFragment::setAsset, new AssetParser());
     }
 
     public ColladaDocumentFragment parse(URI sourceUri, XmlPullParser pullParser) {
@@ -31,7 +27,7 @@ public class ColladaFragmentParser {
         fragment.setUri(sourceUri);
 
         skipToStart(pullParser);
-        return parser.parse(pullParser, fragment);
+        return parser.apply(pullParser, fragment);
     }
 
     @SneakyThrows({XmlPullParserException.class, IOException.class})

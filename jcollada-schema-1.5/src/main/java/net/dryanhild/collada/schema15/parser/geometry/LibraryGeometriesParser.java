@@ -5,21 +5,19 @@ import net.dryanhild.collada.schema15.data.geometry.LibraryGeometries;
 import net.dryanhild.collada.schema15.parser.metadata.AssetParser;
 import org.xmlpull.v1.XmlPullParser;
 
-import javax.inject.Inject;
+import java.util.function.Function;
 
-public class LibraryGeometriesParser {
+public class LibraryGeometriesParser implements Function<XmlPullParser, LibraryGeometries> {
 
     private final XmlParser<LibraryGeometries> parser = new XmlParser<>("library_geometries", LibraryGeometries.class);
 
-    @Inject
-    public LibraryGeometriesParser(AssetParser assetParser) {
-        parser.addElementConsumer("asset", (fragment, pullParser) -> fragment.setAsset(assetParser.parse(pullParser)));
+    public LibraryGeometriesParser() {
+        parser.addElementConsumer("asset", LibraryGeometries::setAsset, new AssetParser());
 
     }
 
-    public LibraryGeometries parse(XmlPullParser pullParser) {
-        LibraryGeometries geometries = new LibraryGeometries();
-
-        return parser.parse(pullParser, geometries);
+    @Override
+    public LibraryGeometries apply(XmlPullParser pullParser) {
+        return parser.apply(pullParser, new LibraryGeometries());
     }
 }
