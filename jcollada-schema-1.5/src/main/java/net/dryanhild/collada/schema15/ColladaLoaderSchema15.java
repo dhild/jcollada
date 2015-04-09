@@ -1,15 +1,15 @@
 package net.dryanhild.collada.schema15;
 
 import com.google.common.collect.ImmutableList;
-import dagger.ObjectGraph;
 import net.dryanhild.collada.VersionSupport;
 import net.dryanhild.collada.common.parser.XmlParser;
 import net.dryanhild.collada.data.ColladaDocument;
 import net.dryanhild.collada.schema15.data.ColladaDocumentFragment;
 import net.dryanhild.collada.schema15.parser.ColladaFragmentParser;
-import net.dryanhild.collada.schema15.postprocess.ColladaDocumentAssembler;
+import net.dryanhild.collada.schema15.postprocess.DocumentAssembler;
 import net.dryanhild.collada.spi.ColladaLoaderService;
 import net.dryanhild.collada.spi.ParsingContext;
+import org.glassfish.hk2.api.ServiceLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xmlpull.v1.XmlPullParser;
@@ -29,11 +29,7 @@ public class ColladaLoaderSchema15 implements ColladaLoaderService {
 
     private static final Logger logger = LoggerFactory.getLogger(ColladaLoaderSchema15.class);
 
-    private ObjectGraph objectGraph;
-
-    public ColladaLoaderSchema15() {
-        objectGraph = ObjectGraph.create(new ColladaModule());
-    }
+    private ServiceLocator serviceRegistry = ColladaServiceRegistry.getServiceLocator();
 
     @Override
     public Collection<VersionSupport> getColladaVersions() {
@@ -51,7 +47,7 @@ public class ColladaLoaderSchema15 implements ColladaLoaderService {
 
     @Override
     public ColladaDocument load(ParsingContext context) throws IOException {
-        ColladaDocumentAssembler assembler = objectGraph.get(ColladaDocumentAssembler.class);
+        DocumentAssembler assembler = serviceRegistry.getService(DocumentAssembler.class);
 
         assembler.addFragment(parseFragment(context, context.getSourceUri(), context.getMainFileInputStream()));
 
@@ -61,7 +57,7 @@ public class ColladaLoaderSchema15 implements ColladaLoaderService {
     private ColladaDocumentFragment parseFragment(ParsingContext context, URI uri, InputStream inputStream)
             throws IOException {
         XmlPullParser parser = XmlParser.createPullParser(context.isValidating(), inputStream, context.getCharset());
-        ColladaFragmentParser documentParser = objectGraph.get(ColladaFragmentParser.class);
+        ColladaFragmentParser documentParser = serviceRegistry.getService(ColladaFragmentParser.class);
         return documentParser.parse(uri, parser);
     }
 }

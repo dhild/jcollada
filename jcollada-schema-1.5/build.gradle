@@ -22,6 +22,12 @@
 
 apply plugin: 'groovy'
 
+configurations {
+    hk2Generator {
+        extendsFrom compile
+    }
+}
+
 dependencies {
     compile project(':jcollada-spi')
     compile project(':jcollada-common')
@@ -29,8 +35,8 @@ dependencies {
     compile 'com.carrotsearch:hppc:0.6.0'
     provided 'org.projectlombok:lombok:1.16.2'
 
-    compile 'com.squareup.dagger:dagger:1.2.2'
-    provided 'com.squareup.dagger:dagger-compiler:1.2.2'
+    compile "org.glassfish.hk2:hk2:$hk2Version"
+    hk2Generator "org.glassfish.hk2:hk2-inhabitant-generator:$hk2Version"
 
     compile "xmlpull:xmlpull:$xmlpullVersion"
     provided "net.sf.kxml:kxml2:2.2.2"
@@ -38,9 +44,35 @@ dependencies {
     testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
 }
 
+task('generateHK2', type: JavaExec) {
+    outputs.dir "$buildDir/generated/hk2"
+    inputs.dir sourceSets.main.output.classesDir
+    dependsOn 'compileJava', 'processResources'
+
+    classpath configurations.hk2Generator
+
+    args "--locator", "JCollada-Schema-1.5",
+            "--directory", "$buildDir/generated/hk2/META-INF/hk2-locator",
+            "--file", sourceSets.main.output.classesDir.path
+
+    main "org.jvnet.hk2.generator.HabitatGenerator"
+}
+
+task('copyHK2Test', type: Copy) {
+    dependsOn 'processTestResources', 'generateHK2'
+    from "$buildDir/generated/hk2"
+    into sourceSets.test.output.resourcesDir
+}
+
+test.dependsOn 'copyHK2Test'
+
 jar {
+    dependsOn 'generateHK2'
+    from {
+        files("$buildDir/generated/hk2")
+    }
     manifest {
-        attributes("Implementation-Title": "JCollada for Collada Schema 1.4",
+        attributes("Implementation-Title": "JCollada for Collada Schema 1.5",
                    "Implementation-Version": "$version",
                    "Implementation-Vendor": "D. Ryan Hild",
                    "Specification-Title": "JCollada SPI",
@@ -48,4 +80,3 @@ jar {
                    "Specification-Vendor": "D. Ryan Hild")
     }
 }
-

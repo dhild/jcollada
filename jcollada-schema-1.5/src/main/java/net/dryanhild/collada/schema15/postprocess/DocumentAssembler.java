@@ -21,15 +21,15 @@
  *
  */
 
-package net.dryanhild.collada.schema15.parser;
+package net.dryanhild.collada.schema15.postprocess;
 
+import net.dryanhild.collada.schema15.data.Collada15Document;
 import net.dryanhild.collada.schema15.data.ColladaDocumentFragment;
 import org.jvnet.hk2.annotations.Contract;
-import org.xmlpull.v1.XmlPullParser;
-
-import java.net.URI;
 
 @Contract
-public interface ColladaFragmentParser {
-    ColladaDocumentFragment parse(URI sourceUri, XmlPullParser pullParser);
+public interface DocumentAssembler {
+    void addFragment(ColladaDocumentFragment fragment);
+
+    Collada15Document assemble();
 }
