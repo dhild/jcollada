@@ -42,7 +42,6 @@ subprojects {
     apply plugin: 'jacoco'
     apply plugin: 'maven-publish'
 
-    apply plugin: 'findbugs'
     apply plugin: 'pmd'
 
     sourceCompatibility = '1.8'
