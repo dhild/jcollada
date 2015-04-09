@@ -45,6 +45,7 @@ public class TextParser<OutputType> extends XmlParser<OutputType> {
                     int[] startAndLength = new int[2];
                     char[] text = parser.getTextCharacters(startAndLength);
                     builder.append(text, startAndLength[0], startAndLength[1]);
+                    token = parser.next();
                     break;
                 default:
                     token = parser.next();

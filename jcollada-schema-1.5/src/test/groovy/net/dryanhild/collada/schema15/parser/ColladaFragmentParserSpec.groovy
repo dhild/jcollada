@@ -1,7 +1,7 @@
 package net.dryanhild.collada.schema15.parser
 
+class ColladaFragmentParserSpec extends ParserSpec {
 
-class ColladaFragmentParserSpec extends Specification implements ParserSpec {
     ColladaFragmentParser fragmentParser
 
     def setup() {

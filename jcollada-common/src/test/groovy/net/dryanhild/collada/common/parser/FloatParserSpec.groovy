@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 D. Ryan Hild <d.ryan.hild@gmail.com>
+ * Copyright (c) 2015 D. Ryan Hild <d.ryan.hild@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -18,31 +18,27 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
+ *
  */
 
-plugins {
-    id 'groovy'
-}
+package net.dryanhild.collada.common.parser
 
-dependencies {
-    compile project(':jcollada-spi')
+import spock.lang.Specification
 
-    compile 'com.carrotsearch:hppc:0.6.0'
-    compile "xmlpull:xmlpull:$xmlpullVersion"
-    provided 'org.projectlombok:lombok:1.16.2'
-    provided "net.sf.kxml:kxml2:2.2.2"
+class FloatParserSpec extends Specification {
 
-    testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
-}
+    FloatParser parser
 
-jar {
-    manifest {
-        attributes("Implementation-Title": "Common JCollada Components",
-                   "Implementation-Version": "$version",
-                   "Implementation-Vendor": "D. Ryan Hild",
-                   "Specification-Title": "JCollada SPI",
-                   "Specification-Version": "$version",
-                   "Specification-Vendor": "D. Ryan Hild")
+    def setup() {
+        parser = new FloatParser()
     }
-}
 
+    def 'can parse simple float list'() {
+        when:
+        def result = parser.apply('1 2.2 33333 4.0543 0.5')
+
+        then:
+        result.toArray().toList() == [1f, 2.2f, 33333f, 4.0543f, 0.5f]
+    }
+
+}

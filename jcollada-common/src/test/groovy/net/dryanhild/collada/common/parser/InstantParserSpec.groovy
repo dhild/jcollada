@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 D. Ryan Hild <d.ryan.hild@gmail.com>
+ * Copyright (c) 2015 D. Ryan Hild <d.ryan.hild@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -18,31 +18,35 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
+ *
  */
 
-plugins {
-    id 'groovy'
-}
+package net.dryanhild.collada.common.parser
 
-dependencies {
-    compile project(':jcollada-spi')
+import java.time.Instant
+import java.time.ZoneOffset
 
-    compile 'com.carrotsearch:hppc:0.6.0'
-    compile "xmlpull:xmlpull:$xmlpullVersion"
-    provided 'org.projectlombok:lombok:1.16.2'
-    provided "net.sf.kxml:kxml2:2.2.2"
+class InstantParserSpec extends ParserSpec {
 
-    testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
-}
-
-jar {
-    manifest {
-        attributes("Implementation-Title": "Common JCollada Components",
-                   "Implementation-Version": "$version",
-                   "Implementation-Vendor": "D. Ryan Hild",
-                   "Specification-Title": "JCollada SPI",
-                   "Specification-Version": "$version",
-                   "Specification-Vendor": "D. Ryan Hild")
+    def setup() {
+        parser = new InstantParser('element')
     }
-}
 
+    def 'can parse simple date'() {
+        when:
+        Instant result = runParser {
+            it.element {
+                mkp.yield('2002-05-30T09:02:01Z')
+            }
+        }
+
+        then:
+        result.atZone(ZoneOffset.UTC).year == 2002
+        result.atZone(ZoneOffset.UTC).monthValue == 05
+        result.atZone(ZoneOffset.UTC).dayOfMonth == 30
+        result.atZone(ZoneOffset.UTC).hour == 9
+        result.atZone(ZoneOffset.UTC).minute == 2
+        result.atZone(ZoneOffset.UTC).second == 1
+    }
+
+}

@@ -156,7 +156,6 @@ public class XmlParser<OutputType> implements BiFunction<XmlPullParser, OutputTy
         setAttributes(parser, object);
 
         parseInnerElements(parser, object, depth);
-        parseInnerElements(parser, object, depth);
 
         return object;
     }

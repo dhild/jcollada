@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 D. Ryan Hild <d.ryan.hild@gmail.com>
+ * Copyright (c) 2015 D. Ryan Hild <d.ryan.hild@gmail.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -18,31 +18,41 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
+ *
  */
 
-plugins {
-    id 'groovy'
-}
+package net.dryanhild.collada.common.parser
 
-dependencies {
-    compile project(':jcollada-spi')
+class SimpleTextParserSpec extends ParserSpec {
 
-    compile 'com.carrotsearch:hppc:0.6.0'
-    compile "xmlpull:xmlpull:$xmlpullVersion"
-    provided 'org.projectlombok:lombok:1.16.2'
-    provided "net.sf.kxml:kxml2:2.2.2"
-
-    testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
-}
-
-jar {
-    manifest {
-        attributes("Implementation-Title": "Common JCollada Components",
-                   "Implementation-Version": "$version",
-                   "Implementation-Vendor": "D. Ryan Hild",
-                   "Specification-Title": "JCollada SPI",
-                   "Specification-Version": "$version",
-                   "Specification-Vendor": "D. Ryan Hild")
+    def setup() {
+        parser = new SimpleTextParser('element')
     }
-}
 
+    def 'can parse basic string data'() {
+        when:
+        def result = runParser {
+            it.element {
+                mkp.yield(' blah blah')
+            }
+        }
+
+        then:
+        result.toString() == ' blah blah'
+    }
+
+    def 'can parse with comments in between string data'() {
+        when:
+        def result = runParser {
+            it.element {
+                mkp.yield('foo')
+                mkp.comment('This is ignored')
+                mkp.yield('bar')
+            }
+        }
+
+        then:
+        result.toString() == 'foobar'
+    }
+
+}

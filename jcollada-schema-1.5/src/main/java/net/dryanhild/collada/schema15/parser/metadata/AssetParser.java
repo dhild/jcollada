@@ -13,7 +13,7 @@ public class AssetParser implements Function<XmlPullParser, MutableAsset> {
 
     public AssetParser() {
         parser.addElementConsumer("created", MutableAsset::setCreated, new InstantParser("created"));
-        parser.addElementConsumer("modified", MutableAsset::setModified, new InstantParser("created"));
+        parser.addElementConsumer("modified", MutableAsset::setModified, new InstantParser("modified"));
         parser.addStringElementConsumer("subject", MutableAsset::setSubject);
         parser.addStringElementConsumer("title", MutableAsset::setTitle);
         parser.addStringElementConsumer("revision", MutableAsset::setRevision);
