@@ -3,3 +3,4 @@
 .gradle
 .idea
 build
+jcollada-schema-1.5/src/main/generated

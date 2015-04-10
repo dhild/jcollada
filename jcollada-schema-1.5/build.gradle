@@ -20,10 +20,15 @@
  * THE SOFTWARE.
  */
 
-apply plugin: 'groovy'
+plugins {
+    id 'groovy'
+}
 
 configurations {
     hk2Generator {
+        extendsFrom compile
+    }
+    jaxb {
         extendsFrom compile
     }
 }
@@ -31,6 +36,12 @@ configurations {
 dependencies {
     compile project(':jcollada-spi')
     compile project(':jcollada-common')
+
+    jaxb 'com.sun.xml.bind:jaxb-xjc:2.2.11'
+    jaxb 'com.sun.xml.bind:jaxb-impl:2.2.11'
+    jaxb 'com.sun.xml.bind:jaxb-core:2.2.11'
+    jaxb 'com.sun.xml.bind:jaxb-ri:2.2.11'
+    jaxb 'javax.xml.bind:jaxb-api:2.2.11'
 
     compile 'com.carrotsearch:hppc:0.6.0'
     provided 'org.projectlombok:lombok:1.16.2'
@@ -43,6 +54,35 @@ dependencies {
 
     testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
 }
+
+sourceSets {
+    generated {
+        java {
+            srcDirs = ["$projectDir/src/main/generated"]
+        }
+    }
+}
+
+task('xjc') {
+    inputs.dir "$projectDir/src/main/resources/schema"
+    outputs.dir "$projectDir/src/main/generated"
+    doLast {
+        ant.taskdef(name: 'xjc', classname: 'com.sun.tools.xjc.XJCTask', classpath: configurations.jaxb.asPath)
+
+        file("$projectDir/src/main/generated").mkdirs()
+        ant.xjc(schema: "$projectDir/src/main/resources/schema/collada_schema_1_5.xsd",
+                package: 'org.collada.schema15',
+                destdir: "$projectDir/src/main/generated",
+                removeOldOutput: true,
+                binding: "$projectDir/src/main/resources/schema/bindings.xjb",
+                extension: true) {
+            arg(value: "-Xlocator")
+            arg(value: "-mark-generated")
+        }
+    }
+}
+
+compileJava.dependsOn 'xjc'
 
 task('generateHK2', type: JavaExec) {
     outputs.dir "$buildDir/generated/hk2"
@@ -73,10 +113,10 @@ jar {
     }
     manifest {
         attributes("Implementation-Title": "JCollada for Collada Schema 1.5",
-                   "Implementation-Version": "$version",
-                   "Implementation-Vendor": "D. Ryan Hild",
-                   "Specification-Title": "JCollada SPI",
-                   "Specification-Version": "$version",
-                   "Specification-Vendor": "D. Ryan Hild")
+                "Implementation-Version": "$version",
+                "Implementation-Vendor": "D. Ryan Hild",
+                "Specification-Title": "JCollada SPI",
+                "Specification-Version": "$version",
+                "Specification-Vendor": "D. Ryan Hild")
     }
 }
