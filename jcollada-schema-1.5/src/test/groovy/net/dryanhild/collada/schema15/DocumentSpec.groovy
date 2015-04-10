@@ -21,19 +21,29 @@
  *
  */
 
-package net.dryanhild.collada.common.annotations;
+package net.dryanhild.collada.schema15
+import groovy.xml.MarkupBuilder
+import spock.lang.Specification
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.nio.charset.StandardCharsets
 
-/**
- * Indicates that the annotated attribute is an XML id.
- */
-@Documented
-@Target(ElementType.METHOD)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface Id {
+abstract class DocumentSpec extends Specification {
+
+    InputStream colladaFile(Closure data) {
+        def sw = new StringWriter()
+        def xml = new MarkupBuilder(sw)
+        xml.COLLADA(xmlns: 'http://www.collada.org/2008/03/COLLADASchema', version: '1.5.0') {
+            assset {
+                created {
+                    mkp.yield('2007-12-11T14:24:00Z')
+                }
+                modified {
+                    mkp.yield('2007-12-11T14:24:00Z')
+                }
+            }
+            data(xml)
+        }
+        new ByteArrayInputStream(sw.toString().getBytes(StandardCharsets.UTF_8))
+    }
+
 }

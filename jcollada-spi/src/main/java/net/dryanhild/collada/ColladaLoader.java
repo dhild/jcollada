@@ -30,7 +30,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -49,7 +48,6 @@ import java.util.ServiceLoader;
  * that these are set to sane values, or that you are comfortable with the defaults.
  *
  * @see {@link #isValidating()}
- * @see {@link #getCharset()}
  */
 public class ColladaLoader {
 
@@ -112,7 +110,6 @@ public class ColladaLoader {
      * @throws net.dryanhild.collada.IncorrectFormatException
      *         If there is a problem detected with the format.
      * @see {@link #setValidating(boolean)}
-     * @see {@link #setCharset(java.nio.charset.Charset)}
      */
     public ColladaDocument load(URL url) throws IOException {
         URI uri;
@@ -122,14 +119,11 @@ public class ColladaLoader {
             LOG.debug("Unable to convert directly to a URI, using just the path instead", e);
             uri = URI.create(url.getPath());
         }
-        return load(uri, url.openStream());
+        return load(uri);
     }
 
     /**
      * Loads the given input stream into a collada document, using the current settings for validation and charset.
-     *
-     * @param input
-     *         The {@link java.io.InputStream} to read from.
      *
      * @return The loaded file.
      *
@@ -139,10 +133,9 @@ public class ColladaLoader {
      *         If there is a problem detected with the format.
      * @see {@link #load(java.net.URL)}
      * @see {@link #setValidating(boolean)}
-     * @see {@link #setCharset(java.nio.charset.Charset)}
      */
-    public ColladaDocument load(URI uri, InputStream input) throws IOException {
-        return loadImpl(new DefaultParsingContext(validating, charset, uri, input));
+    public ColladaDocument load(URI uri) throws IOException {
+        return loadImpl(new DefaultParsingContext(validating, uri));
     }
 
     private ColladaDocument loadImpl(ParsingContext context) throws IOException {
@@ -176,8 +169,7 @@ public class ColladaLoader {
      * <p>
      * By default, this flag is set to <code>true</code>.
      *
-     * @return Whether calls to {@link #load(java.net.URL)} or {@link #load(java.io.InputStream)} will attempt to use
-     * a validating parser.
+     * @return Whether calls to {@link #load(java.net.URL)} will attempt to use a validating parser.
      */
     public boolean isValidating() {
         return validating;
@@ -187,40 +179,11 @@ public class ColladaLoader {
      * Sets the validation flag.
      *
      * @param validating
-     *         Whether calls to {@link #load(java.net.URL)} or {@link #load(java.io.InputStream)} should
-     *         attempt to use a validating parser.
+     *         Whether calls to {@link #load(java.net.URL)} should attempt to use a validating parser.
      *
      * @see {@link #isValidating()}
      */
     public void setValidating(boolean validating) {
         this.validating = validating;
-    }
-
-    /**
-     * Returns the charset that should be used to interpret the data. Note that this setting applies mainly to the
-     * XML header for version selection. If a standard ASCII-like charset was used,
-     * then this setting probably does not matter.
-     * <p>
-     * This setting may go away in the future and be replaced with a charset-detecting XML reader that only gets to
-     * the version string.
-     * <p>
-     * By default, this is set to use {@link java.nio.charset.StandardCharsets#UTF_8}.
-     *
-     * @return The {@link java.nio.charset.Charset} to be used for reading the header for version detection.
-     */
-    public Charset getCharset() {
-        return charset;
-    }
-
-    /**
-     * Sets the Charset to use for reading the COLLADA version.
-     *
-     * @param charset
-     *         The Charset to use.
-     *
-     * @see {@link #getCharset()}
-     */
-    public void setCharset(Charset charset) {
-        this.charset = charset;
     }
 }

@@ -1,27 +1,27 @@
 package net.dryanhild.collada.schema15
 
+import net.dryanhild.collada.schema15.parser.ColladaFragmentParser
+import net.dryanhild.collada.schema15.postprocess.DocumentAssembler
 import net.dryanhild.collada.spi.ParsingContext
-import spock.lang.Specification
 
-import java.nio.charset.StandardCharsets
-
-class ColladaLoaderSchema15Spec extends Specification {
-
-    static String MINIMAL = "<COLLADA xmlns=\"http://www.collada.org/2008/03/COLLADASchema\" version=\"1.5.0\">" +
-            " <asset><modified>2007-12-11T14:24:00Z</modified></asset>" +
-            "</COLLADA>"
+class ColladaLoaderSchema15Spec extends DocumentSpec {
 
     ColladaLoaderSchema15 loader
+    DocumentAssembler assembler
+    ColladaFragmentParser parser
 
     def setup() {
-        loader = new ColladaLoaderSchema15()
+        assembler = Mock(DocumentAssembler)
+        parser = Mock(ColladaFragmentParser)
+        loader = new ColladaLoaderSchema15(assembler, parser)
     }
 
     def 'can load a minimalist file'() {
         setup:
+        def stream = colladaFile {}
         def context = Mock(ParsingContext)
-        context.getCharset() >> StandardCharsets.UTF_8
-        context.getMainFileInputStream() >> new ByteArrayInputStream(MINIMAL.bytes)
+        context.getMainFileInputStream() >> stream
+        context.isValidating() >> false
 
         when:
         def result = loader.load(context)

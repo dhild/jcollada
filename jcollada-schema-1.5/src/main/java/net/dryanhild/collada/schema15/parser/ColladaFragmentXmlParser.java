@@ -1,44 +1,78 @@
 package net.dryanhild.collada.schema15.parser;
 
-import lombok.SneakyThrows;
-import net.dryanhild.collada.common.parser.XmlParser;
-import net.dryanhild.collada.schema15.data.ColladaDocumentFragment;
-import net.dryanhild.collada.schema15.parser.metadata.AssetParser;
+import org.codehaus.stax2.XMLInputFactory2;
+import org.collada.schema15.COLLADA;
+import org.collada.schema15.ObjectFactory;
 import org.jvnet.hk2.annotations.Service;
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.net.URI;
-
-import static org.xmlpull.v1.XmlPullParser.START_DOCUMENT;
-import static org.xmlpull.v1.XmlPullParser.START_TAG;
+import java.io.InputStream;
+import java.net.URL;
+import javax.xml.XMLConstants;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
 
 @Service
 public class ColladaFragmentXmlParser implements ColladaFragmentParser {
 
-    private final XmlParser<ColladaDocumentFragment> parser = new XmlParser<>("COLLADA", ColladaDocumentFragment.class);
+    private static final Logger logger = LoggerFactory.getLogger(ColladaFragmentXmlParser.class);
 
-    public ColladaFragmentXmlParser() {
-        parser.addAttributeConsumer("base", ((fragment, value) -> fragment.setUri(fragment.getUri().resolve(value))));
-        parser.addElementConsumer("asset", ColladaDocumentFragment::setAsset, new AssetParser());
+    public static final String SCHEMA_EXTERNAL_LOCATION = "https://www.khronos.org/files/collada_schema_1_5";
+    private static XMLInputFactory inputFactory;
+    private static JAXBContext jaxbContext;
+    private static Schema schema;
+
+    private synchronized static XMLStreamReader createXMLStreamReader(InputStream inputStream)
+            throws XMLStreamException {
+        if (inputFactory == null) {
+            inputFactory = XMLInputFactory2.newInstance();
+            inputFactory.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, true);
+        }
+        return inputFactory.createXMLStreamReader(inputStream);
+    }
+
+    private synchronized static JAXBContext getContext() throws JAXBException {
+        if (jaxbContext == null) {
+            jaxbContext = JAXBContext.newInstance(ObjectFactory.class);
+        }
+        return jaxbContext;
+    }
+
+    private synchronized static Schema getSchema() {
+        if (schema == null) {
+            try {
+                SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+                schema = factory.newSchema(new URL(SCHEMA_EXTERNAL_LOCATION));
+            } catch (Exception e) {
+                logger.warn("Unable to create schema for validating!");
+            }
+        }
+        return schema;
     }
 
     @Override
-    public ColladaDocumentFragment parse(URI sourceUri, XmlPullParser pullParser) {
-        ColladaDocumentFragment fragment = new ColladaDocumentFragment();
-        fragment.setUri(sourceUri);
+    public COLLADA parse(boolean validate, InputStream inputStream) {
+        try {
+            JAXBContext jaxbContext = getContext();
+            Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 
-        skipToStart(pullParser);
-        return parser.apply(pullParser, fragment);
-    }
+            if (validate) {
+                unmarshaller.setSchema(getSchema());
+            }
 
-    @SneakyThrows({XmlPullParserException.class, IOException.class})
-    private void skipToStart(XmlPullParser pullParser) {
-        pullParser.require(START_DOCUMENT, null, null);
-        while (pullParser.getEventType() != START_TAG) {
-            pullParser.next();
+            XMLStreamReader reader = createXMLStreamReader(inputStream);
+            JAXBElement<COLLADA> element = unmarshaller.unmarshal(reader, COLLADA.class);
+            return element.getValue();
+        } catch (XMLStreamException | JAXBException e) {
+            throw new RuntimeException(e);
         }
     }
-
 }

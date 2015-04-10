@@ -21,32 +21,28 @@
  *
  */
 
-package net.dryanhild.collada.common.parser
+package net.dryanhild.collada.schema15
+import net.dryanhild.collada.ColladaLoader
+import spock.lang.Specification
 
-import java.time.Instant
-import java.time.ZoneOffset
+class ColladaLoaderSpec extends Specification {
 
-class InstantParserSpec extends ParserSpec {
+    ColladaLoader loader
 
     def setup() {
-        parser = new InstantParser('element')
+        loader = new ColladaLoader()
     }
 
-    def 'can parse simple date'() {
+    def 'can load a minimalist file'() {
+        setup:
+        def url = ClassLoader.getSystemClassLoader().getResource("/minimal.dae")
+
         when:
-        Instant result = runParser {
-            it.element {
-                mkp.yield('2002-05-30T09:02:01Z')
-            }
-        }
+        def result = loader.load(url)
 
         then:
-        result.atZone(ZoneOffset.UTC).year == 2002
-        result.atZone(ZoneOffset.UTC).monthValue == 05
-        result.atZone(ZoneOffset.UTC).dayOfMonth == 30
-        result.atZone(ZoneOffset.UTC).hour == 9
-        result.atZone(ZoneOffset.UTC).minute == 2
-        result.atZone(ZoneOffset.UTC).second == 1
+        result.version.majorVersion == 1
+        result.version.minorVersion == 5
+        result.version.thirdVersion == 0
     }
-
 }

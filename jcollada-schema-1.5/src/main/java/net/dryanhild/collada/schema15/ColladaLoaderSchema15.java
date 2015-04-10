@@ -2,24 +2,23 @@ package net.dryanhild.collada.schema15;
 
 import com.google.common.collect.ImmutableList;
 import net.dryanhild.collada.VersionSupport;
-import net.dryanhild.collada.common.parser.XmlParser;
 import net.dryanhild.collada.data.ColladaDocument;
-import net.dryanhild.collada.schema15.data.ColladaDocumentFragment;
 import net.dryanhild.collada.schema15.parser.ColladaFragmentParser;
 import net.dryanhild.collada.schema15.postprocess.DocumentAssembler;
 import net.dryanhild.collada.spi.ColladaLoaderService;
 import net.dryanhild.collada.spi.ParsingContext;
-import org.glassfish.hk2.api.ServiceLocator;
+import org.collada.schema15.COLLADA;
+import org.jvnet.hk2.annotations.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xmlpull.v1.XmlPullParser;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 import java.util.Collection;
 import java.util.regex.Pattern;
+import javax.inject.Inject;
 
+@Service
 public class ColladaLoaderSchema15 implements ColladaLoaderService {
 
     public static final VersionSupport VERSION_1_5_0 = new VersionSupport(1, 5, 0);
@@ -29,7 +28,14 @@ public class ColladaLoaderSchema15 implements ColladaLoaderService {
 
     private static final Logger logger = LoggerFactory.getLogger(ColladaLoaderSchema15.class);
 
-    private ServiceLocator serviceRegistry = ColladaServiceRegistry.getServiceLocator();
+    private final DocumentAssembler documentAssembler;
+    private final ColladaFragmentParser documentParser;
+
+    @Inject
+    public ColladaLoaderSchema15(DocumentAssembler documentAssembler,ColladaFragmentParser documentParser) {
+        this.documentAssembler = documentAssembler;
+        this.documentParser = documentParser;
+    }
 
     @Override
     public Collection<VersionSupport> getColladaVersions() {
@@ -47,17 +53,10 @@ public class ColladaLoaderSchema15 implements ColladaLoaderService {
 
     @Override
     public ColladaDocument load(ParsingContext context) throws IOException {
-        DocumentAssembler assembler = serviceRegistry.getService(DocumentAssembler.class);
-
-        assembler.addFragment(parseFragment(context, context.getSourceUri(), context.getMainFileInputStream()));
-
-        return assembler.assemble();
-    }
-
-    private ColladaDocumentFragment parseFragment(ParsingContext context, URI uri, InputStream inputStream)
-            throws IOException {
-        XmlPullParser parser = XmlParser.createPullParser(context.isValidating(), inputStream, context.getCharset());
-        ColladaFragmentParser documentParser = serviceRegistry.getService(ColladaFragmentParser.class);
-        return documentParser.parse(uri, parser);
+        try (InputStream inputStream = context.getMainFileInputStream()) {
+            COLLADA fragment = documentParser.parse(context.isValidating(), inputStream);
+            documentAssembler.addFragment(fragment);
+            return documentAssembler.assemble();
+        }
     }
 }

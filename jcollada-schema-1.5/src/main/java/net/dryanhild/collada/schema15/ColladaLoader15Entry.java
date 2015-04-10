@@ -23,17 +23,21 @@
 
 package net.dryanhild.collada.schema15;
 
+import net.dryanhild.collada.VersionSupport;
+import net.dryanhild.collada.data.ColladaDocument;
+import net.dryanhild.collada.spi.ColladaLoaderService;
+import net.dryanhild.collada.spi.ParsingContext;
 import org.glassfish.hk2.api.DescriptorFileFinder;
 import org.glassfish.hk2.api.DynamicConfigurationService;
 import org.glassfish.hk2.api.Populator;
 import org.glassfish.hk2.api.ServiceLocator;
 import org.glassfish.hk2.api.ServiceLocatorFactory;
 import org.glassfish.hk2.utilities.ClasspathDescriptorFileFinder;
-import org.glassfish.hk2.utilities.ServiceLocatorUtilities;
 
 import java.io.IOException;
+import java.util.Collection;
 
-public class ColladaServiceRegistry  {
+public class ColladaLoader15Entry implements ColladaLoaderService {
 
     public static final String SERVICE_NAME = "JCollada-Schema-1.5";
 
@@ -45,13 +49,12 @@ public class ColladaServiceRegistry  {
         }
 
         ServiceLocator locator = factory.create(SERVICE_NAME);
-        ServiceLocatorUtilities.enablePerThreadScope(locator);
 
         DynamicConfigurationService dcs = locator.getService(DynamicConfigurationService.class);
         Populator populator = dcs.getPopulator();
 
         try {
-            ClassLoader classLoader = ColladaServiceRegistry.class.getClassLoader();
+            ClassLoader classLoader = ColladaLoader15Entry.class.getClassLoader();
             DescriptorFileFinder finder = new ClasspathDescriptorFileFinder(classLoader, SERVICE_NAME);
             populator.populate(finder);
         } catch (IOException e) {
@@ -61,4 +64,30 @@ public class ColladaServiceRegistry  {
         return locator;
     }
 
+    private ServiceLocator locator = getServiceLocator();
+    private ColladaLoaderSchema15 loader;
+    private PerParseContext perParseContext;
+
+    public ColladaLoader15Entry() {
+        loader = locator.getService(ColladaLoaderSchema15.class);
+        perParseContext = locator.getService(PerParseContext.class);
+    }
+
+    @Override
+    public Collection<VersionSupport> getColladaVersions() {
+        return loader.getColladaVersions();
+    }
+
+    @Override
+    public boolean canLoad(ParsingContext context) throws IOException {
+        return loader.canLoad(context);
+    }
+
+    @Override
+    public ColladaDocument load(ParsingContext context) throws IOException {
+        perParseContext.startContext();
+        ColladaDocument document = loader.load(context);
+        perParseContext.endContext();
+        return document;
+    }
 }

@@ -21,26 +21,21 @@
  *
  */
 
-package net.dryanhild.collada.common.geometry.source;
+package net.dryanhild.collada.schema15;
 
-import net.dryanhild.collada.common.annotations.Attribute;
-import net.dryanhild.collada.common.annotations.Element;
-import net.dryanhild.collada.common.annotations.Id;
-import net.dryanhild.collada.common.annotations.Token;
+import org.glassfish.hk2.api.Proxiable;
 
-public interface SourceTechniqueCommon {
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
+import javax.inject.Scope;
 
-    @Id
-    @Attribute
-    String getId();
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-    @Token
-    @Attribute
-    String getName();
-
-    @Element(name = "float_array", maxOccurs = 1)
-    FloatArray getFloats();
-
-    @Element(name = "int_array", maxOccurs = 1)
-    IntArray getInts();
+@Scope
+@Proxiable
+@Target({TYPE, METHOD})
+@Retention(RUNTIME)
+public @interface PerParse {
 }

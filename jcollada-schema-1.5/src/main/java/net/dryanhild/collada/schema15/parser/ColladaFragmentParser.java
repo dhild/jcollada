@@ -23,13 +23,12 @@
 
 package net.dryanhild.collada.schema15.parser;
 
-import net.dryanhild.collada.schema15.data.ColladaDocumentFragment;
+import org.collada.schema15.COLLADA;
 import org.jvnet.hk2.annotations.Contract;
-import org.xmlpull.v1.XmlPullParser;
 
-import java.net.URI;
+import java.io.InputStream;
 
 @Contract
 public interface ColladaFragmentParser {
-    ColladaDocumentFragment parse(URI sourceUri, XmlPullParser pullParser);
+    COLLADA parse(boolean validate, InputStream inputStream);
 }

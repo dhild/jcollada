@@ -40,6 +40,7 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.regex.Pattern;
 
@@ -88,7 +89,7 @@ public class ColladaLoaderService14 implements ColladaLoaderService {
             factory.setNamespaceAware(true);
             factory.setValidating(context.isValidating());
             XmlPullParser parser = factory.newPullParser();
-            Reader reader = new InputStreamReader(context.getMainFileInputStream(), context.getCharset());
+            Reader reader = new InputStreamReader(context.getMainFileInputStream(), StandardCharsets.UTF_8);
             parser.setInput(reader);
 
             data.reset(parser);

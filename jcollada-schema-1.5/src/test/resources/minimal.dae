@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<COLLADA xmlns="http://www.collada.org/2008/03/COLLADASchema" version="1.5.0">
+ <asset>
+   <created>2007-12-11T14:24:00Z</created>
+   <modified>2007-12-11T14:24:00Z</modified>
+ </asset>
+ <library_visual_scenes>
+   <visual_scene id="VisualSceneNode" name="untitled">
+     <node id="Model_E0_MESH_0_REF_1" name="Model_E0_MESH_0_REF_1">
+       <instance_geometry url="#Model_E0_MESH_0_REF_1_lib"/>
+     </node>
+   </visual_scene>
+ </library_visual_scenes>
+ <library_geometries>
+   <geometry id="Model_E0_MESH_0_REF_1_lib" name="Model_E0_MESH_0_REF_1">
+     <mesh>
+       <source id="Model_E0_MESH_0_REF_1_lib_positions" name="position">
+         <float_array id="Model_E0_MESH_0_REF_1_lib_positions_array" count="9">-50 -50 0 50 -50 0 0 50 0</float_array>
+         <technique_common>
+           <accessor count="3" source="#Model_E0_MESH_0_REF_1_lib_positions_array" stride="3">
+             <param name="X" type="float"/>
+             <param name="Y" type="float"/>
+             <param name="Z" type="float"/>
+           </accessor>
+         </technique_common>
+       </source>
+       <source id="Model_E0_MESH_0_REF_1_lib_normals" name="normal">
+         <float_array id="Model_E0_MESH_0_REF_1_lib_normals_array" count="9">0 0 -1 0 0 -1 0 0 -1</float_array>
+         <technique_common>
+           <accessor count="3" source="#Model_E0_MESH_0_REF_1_lib_normals_array" stride="3">
+             <param name="X" type="float"/>
+             <param name="Y" type="float"/>
+             <param name="Z" type="float"/>
+           </accessor>
+         </technique_common>
+       </source>
+       <vertices id="Model_E0_MESH_0_REF_1_lib_vertices">
+         <input semantic="POSITION" source="#Model_E0_MESH_0_REF_1_lib_positions"/>
+         <input semantic="NORMAL" source="#Model_E0_MESH_0_REF_1_lib_normals"/>
+       </vertices>
+       <triangles count="1" material="Textured_Bump_E0_MP_MAT">
+         <input offset="0" semantic="VERTEX" source="#Model_E0_MESH_0_REF_1_lib_vertices"/>
+          <p>0 1 2</p>
+       </triangles>
+     </mesh>
+   </geometry>
+ </library_geometries>
+ <scene>
+   <instance_visual_scene url="#VisualSceneNode"/>
+ </scene>
+</COLLADA>

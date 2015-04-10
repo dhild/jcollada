@@ -33,6 +33,17 @@ configurations {
     }
 }
 
+sourceSets {
+    generated {
+        java {
+            srcDirs = ["$projectDir/src/main/generated"]
+        }
+    }
+    main {
+        compileClasspath += sourceSets.generated.output
+    }
+}
+
 dependencies {
     compile project(':jcollada-spi')
     compile project(':jcollada-common')
@@ -43,24 +54,20 @@ dependencies {
     jaxb 'com.sun.xml.bind:jaxb-ri:2.2.11'
     jaxb 'javax.xml.bind:jaxb-api:2.2.11'
 
+    generatedCompile 'javax.xml.bind:jaxb-api:2.2.11'
+    generatedCompile 'com.sun.xml.bind:jaxb-core:2.2.11'
+
+    compile 'javax.xml.bind:jaxb-api:2.2.11'
+    compile 'com.sun.xml.bind:jaxb-core:2.2.11'
+    compile 'org.codehaus.woodstox:woodstox-core-asl:4.4.1'
+
     compile 'com.carrotsearch:hppc:0.6.0'
     provided 'org.projectlombok:lombok:1.16.2'
 
     compile "org.glassfish.hk2:hk2:$hk2Version"
     hk2Generator "org.glassfish.hk2:hk2-inhabitant-generator:$hk2Version"
 
-    compile "xmlpull:xmlpull:$xmlpullVersion"
-    provided "net.sf.kxml:kxml2:2.2.2"
-
     testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
-}
-
-sourceSets {
-    generated {
-        java {
-            srcDirs = ["$projectDir/src/main/generated"]
-        }
-    }
 }
 
 task('xjc') {

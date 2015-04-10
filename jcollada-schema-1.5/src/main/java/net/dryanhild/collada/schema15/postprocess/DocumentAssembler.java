@@ -24,12 +24,12 @@
 package net.dryanhild.collada.schema15.postprocess;
 
 import net.dryanhild.collada.schema15.data.Collada15Document;
-import net.dryanhild.collada.schema15.data.ColladaDocumentFragment;
+import org.collada.schema15.COLLADA;
 import org.jvnet.hk2.annotations.Contract;
 
 @Contract
 public interface DocumentAssembler {
-    void addFragment(ColladaDocumentFragment fragment);
+    void addFragment(COLLADA fragment);
 
     Collada15Document assemble();
 }

@@ -25,7 +25,6 @@ package net.dryanhild.collada.spi;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
-import java.nio.charset.Charset;
 
 public interface ParsingContext {
 
@@ -33,14 +32,8 @@ public interface ParsingContext {
 
     CharSequence getMainFileHeader() throws IOException;
 
-    InputStream getMainFileInputStream();
-
-    Charset getCharset();
+    InputStream getMainFileInputStream() throws IOException;
 
     URI getSourceUri();
-
-    void store(Object key, Object value);
-
-    <T> T retrieve(Object key, Class<T> type);
 
 }

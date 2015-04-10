@@ -28,9 +28,7 @@ dependencies {
     compile project(':jcollada-spi')
 
     compile 'com.carrotsearch:hppc:0.6.0'
-    compile "xmlpull:xmlpull:$xmlpullVersion"
     provided 'org.projectlombok:lombok:1.16.2'
-    provided "net.sf.kxml:kxml2:2.2.2"
 
     testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
 }
