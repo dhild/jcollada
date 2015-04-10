@@ -12,9 +12,9 @@ import java.util.List;
 public class Accessor {
 
     private int count;
-    private int offset;
+    private Integer offset;
     private URI source;
-    private int stride;
+    private Integer stride;
 
     private final List<Param> params = new ArrayList<>();
 

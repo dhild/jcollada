@@ -8,7 +8,7 @@ import java.util.function.Function;
 
 public class AcessorParser implements Function<XmlPullParser, Accessor> {
 
-    private final XmlParser<Accessor> parser = new XmlParser<>("accessor", Accessor.class);
+    final XmlParser<Accessor> parser = new XmlParser<>("accessor", Accessor.class);
 
     public AcessorParser() {
         parser.addIntConsumer("count", Accessor::setCount);

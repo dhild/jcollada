@@ -12,6 +12,6 @@ public class SharedInput {
     private int offset;
     private String semantic;
     private URI source;
-    private int set;
+    private Integer set;
 
 }

@@ -21,40 +21,47 @@
  *
  */
 
-package net.dryanhild.collada.schema15.parser
-import groovy.xml.MarkupBuilder
-import net.dryanhild.collada.common.parser.XmlParser
-import org.xmlpull.v1.XmlPullParser
-import spock.lang.Specification
+package net.dryanhild.collada.schema15.parser.geometry
 
-import java.nio.charset.StandardCharsets
-import java.util.function.Function
+import net.dryanhild.collada.schema15.data.geometry.Param
+import net.dryanhild.collada.schema15.parser.ParserSpec
 
-abstract class ParserSpec extends Specification {
+class ParamParserSpec extends ParserSpec {
 
-    Function parser
-
-    XmlPullParser createDocumentParser(String data) {
-        InputStream input = new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8))
-        XmlParser.createPullParser(false, input, StandardCharsets.UTF_8)
+    def setup() {
+        parser = new ParamParser()
     }
 
-    XmlPullParser createParser(Closure data) {
-        def sw = new StringWriter()
-        def xml = new MarkupBuilder(sw)
-        xml.COLLADA(xmlns: 'http://www.collada.org/2008/03/COLLADASchema', version: '1.5.0') {
-            data(xml)
-        }
-        def xmlParser = createDocumentParser(sw.toString())
-        while (xmlParser.eventType != XmlPullParser.START_TAG || xmlParser.name == 'COLLADA') {
-            xmlParser.nextTag()
-        }
-        xmlParser
+    def 'can parse name'() {
+        when:
+        Param result = runParser { it.param(name: 'myparam') }
+
+        then:
+        result.name == 'myparam'
     }
 
-    public <T> T runParser(Closure data) {
-        def xmlParser = createParser(data)
-        parser.apply(xmlParser)
+    def 'can parse sid'() {
+        when:
+        Param result = runParser { it.param(sid: 'test') }
+
+        then:
+        result.sid == 'test'
+    }
+
+    def 'can parse type'() {
+        when:
+        Param result = runParser { it.param(type: 'test') }
+
+        then:
+        result.type == 'test'
+    }
+
+    def 'can parse semantic'() {
+        when:
+        Param result = runParser { it.param(semantic: 'test') }
+
+        then:
+        result.semantic == 'test'
     }
 
 }

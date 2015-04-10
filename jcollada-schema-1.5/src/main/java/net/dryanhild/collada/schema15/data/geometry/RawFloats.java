@@ -11,8 +11,8 @@ public class RawFloats {
     private String id;
     private String name;
     private int count;
-    private int digits;
-    private int magnitude;
+    private Integer digits;
+    private Integer magnitude;
 
     private FloatArrayList floats;
 

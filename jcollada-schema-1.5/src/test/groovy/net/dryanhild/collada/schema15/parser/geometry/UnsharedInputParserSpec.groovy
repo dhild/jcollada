@@ -21,40 +21,39 @@
  *
  */
 
-package net.dryanhild.collada.schema15.parser
-import groovy.xml.MarkupBuilder
-import net.dryanhild.collada.common.parser.XmlParser
-import org.xmlpull.v1.XmlPullParser
-import spock.lang.Specification
+package net.dryanhild.collada.schema15.parser.geometry
+import net.dryanhild.collada.schema15.data.geometry.UnsharedInput
+import net.dryanhild.collada.schema15.parser.ParserSpec
 
-import java.nio.charset.StandardCharsets
-import java.util.function.Function
+class UnsharedInputParserSpec extends ParserSpec {
 
-abstract class ParserSpec extends Specification {
-
-    Function parser
-
-    XmlPullParser createDocumentParser(String data) {
-        InputStream input = new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8))
-        XmlParser.createPullParser(false, input, StandardCharsets.UTF_8)
+    def setup() {
+        parser = new UnsharedInputParser()
     }
 
-    XmlPullParser createParser(Closure data) {
-        def sw = new StringWriter()
-        def xml = new MarkupBuilder(sw)
-        xml.COLLADA(xmlns: 'http://www.collada.org/2008/03/COLLADASchema', version: '1.5.0') {
-            data(xml)
-        }
-        def xmlParser = createDocumentParser(sw.toString())
-        while (xmlParser.eventType != XmlPullParser.START_TAG || xmlParser.name == 'COLLADA') {
-            xmlParser.nextTag()
-        }
-        xmlParser
+    def 'can parse semantic'() {
+        when:
+        UnsharedInput result = runParser { it.input(semantic: 'test') }
+
+        then:
+        result.semantic == 'test'
     }
 
-    public <T> T runParser(Closure data) {
-        def xmlParser = createParser(data)
-        parser.apply(xmlParser)
+    def 'can parse semantic with space start'() {
+        when:
+        UnsharedInput result = runParser { it.input(semantic: '  test') }
+
+        then:
+        result.semantic == 'test'
+    }
+
+    def 'can parse source'() {
+        when:
+        UnsharedInput result = runParser { it.input(source: '#test') }
+
+        then:
+        result.source.fragment == 'test'
+        result.source.toString() == '#test'
     }
 
 }

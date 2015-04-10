@@ -49,4 +49,62 @@ class AssetParserSpec extends ParserSpec {
         result.modified.atZone(ZoneOffset.UTC).dayOfMonth == 30
     }
 
+    def 'can parse created dates'() {
+        when:
+        Asset result = runParser {
+            it.asset {
+                created {
+                    mkp.yield('2002-05-30T09:02:01Z')
+                }
+            }
+        }
+
+        then:
+        result.created.atZone(ZoneOffset.UTC).year == 2002
+        result.created.atZone(ZoneOffset.UTC).monthValue == 05
+        result.created.atZone(ZoneOffset.UTC).dayOfMonth == 30
+    }
+
+    def 'can parse subject'() {
+        when:
+        Asset result = runParser {
+            it.asset {
+                subject {
+                    mkp.yield('test subject')
+                }
+            }
+        }
+
+        then:
+        result.subject == 'test subject'
+    }
+
+    def 'can parse title'() {
+        when:
+        Asset result = runParser {
+            it.asset {
+                title {
+                    mkp.yield('test title')
+                }
+            }
+        }
+
+        then:
+        result.title == 'test title'
+    }
+
+    def 'can parse revision'() {
+        when:
+        Asset result = runParser {
+            it.asset {
+                revision {
+                    mkp.yield('test revision')
+                }
+            }
+        }
+
+        then:
+        result.revision == 'test revision'
+    }
+
 }

@@ -11,8 +11,8 @@ public class RawInts {
     private String id;
     private String name;
     private int count;
-    private int minInclusive;
-    private int maxInclusive;
+    private Integer minInclusive;
+    private Integer maxInclusive;
 
     private IntArrayList ints;
 

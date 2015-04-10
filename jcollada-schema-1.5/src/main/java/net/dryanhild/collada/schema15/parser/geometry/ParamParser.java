@@ -11,7 +11,6 @@ public class ParamParser implements Function<XmlPullParser, Param> {
     private final XmlParser<Param> parser = new XmlParser<>("param", Param.class);
 
     public ParamParser() {
-        parser.addAttributeConsumer("name", Param::setName);
         parser.addAttributeConsumer("sid", Param::setSid);
         parser.addAttributeConsumer("type", Param::setType);
         parser.addAttributeConsumer("semantic", Param::setSemantic);
