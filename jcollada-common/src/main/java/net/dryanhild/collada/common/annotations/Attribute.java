@@ -30,7 +30,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Documented
-@Target(ElementType.FIELD)
+@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Attribute {
     /**
@@ -52,4 +52,6 @@ public @interface Attribute {
      * attribute.
      */
     String namespace() default "http://www.collada.org/2008/03/COLLADASchema";
+
+    String defaultValue() default "";
 }

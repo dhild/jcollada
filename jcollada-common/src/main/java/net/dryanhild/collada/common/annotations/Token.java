@@ -30,10 +30,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Indicates that the annotated attribute is an XML id.
+ * Indicates that the annotated attribute is an XML token. Tokens are whitespace trimmed and XML escaped.
  */
 @Documented
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Id {
+public @interface Token {
 }

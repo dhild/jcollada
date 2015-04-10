@@ -33,7 +33,7 @@ import java.lang.annotation.Target;
  * Indicates that the annotated attribute is an XML NMTOKEN.
  */
 @Documented
-@Target(ElementType.FIELD)
+@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface NameToken {
 }

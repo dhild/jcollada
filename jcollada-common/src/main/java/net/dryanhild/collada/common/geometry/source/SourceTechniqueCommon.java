@@ -21,19 +21,26 @@
  *
  */
 
-package net.dryanhild.collada.common.annotations;
+package net.dryanhild.collada.common.geometry.source;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import net.dryanhild.collada.common.annotations.Attribute;
+import net.dryanhild.collada.common.annotations.Element;
+import net.dryanhild.collada.common.annotations.Id;
+import net.dryanhild.collada.common.annotations.Token;
 
-/**
- * Indicates that the annotated attribute is a URI fragment reference.
- */
-@Documented
-@Target(ElementType.FIELD)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface UriRef {
+public interface SourceTechniqueCommon {
+
+    @Id
+    @Attribute
+    String getId();
+
+    @Token
+    @Attribute
+    String getName();
+
+    @Element(name = "float_array", maxOccurs = 1)
+    FloatArray getFloats();
+
+    @Element(name = "int_array", maxOccurs = 1)
+    IntArray getInts();
 }

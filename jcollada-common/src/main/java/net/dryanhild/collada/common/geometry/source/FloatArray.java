@@ -22,24 +22,26 @@
 
 package net.dryanhild.collada.common.geometry.source;
 
+import net.dryanhild.collada.common.annotations.Attribute;
+import net.dryanhild.collada.common.annotations.Id;
+import net.dryanhild.collada.common.annotations.Token;
 
-import lombok.Getter;
-import lombok.Setter;
+public interface FloatArray {
 
-@Getter
-@Setter
-public class FloatArray {
+    @Id
+    @Attribute
+    String getId();
 
-    private String name;
-    private String id;
+    @Token
+    @Attribute
+    String getName();
 
-    public float[] values;
+    @Attribute(required = true)
+    int getCount();
 
-    public void setSize(int size) {
-        values = new float[size];
-    }
+    @Attribute(defaultValue = "6")
+    int getDigits();
 
-    public float get(int index) {
-        return values[index];
-    }
+    @Attribute(defaultValue = "38")
+    int getMagnitude();
 }

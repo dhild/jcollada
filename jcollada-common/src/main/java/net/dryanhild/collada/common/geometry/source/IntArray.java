@@ -21,19 +21,28 @@
  *
  */
 
-package net.dryanhild.collada.common.annotations;
+package net.dryanhild.collada.common.geometry.source;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import net.dryanhild.collada.common.annotations.Attribute;
+import net.dryanhild.collada.common.annotations.Id;
+import net.dryanhild.collada.common.annotations.Token;
 
-/**
- * Indicates that the annotated attribute is an XML id.
- */
-@Documented
-@Target(ElementType.METHOD)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface Id {
+public interface IntArray {
+
+    @Id
+    @Attribute
+    String getId();
+
+    @Token
+    @Attribute
+    String getName();
+
+    @Attribute(required = true)
+    int getCount();
+
+    @Attribute(defaultValue = "-2147483648")
+    int getMinInclusive();
+
+    @Attribute(defaultValue = "2147483647")
+    int getMaxInclusive();
 }

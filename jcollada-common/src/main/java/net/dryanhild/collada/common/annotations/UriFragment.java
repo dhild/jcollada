@@ -30,10 +30,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Indicates that the annotated attribute is an XML id.
+ * Indicates that the annotated attribute is a URI fragment reference.
  */
 @Documented
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Id {
+public @interface UriFragment {
 }
