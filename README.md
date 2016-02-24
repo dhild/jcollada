@@ -1,6 +1,6 @@
 # JCollada - Java COLLADA loading
 
-[![Build Status](http://dev.dryanhild.net:8080/jenkins/job/JCollada/badge/icon)](http://dev.dryanhild.net:8080/jenkins/job/JCollada/)
+[![Build Status](http://jenkins.dryanhild.net:8080/jenkins/job/JCollada/badge/icon)](http://dev.dryanhild.net:8080/jenkins/job/JCollada/)
 
 
 The aim of this project is to provide functionality to load COLLADA files into Java for rendering, specifically using OpenGL.
